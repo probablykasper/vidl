@@ -1,0 +1,11 @@
+version: "3.3"
+services:
+    vidl-web:
+        build: ./web
+        container_name: vidl-web
+        ports:
+            - 80:80
+        volumes:
+            - ./web/src:/usr/src/app
+        environment:
+            - "NODEJS_VERSION=8.6.0"

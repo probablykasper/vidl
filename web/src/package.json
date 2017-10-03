@@ -1,0 +1,25 @@
+{
+    "name": "vidl-web",
+    "version": "1.0.0",
+    "description": "vidl website",
+    "author": "KH kasperkh.kh@gmail.com",
+    "main": "server.js",
+
+    "scripts": {
+        "start": "npm run nodemon",
+        "nodemon": "nodemon server.js"
+    },
+    "dependencies": {
+        "nodemon": "1.11.0",
+
+        "base32": "0.0.6",
+
+        "express": "4.15.4",
+
+        "pug": "2.0.0-rc.4",
+        "node-sass": "4.5.3",
+        "fs-path": "0.0.23",
+
+        "youtube-dl": "1.12.2"
+    }
+}
