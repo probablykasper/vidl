@@ -20,20 +20,20 @@ module.exports.home = (req, res) => {
 }
 
 const fs = require('fs');
+const ytdl = require('youtube-dl');
 module.exports.download = (req, res) => {
-
+    const url = req.body.url;
+    const args = ["--ffmpeg-location", "/root/bin/", "-o", `files/${b32(6)}.%(ext)s`, "-x", "--audio-format", "mp3"];
+    const dl = ytdl.exec(url, args, {}, function exec(err, output) {
+        "use strict";
+        if (err) throw err;
+        console.log("YER BOY IS DUNN");
+        console.log(err);
+        console.log(output);
+    });
 }
 
-const ytdl = require('youtube-dl');
-const url = "https://www.youtube.com/watch?v=dvsOfsMlT3M";
-const args = ["-o", `files/${b32(6)}.%(ext)s`];
-ytdl.exec(url, args, {}, function exec(err, output) {
-    "use strict";
-    if (err) {
-        throw err;
-    }
-    console.log(output.join("\n"));
-});
+
 
 
 // const args = ["-x", "--audio-format", "mp3"];
