@@ -24,7 +24,15 @@ const ytdl = require('youtube-dl');
 module.exports.startDL = (req, res) => {
     const url = req.params.url;
     const fileID = b32(6);
-    const args = ["--ffmpeg-location", "/root/bin/", "-o", `files/${fileID}.%(ext)s`, "-x", "--audio-format", "mp3"];
+    const args = [
+        "--ffmpeg-location",
+        "/root/bin/",
+        "-x",
+        "-o",
+        `files/${fileID}.%(ext)s`,
+        "--audio-format",
+        "mp3",
+        "--embed-thumbnail"];
     const dl = ytdl.exec(url, args, {}, function exec(err, output) {
         "use strict";
         if (err) throw err;
