@@ -18,14 +18,14 @@ function xhr(reqContent, url, callback, options = {}) {
 var urlBar = document.querySelector("input.url");
 document.addEventListener("keydown", function(e) {
     if (e.which == 13) {
-        var req =
-        "url="+encodeURIComponent(urlBar.value);
-        xhr(req, "/download", function(res) {
+        xhr("", "/start-dl/"+encodeURIComponent(urlBar.value), function(res) {
             if (res.errors) {
-
+                console.log("error");
             } else {
-
+                console.log("done");
+                console.log(res);
+                window.location = "/dl/"+res.id+".mp3";
             }
-        })
+        });
     }
 });

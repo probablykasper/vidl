@@ -21,32 +21,22 @@ module.exports.home = (req, res) => {
 
 const fs = require('fs');
 const ytdl = require('youtube-dl');
-module.exports.download = (req, res) => {
-    const url = req.body.url;
-    const args = ["--ffmpeg-location", "/root/bin/", "-o", `files/${b32(6)}.%(ext)s`, "-x", "--audio-format", "mp3"];
+module.exports.startDL = (req, res) => {
+    const url = req.params.url;
+    const fileID = b32(6);
+    const args = ["--ffmpeg-location", "/root/bin/", "-o", `files/${fileID}.%(ext)s`, "-x", "--audio-format", "mp3"];
     const dl = ytdl.exec(url, args, {}, function exec(err, output) {
         "use strict";
         if (err) throw err;
         console.log("YER BOY IS DUNN");
         console.log(err);
         console.log(output);
+        jsonRes(res, {
+            id: fileID
+        });
     });
+};
+
+module.exports.dl = (req, res) => {
+    res.download(`/usr/src/app/files/${req.params.filename}`);
 }
-
-
-
-
-// const args = ["-x", "--audio-format", "mp3"];
-// const dl = ytdl.exec(url, args, {}, (err, output) => {
-//     console.log("DONE?");
-//     console.log(err);
-//     console.log(output);
-// });
-// dl.on("info", (info) => {
-//     console.log("DL start");
-//     console.log(info.title);
-//     dl.pipe(fs.createWriteStream(`files/${info.id}.${info.ext}`));
-//     dl.on("end", () => {
-//         console.log("ENDED");
-//     });
-// });
