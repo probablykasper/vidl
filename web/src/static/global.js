@@ -37,27 +37,76 @@ function xhr(reqContent, url, callback, options = {}) {
 }
 
 var urlBar = document.querySelector("input.url");
+var socket = io.connect("http://"+window.location.hostname);
+var activeDL = false;
 urlBar.addEventListener("keydown", function(e) {
     if (e.which == 13) {
         var middleDiv = document.querySelector(".middle");
         middleDiv.id = "loading";
         middleDiv.classList.add("loading");
         var format = updateLastFormat();
-        xhr("", "/start-dl/"+format+"/"+encodeURIComponent(urlBar.value), function(res) {
-            if (res.errors) {
-                console.log("error");
-                console.log(res.errors);
-            } else {
-                window.location = "/dl/"+res.id;
-                middleDiv.id = "success";
-                setTimeout(function() {
-                    middleDiv.classList.remove("loading");
-                }, 300);
-                setTimeout(function() {
-                    middleDiv.id = "options";
-                }, 1000);
-            }
+        activeDL = true;
+        socket.emit("start-dl", {
+            url: urlBar.value,
+            format: format
         });
+        var errorMsgP = document.querySelector("p.errorMsg");
+        var errorCodeP = document.querySelector("p.errorCode");
+        socket.on("err", function(data) {
+            socket.close();
+            console.log("err");
+            console.log(data);
+            if (data.msg == "invalidURL") {
+                errorMsgP.innerHTML = "The URL is not valid";
+                errorCodeP.innerHTML = "Code: "+data.code;
+            } else {
+                errorMsgP.innerHTML = "An unknown error occured";
+                errorCodeP.innerHTML = "Code: "+data.code;
+            }
+            middleDiv.id = "error";
+            setTimeout(function() {
+                middleDiv.classList.remove("loading");
+            }, 300);
+        });
+        var titleP = document.querySelector("p.title");
+        var uploaderP = document.querySelector("p.uploader");
+        socket.on("info", function(data) {
+            socket.close();
+            console.log("info");
+            console.log(data);
+            titleP.innerHTML = data.title;
+            uploaderP.innerHTML = data.uploader;
+            if (data.title) titleP.classList.add("visible");
+            if (data.uploader) uploaderP.classList.add("visible");
+        });
+        socket.on("downloaded", function(data) {
+            console.log("downloaded");
+            console.log(data);
+        });
+        socket.on("completed", function(data) {
+            socket.close();
+            console.log("completed");
+            console.log(data);
+            middleDiv.id = "success";
+            setTimeout(function() {
+                middleDiv.classList.remove("loading");
+            }, 300);
+        });
+
+        // xhr("", "/start-dl/"+format+"/"+encodeURIComponent(urlBar.value), function(res) {
+        //     if (res.errors) {
+        //         console.log("error");
+        //         console.log(res.errors);
+        //     } else {
+        //         window.location = "/dl/"+res.id;
+        //         middleDiv.id = "success";
+        //         setTimeout(function() {
+        //             middleDiv.classList.remove("loading");
+        //         }, 300);
+        //         setTimeout(function() {
+        //             middleDiv.id = "options";
+        //         }, 1000);
+        //     }
+        // });
     }
-    var socket = new WebSocket("ws://"+window.location.hostname+"/hello");
 });

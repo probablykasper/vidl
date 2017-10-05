@@ -10,100 +10,121 @@ function jsonRes(res, one, two) {
     res.json(resObj);
 }
 const crypto = require("crypto");
+const fs = require('fs');
+
 const base32 = require("base32");
 const sanitize = require("sanitize-filename");
+const ytdl = require('youtube-dl');
 function b32(x) {
     return base32.encode(crypto.randomBytes(x, "hex"));
 }
 
-let wss;
-const returnExports = {};
-
-returnExports.home = (req, res) => {
+module.exports.home = (req, res) => {
     res.render("home");
 }
 
-const fs = require('fs');
-const ytdl = require('youtube-dl');
-function download(res, url, format, id, callback) {
-    let audio = false;
-    if (format == "mp3" || format == "aac") audio = true;
+// module.exports.dl = (req, res) => {
+//     fs.readdir(`/usr/src/app/files/${req.params.id}`, (err, files) => {
+//         for (var i = 0; i < files.length; i++) {
+//             if (files[i].endsWith(".mp3") || files[i].endsWith(".aac")
+//             || files[i].endsWith(".mp4")) {
+//                 res.download(`/usr/src/app/files/${req.params.id}/${files[i]}`);
+//             }
+//         }
+//     });
+// }
 
+function download(info, cbErr, cbSuc) {
     const args = ["--ffmpeg-location", "/root/bin/"];
-    if (audio) args.push("-x");
-    args.push("-o", `files/${id}/file.%(ext)s`);
+    if (info.audioOnly) args.push("-x");
+    args.push("-o", `files/${info.id}/file.%(ext)s`);
     args.push("--restrict-filenames");
-    if (audio) args.push("--audio-format", format);
-    if (audio) args.push("--audio-quality", "0");
-    if (!audio) args.push("--format", format);
-    if (format == "mp3") args.push("--embed-thumbnail");
+    if (info.audioOnly) args.push("--audio-format", info.format);
+    if (info.audioOnly) args.push("--audio-quality", "0");
+    if (!info.audioOnly) args.push("--format", info.format);
+    if (info.mp3) args.push("--embed-thumbnail");
 
-    ytdl.exec(url, args, {}, function exec(err, output) {
+    ytdl.exec(info.url, args, {}, function exec(err, output) {
         if (err) {
-            console.log("-------------------- FFMPEG ERROR:");
+            console.log("::::: FFMPEG GETINFO UNKNOWN ERROR :::::");
             console.log(err);
-            jsonRes(res, "err", 10002);
+            cbErr({
+                code: "f0002-"+err.code,
+                msg: "unknown"
+            });
         } else {
-            callback();
+            cbSuc();
         }
     });
 }
-function getInfo(res, url, callback) {
+
+
+
+function getInfo(url, cbErr, cbSuc) {
     ytdl.getInfo(url, [], (err, info) => {
         if (err) {
-            console.log("-------------------- FFMPEG ERROR:");
-            console.log(err);
-            jsonRes(res, "err", 10003);
+            if (err.code == 1) {
+                cbErr({
+                    code: "f0001-1",
+                    msg: "invalidURL"
+                });
+            } else {
+                console.log("::::: FFMPEG GETINFO UNKNOWN ERROR :::::");
+                console.log(err);
+                cbErr({
+                    code: "f0001-"+err.code,
+                    msg: "unknown"
+                });
+            }
         } else {
-            callback(info.title);
+            cbSuc(info.title, info.uploader, info.webpage_url);
         }
     });
 }
-returnExports.startDL = (req, res) => {
-    const url = req.params.url;
-    const id = b32(6);
-    const format = req.params.format;
-    if (format == "mp3" || format == "aac" || format == "mp4") {
-        getInfo(res, url, (title) => {
-            download(res, url, format, id, () => {
-                const filename = `files/${id}/file.${format}`;
-                let newFilename = `${sanitize(title)}.${format}`;
-                newFilename = `files/${id}/${newFilename}`;
-                fs.rename(filename, newFilename, () => {
-                    jsonRes(res, {
-                        id: id
+
+module.exports.io = (socket) => {
+    console.log(`socket conn: ${socket.id}`);
+    let callCount = 0;
+    socket.on("start-dl", (data) => {
+        const info = {};
+        info.format = data.format;
+        info.mp3 = (info.format == "mp3") ? true : false;
+        info.aac = (info.format == "aac") ? true : false;
+        info.webm = (info.format == "webm") ? true : false;
+        if (callCount == 0 && (info.mp3 || info.aac || info.webm)) {
+            callCount++;
+            info.id = b32(6);
+            info.audioOnly = (info.format != "webm") ? true : false;
+            info.url = data.url;
+            getInfo(info.url, (err) => {
+                socket.emit("err", err);
+            }, (title, uploader, url) => {
+                info.title = title;
+                info.uploader = uploader;
+                info.url = url;
+                socket.emit("info", {
+                    title: title,
+                    uploader: uploader,
+                    url: url,
+                    id: info.id
+                });
+                download(info, (err) => {
+                    socket.emit("err", err);
+                }, () => {
+                    socket.emit("downloaded");
+                    const filename = `files/${info.id}/file.${info.format}`;
+                    let newFilename = `${sanitize(info.title)}.${info.format}`;
+                    newFilename = `files/${info.id}/${newFilename}`;
+                    fs.rename(filename, newFilename, () => {
+                        socket.emit("completed");
                     });
                 });
             });
-        });
-    } else {
-        jsonRes(res, "err", 10001);
-    }
-};
-
-returnExports.dl = (req, res) => {
-    fs.readdir(`/usr/src/app/files/${req.params.id}`, (err, files) => {
-        for (var i = 0; i < files.length; i++) {
-            if (files[i].endsWith(".mp3") || files[i].endsWith(".aac")
-            || files[i].endsWith(".mp4")) {
-                res.download(`/usr/src/app/files/${req.params.id}/${files[i]}`);
-            }
+        } else {
+            socket.emit("err", {
+                code: "00001",
+                msg: "invalidFormat"
+            });
         }
     });
-}
-
-const url = require("url");
-
-module.exports = (wssFromServerJS) => {
-    wss = wssFromServerJS;
-    wss.on("connection", function connection(ws, req) {
-        const location = url.parse(req.url, true);
-
-        ws.on("message", function incoming(message) {
-            console.log("received: %s", message);
-        });
-
-        ws.send("WOBO");
-    });
-    return returnExports;
-}
+};
