@@ -13,6 +13,8 @@
         "nodemon": "1.11.0",
 
         "base32": "0.0.6",
+        "sanitize-filename": "1.6.1",
+        "rimraf": "2.6.2",
 
         "express": "4.15.4",
         "socket.io": "2.0.3",

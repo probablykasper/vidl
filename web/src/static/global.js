@@ -19,25 +19,11 @@ document.addEventListener("click", function() {
     updateLastFormat();
 });
 
-function xhr(reqContent, url, callback, options = {}) {
-    var xhr = new XMLHttpRequest();
-    if (options.type == undefined)        options.type = "POST";
-    if (options.contentType == undefined) options.contentType = "values";
-    if (options.parseJSON == undefined) options.parseJSON = true;
-    xhr.open(options.type, url, true);
-    xhr.send(reqContent);
-    xhr.onreadystatechange = function() {
-        if (this.readyState == 4) {
-            var res = JSON.parse(this.responseText);
-            if (!options.parseJSON) res = this.responseText;
-            if      (this.status == 200) callback(res, false);
-            else if (this.status == 404) callback(res, 404);
-        }
-    };
-}
-
 var urlBar = document.querySelector("input.url");
-var socket = io.connect("http://"+window.location.hostname);
+function socketConnect() {
+    socket = io.connect("http://"+window.location.hostname);
+}
+socketConnect();
 var activeDL = false;
 urlBar.addEventListener("keydown", function(e) {
     if (e.which == 13) {
@@ -71,7 +57,6 @@ urlBar.addEventListener("keydown", function(e) {
         var titleP = document.querySelector("p.title");
         var uploaderP = document.querySelector("p.uploader");
         socket.on("info", function(data) {
-            socket.close();
             console.log("info");
             console.log(data);
             titleP.innerHTML = data.title;
@@ -91,22 +76,11 @@ urlBar.addEventListener("keydown", function(e) {
             setTimeout(function() {
                 middleDiv.classList.remove("loading");
             }, 300);
+            window.location = "/dl/"+data.id;
+            setTimeout(function() {
+                middleDiv.id = "options";
+                socketConnect();
+            }, 1000);
         });
-
-        // xhr("", "/start-dl/"+format+"/"+encodeURIComponent(urlBar.value), function(res) {
-        //     if (res.errors) {
-        //         console.log("error");
-        //         console.log(res.errors);
-        //     } else {
-        //         window.location = "/dl/"+res.id;
-        //         middleDiv.id = "success";
-        //         setTimeout(function() {
-        //             middleDiv.classList.remove("loading");
-        //         }, 300);
-        //         setTimeout(function() {
-        //             middleDiv.id = "options";
-        //         }, 1000);
-        //     }
-        // });
     }
 });

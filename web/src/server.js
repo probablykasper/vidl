@@ -22,8 +22,7 @@ app.use(bodyParser.json());
 // routes
 const routes = require("./modules/routes");
 app.get("/", routes.home);
-// app.post("/start-dl/:format/:url", routes.startDL);
-// app.get("/dl/:id", routes.dl);
+app.get("/dl/:id", routes.dl);
 
 // start server
 var server = app.listen(80, () => {

@@ -13,6 +13,7 @@ const crypto = require("crypto");
 const fs = require('fs');
 
 const base32 = require("base32");
+const rimraf = require("rimraf");
 const sanitize = require("sanitize-filename");
 const ytdl = require('youtube-dl');
 function b32(x) {
@@ -23,16 +24,16 @@ module.exports.home = (req, res) => {
     res.render("home");
 }
 
-// module.exports.dl = (req, res) => {
-//     fs.readdir(`/usr/src/app/files/${req.params.id}`, (err, files) => {
-//         for (var i = 0; i < files.length; i++) {
-//             if (files[i].endsWith(".mp3") || files[i].endsWith(".aac")
-//             || files[i].endsWith(".mp4")) {
-//                 res.download(`/usr/src/app/files/${req.params.id}/${files[i]}`);
-//             }
-//         }
-//     });
-// }
+module.exports.dl = (req, res) => {
+    fs.readdir(`/usr/src/app/files/${req.params.id}`, (err, files) => {
+        for (var i = 0; i < files.length; i++) {
+            if (files[i].endsWith(".mp3") || files[i].endsWith(".aac")
+            || files[i].endsWith(".mp4")) {
+                res.download(`/usr/src/app/files/${req.params.id}/${files[i]}`);
+            }
+        }
+    });
+}
 
 function download(info, cbErr, cbSuc) {
     const args = ["--ffmpeg-location", "/root/bin/"];
@@ -111,12 +112,23 @@ module.exports.io = (socket) => {
                 download(info, (err) => {
                     socket.emit("err", err);
                 }, () => {
-                    socket.emit("downloaded");
+                    socket.emit("downloaded", {});
                     const filename = `files/${info.id}/file.${info.format}`;
                     let newFilename = `${sanitize(info.title)}.${info.format}`;
                     newFilename = `files/${info.id}/${newFilename}`;
                     fs.rename(filename, newFilename, () => {
-                        socket.emit("completed");
+                        socket.emit("completed", {
+                            id: info.id
+                        });
+                        setTimeout(() => {
+                            // delete file
+                            rimraf(`files/${info.id}`, (err) => {
+                                if (err) {
+                                    console.log("::::: RIMRAF FOLDER DELETE ERROR :::::");
+                                    console.log(err);
+                                }
+                            });
+                        }, 1000*60*60);
                     });
                 });
             });
