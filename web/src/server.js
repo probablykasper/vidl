@@ -2,6 +2,10 @@
 // express
 const express = require("express");
 const app = express();
+const http = require("http");
+const server = http.createServer(app);
+const WebSocket = require('ws');
+const wss = new WebSocket.Server({ server });
 // local modules
 require("./modules/compile")();
 
@@ -20,12 +24,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // routes
-const routes = require("./modules/routes");
+const routes = require("./modules/routes")(wss);
 app.get("/", routes.home);
-app.post("/start-dl/:url", routes.startDL);
-app.get("/dl/:filename", routes.dl);
+app.post("/start-dl/:format/:url", routes.startDL);
+app.get("/dl/:id", routes.dl);
 
 // start server
-app.listen(80, function() {
-    console.log("Express server listening");
+server.listen(80, function listening() {
+    console.log("Express and WebSocket listening on %d", server.address().port);
 });

@@ -1,3 +1,24 @@
+var lastFormat = localStorage.getItem("lastFormat");
+if (lastFormat) {
+    document.querySelector("#"+lastFormat).checked = true;
+} else {
+    document.querySelector("#mp3").checked = true;
+}
+function updateLastFormat() {
+    var format = "";
+    var inputs = document.querySelectorAll(".options input");
+    for (var i = 0; i < inputs.length; i++) {
+        if (inputs[i].checked) {
+            format = inputs[i].id;
+        }
+    }
+    localStorage.setItem("lastFormat", format);
+    return format;
+}
+document.addEventListener("click", function() {
+    updateLastFormat();
+});
+
 function xhr(reqContent, url, callback, options = {}) {
     var xhr = new XMLHttpRequest();
     if (options.type == undefined)        options.type = "POST";
@@ -16,16 +37,27 @@ function xhr(reqContent, url, callback, options = {}) {
 }
 
 var urlBar = document.querySelector("input.url");
-document.addEventListener("keydown", function(e) {
+urlBar.addEventListener("keydown", function(e) {
     if (e.which == 13) {
-        xhr("", "/start-dl/"+encodeURIComponent(urlBar.value), function(res) {
+        var middleDiv = document.querySelector(".middle");
+        middleDiv.id = "loading";
+        middleDiv.classList.add("loading");
+        var format = updateLastFormat();
+        xhr("", "/start-dl/"+format+"/"+encodeURIComponent(urlBar.value), function(res) {
             if (res.errors) {
                 console.log("error");
+                console.log(res.errors);
             } else {
-                console.log("done");
-                console.log(res);
-                window.location = "/dl/"+res.id+".mp3";
+                window.location = "/dl/"+res.id;
+                middleDiv.id = "success";
+                setTimeout(function() {
+                    middleDiv.classList.remove("loading");
+                }, 300);
+                setTimeout(function() {
+                    middleDiv.id = "options";
+                }, 1000);
             }
         });
     }
+    var socket = new WebSocket("ws://"+window.location.hostname+"/hello");
 });

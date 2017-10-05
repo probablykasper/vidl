@@ -1,3 +1,15 @@
+input, label
+    border-radius: 3px
+    font-family: "Roboto", sans-serif
+    background-color: transparent
+    outline: none
+@keyframes spin
+    0%
+        transform: rotate(0deg)
+    50%
+        transform: rotate(180deg)
+    100%
+        transform: rotate(360deg)
 body
     .container
         height: 100%
@@ -6,26 +18,87 @@ body
         top: 0px
         left: 0px
         background: linear-gradient(to bottom right, #105057, #10083E)
-    .app-bar
-        width: 100%
-        // position: absolute
-        // top: 50%
-        // left: 50%
-        // transform: translate(-50%, -50%)
         display: flex
-        justify-content: center
-        // flex-direction: column
-        align-items: center
-        input.url
-            font-family: "Roboto"
-            background-color: transparent
-            border: 1px solid #EEEEEE
-            border-radius: 3px
-            width: 450px
-            margin: 15px
-            padding: 13px
-            font-size: 14px
-            outline: none
-            color: white
-            &::placeholder
-                color: rgba(#FFFFFF, 0.3)
+        flex-direction: column
+        .app-bar
+            width: 100%
+            min-height: 72px
+            display: flex
+            justify-content: center
+            align-items: center
+            input.url
+                border: 1px solid #FFFFFF
+                width: 450px
+                margin: 15px
+                padding: 13px
+                font-size: 14px
+                color: white
+                &::placeholder
+                    color: rgba(#FFFFFF, 0.3)
+        .middle
+            width: 100%
+            height: 100%
+            display: flex
+            justify-content: center
+            align-items: center
+            transition: opacity $transition
+            .options, .loader, .success
+                opacity: 0
+                transition: opacity $transition-long, transform $transition-long
+            &#options .options, &#loading .loader
+                opacity: 1
+            &#success .success
+                opacity: 1
+                transform: scale(1)
+            .options
+                position: absolute
+                display: flex
+                justify-content: center
+                align-items: center
+            .loader
+                position: absolute
+                width: 60px
+                height: 60px
+                border-width: 1px
+                border-style: solid
+                border-top-color: transparent
+                border-left-color: rgba(#FFFFFF, 0.5)
+                border-bottom-color: transparent
+                border-right-color: rgba(#FFFFFF, 0.5)
+                border-radius: 50%
+            &.loading .loader
+                animation: spin 4s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite
+            .success
+                transform: scale(0.8)
+                width: 80px
+                height: 80px
+            .button
+                input
+                    display: none
+                input + label
+                    display: block
+                    text-align: center
+                    border: 1px solid rgba(#FFFFFF, 0)
+                    cursor: pointer
+                    color: rgba(#FFFFFF, 0.7)
+                    font-size: 15px
+                    margin: 10px
+                    width: 70px
+                    padding: 10px 0px
+                    transition: all $transition
+                input:checked + label
+                    border-color: rgba(#FFFFFF, 0.5)
+                    color: rgba(#FFFFFF, 1)
+            .audio
+                display: flex
+                justify-content: flex-end
+                width: 100%
+            .video
+                display: flex
+                justify-content: flex-start
+                width: 100%
+            .divider
+                height: 30px
+                min-width: 1px
+                background-color: #FFFFFF
+                margin: 20px

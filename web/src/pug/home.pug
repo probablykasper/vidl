@@ -2,7 +2,7 @@ doctype html
 html
     head.mdc-typography
         title vidl
-        link(href='https://fonts.googleapis.com/css?family=Roboto:400,500', rel='stylesheet')
+        link(href="https://fonts.googleapis.com/css?family=Roboto:400,500", rel="stylesheet")
         // favicons
         link(rel="apple-touch-icon", sizes="180x180", href="/apple-touch-icon.png")
         link(rel="icon", type="image/png", sizes="32x32", href="/favicon-32x32.png")
@@ -18,4 +18,24 @@ html
         .container
             .app-bar
                 input.url(placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+            .middle#options
+                svg.success(xmlns="http://www.w3.org/2000/svg", fill="#ffffff", height="24", viewbox="0 0 24 24", width="24")
+                  path(d="M0 0h24v24H0z", fill="none")
+                  path(d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z")
+                .error
+                .loader
+                .options
+                    .audio
+                        div.button
+                            input(id="mp3", type="radio", name="radio")
+                            label(for="mp3") MP3
+                        div.button
+                            input(id="aac", type="radio", name="radio")
+                            label(for="aac") AAC
+                    .divider
+                    .video
+                        div.button
+                            input(id="mp4", type="radio", name="radio")
+                            label(for="mp4") MP4
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js")
         script(src="/global.js")
