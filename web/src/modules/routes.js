@@ -132,6 +132,11 @@ module.exports.io = (socket) => {
                     });
                 });
             });
+        } else if (callCount != 0) {
+            socket.emit("err", {
+                code: "00002",
+                msg: "alreadyActive"
+            });
         } else {
             socket.emit("err", {
                 code: "00001",

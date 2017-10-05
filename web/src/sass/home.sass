@@ -34,8 +34,11 @@ body
                 padding: 13px
                 font-size: 14px
                 color: white
+                transition: opacity $transition
                 &::placeholder
                     color: rgba(#FFFFFF, 0.3)
+                &.locked
+                    opacity: 0.5
         .middle
             width: 100%
             height: 100%
