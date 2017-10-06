@@ -13,9 +13,17 @@ module.exports = () => {
                 });
             }
         } else {
-            console.log("::::: COULD NOT READ files DIR :::::");
-            console.log("::::: init.js");
+            console.log("Creating files directory");
             console.log(err);
+        }
+        if (err) {
+            fs.mkdir("files", (err) => {
+                if (err) {
+                    console.log("::::: ERROR CREATING files DIRECTORY :::::");
+                    console.log("::::: init.js");
+                    console.log(err);
+                }
+            });
         }
     });
 }
