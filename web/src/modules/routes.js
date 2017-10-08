@@ -91,11 +91,11 @@ module.exports.io = (socket) => {
         info.format = data.format;
         info.mp3 = (info.format == "mp3") ? true : false;
         info.aac = (info.format == "aac") ? true : false;
-        info.webm = (info.format == "webm") ? true : false;
-        if (callCount == 0 && (info.mp3 || info.aac || info.webm)) {
+        info.mp4 = (info.format == "mp4") ? true : false;
+        if (callCount == 0 && (info.mp3 || info.aac || info.mp4)) {
             callCount++;
             info.id = b32(6);
-            info.audioOnly = (info.format != "webm") ? true : false;
+            info.audioOnly = (info.format != "mp4") ? true : false;
             info.url = data.url;
             getInfo(info.url, (err) => {
                 socket.emit("err", err);
