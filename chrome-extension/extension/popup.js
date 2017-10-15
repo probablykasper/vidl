@@ -46,4 +46,5 @@ function init(format) {
     chrome.runtime.sendMessage({
         "format": format
     });
+    window.close();
 }
