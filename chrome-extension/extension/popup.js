@@ -30,17 +30,21 @@ document.addEventListener("click", function() {
     updateLastFormat();
 });
 
-var mp3 = document.querySelector("#mp3", function() {
-    download("mp3");
-);
-var aac = document.querySelector("#aac", function() {
-    download("aac");
-);
-var mp4 = document.querySelector("#mp4", function() {
-    download("mp4");
-);
-function download(format) {
-    setTimeout(function() {
-        localStorage.setItem("timeoutedd");
-    }, 3000);
-}
+var mp3 = document.querySelector("#mp3");
+mp3.addEventListener("click", function() {
+    chrome.runtime.sendMessage({
+        "format": "mp3"
+    });
+});
+var aac = document.querySelector("#aac");
+aac.addEventListener("click", function() {
+    chrome.runtime.sendMessage({
+        "format": "aac"
+    });
+});
+var mp4 = document.querySelector("#mp4");
+mp4.addEventListener("click", function() {
+    chrome.runtime.sendMessage({
+        "format": "mp4"
+    });
+});
