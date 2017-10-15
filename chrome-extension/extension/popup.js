@@ -32,19 +32,19 @@ document.addEventListener("click", function() {
 
 var mp3 = document.querySelector("#mp3");
 mp3.addEventListener("click", function() {
-    chrome.runtime.sendMessage({
-        "format": "mp3"
-    });
+    init("mp3");
 });
 var aac = document.querySelector("#aac");
 aac.addEventListener("click", function() {
-    chrome.runtime.sendMessage({
-        "format": "aac"
-    });
+    init("aac");
 });
 var mp4 = document.querySelector("#mp4");
 mp4.addEventListener("click", function() {
-    chrome.runtime.sendMessage({
-        "format": "mp4"
-    });
+    init("mp4");
 });
+function init(format) {
+    chrome.runtime.sendMessage({
+        "format": format
+    });
+    chrome.tabs.remove();
+}

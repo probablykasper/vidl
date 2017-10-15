@@ -1,5 +1,4 @@
 // compileCompressed:extension/popup.css
-@import "variables.sass"
 p, input, label
     font-family: "Roboto", sans-serif
 input, label
@@ -14,8 +13,7 @@ input, label
     100%
         transform: rotate(360deg)
 body
-    height: 60px
-    width: 300px
+    // margin: 0px
     background: linear-gradient(to bottom, #145F6D, #122958)
     display: flex
     flex-direction: column
@@ -25,74 +23,11 @@ body
         display: flex
         justify-content: center
         align-items: center
-        transition: opacity $transition
-        .options, .loading, .success, .error
-            opacity: 0
-            transition: opacity $transition-long, transform $transition-long
-        &#options .options, &#loading .loading, &#error .error
-            opacity: 1
-        &#success .success, &#error .error svg
-            opacity: 1
-            transform: scale(1)
         .options
             user-select: none
-            position: absolute
+            flex-direction: column
             display: flex
-            justify-content: center
             align-items: center
-        p
-            text-align: center
-            height: 20px
-            line-height: 20px
-            margin: 0px
-            transition: opacity $transition
-        .loading
-            position: absolute
-            .loader
-                margin: auto
-                width: 60px
-                height: 60px
-                border-width: 1px
-                border-style: solid
-                border-top-color: transparent
-                border-left-color: rgba(#FFFFFF, 0.5)
-                border-bottom-color: transparent
-                border-right-color: rgba(#FFFFFF, 0.5)
-                border-radius: 50%
-            p
-                opacity: 0
-                &.visible
-                    opacity: 1
-            p.title
-                margin-top: 20px
-                margin-bottom: 2px
-                font-size: 16px
-                color: rgba(#FFFFFF, 0.8)
-            p.uploader
-                font-size: 14px
-                color: rgba(#FFFFFF, 0.6)
-        &.loading .loading .loader
-            animation: spin 4s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite
-        .success
-            transform: scale(0.8)
-            width: 80px
-            height: 80px
-        .error
-            position: absolute
-            svg
-                transform: scale(0.8)
-                width: 80px
-                height: 80px
-                display: block
-                margin-left: auto
-                margin-right: auto
-            p.errorMsg
-                margin-bottom: 2px
-                font-size: 16px
-                color: rgba(#FFFFFF, 0.8)
-            p.errorCode
-                font-size: 14px
-                color: rgba(#FFFFFF, 0.6)
         .button
             input
                 display: none
@@ -103,18 +38,15 @@ body
                 cursor: pointer
                 color: rgba(#FFFFFF, 0.7)
                 font-size: 15px
-                margin: 10px
+                margin: 8px
                 width: 70px
-                padding: 10px 0px
-                transition: all $transition
+                padding: 12px 2px
             input:checked + label
                 border-color: rgba(#FFFFFF, 0.5)
                 color: rgba(#FFFFFF, 1)
         .audio
             display: flex
-            justify-content: flex-end
-            width: 100%
+            flex-direction: column
         .video
             display: flex
-            justify-content: flex-start
-            width: 100%
+            flex-direction: column
