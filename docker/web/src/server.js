@@ -3,7 +3,7 @@
 const express = require("express");
 const app = express();
 // local modules
-require("./modules/compile")();
+// require("./modules/compile")();
 require("./modules/init")();
 
 // load view engine

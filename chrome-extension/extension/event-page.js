@@ -1,4 +1,4 @@
-var hostURL = "localhost";
+var hostURL = "vidl.kasp.io";
 var ws, open = false;
 function socketConnect(callback) {
     ws = new WebSocket("ws://"+hostURL+"/chrome-extension");
