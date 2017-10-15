@@ -46,5 +46,4 @@ function init(format) {
     chrome.runtime.sendMessage({
         "format": format
     });
-    chrome.tabs.remove();
 }

@@ -20,5 +20,23 @@
     "background": {
         "scripts": ["event-page.js"],
         "persistent": false
+    },
+    "commands": {
+        "dl_last": {
+            "suggested_key": {
+              "default": "Ctrl+Shift+S",
+              "mac": "MacCtrl+Shift+S"
+            },
+            "description": "Download current URL in last used format"
+        },
+        "dl_mp3": {
+            "description": "Download current URL in MP3"
+        },
+        "dl_aac": {
+            "description": "Download current URL in AAC"
+        },
+        "dl_mp4": {
+            "description": "Download current URL in MP4"
+        }
     }
 }
