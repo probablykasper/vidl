@@ -20,17 +20,26 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 
-// routes
-const routes = require("./modules/routes");
-app.get("/", routes.home);
-app.get("/dl/:id", routes.dl);
+// // routes
+// const routes = require("./modules/routes");
+// app.get("/", routes.home);
+// app.get("/dl/:id", routes.dl);
+
 
 // start server
-var server = app.listen(80, () => {
+const server = app.listen(80, () => {
     console.log("Express server listening on 80");
 });
 
-// socket setup
-const socket = require("socket.io");
-var io = socket(server);
-io.on("connection", routes.io);
+const WebSocket = require("ws");
+const ws = new WebSocket.Server({server});
+
+// routes
+require("./modules/routes")(app, ws);
+
+
+
+// // socket setup
+// const socket = require("socket.io");
+// var io = socket(server);
+// io.on("connection", routes.io);

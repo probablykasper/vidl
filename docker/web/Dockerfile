@@ -89,7 +89,7 @@ RUN npm install     sanitize-filename@1.6.1
 RUN npm install     rimraf@2.6.2
 
 RUN npm install     express@4.16.1
-RUN npm install     socket.io@2.0.3
+RUN npm install     ws@3.2.0
 
 RUN npm install     pug@2.0.0-rc.4
 RUN npm install     node-sass@4.5.3

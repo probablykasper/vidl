@@ -1,17 +1,7 @@
 "use strict";
-function jsonRes(res, one, two) {
-    let resObj = {};
-    if (one == "err") {
-        resObj.errors = two;
-    } else {
-        if (one) resObj = one;
-        one.errors = null;
-    }
-    res.json(resObj);
-}
+const fs = require("fs");
+const url = require("url");
 const crypto = require("crypto");
-const fs = require('fs');
-
 const base32 = require("base32");
 const rimraf = require("rimraf");
 const sanitize = require("sanitize-filename");
@@ -20,21 +10,71 @@ function b32(x) {
     return base32.encode(crypto.randomBytes(x, "hex"));
 }
 
-module.exports.home = (req, res) => {
-    res.render("home");
-}
-
-module.exports.dl = (req, res) => {
-    fs.readdir(`/usr/src/app/files/${req.params.id}`, (err, files) => {
-        for (var i = 0; i < files.length; i++) {
-            if (files[i].endsWith(".mp3") || files[i].endsWith(".aac")
-            || files[i].endsWith(".mp4")) {
-                res.download(`/usr/src/app/files/${req.params.id}/${files[i]}`);
+module.exports = (app, ws) => {
+    // HOME
+    app.get("/", (req, res) => {
+        res.render("home");
+    });
+    // DL
+    app.get("/dl/:id", (req, res) => {
+        fs.readdir(`/usr/src/app/files/${req.params.id}`, (err, files) => {
+            for (var i = 0; i < files.length; i++) {
+                if (files[i].endsWith(".mp3") || files[i].endsWith(".aac")
+                || files[i].endsWith(".mp4")) {
+                    res.download(`/usr/src/app/files/${req.params.id}/${files[i]}`);
+                }
             }
+        });
+    });
+    // SOCKET
+    ws.on("connection", (ws, req) => {
+        const ip = req.connection.remoteAddress;
+        const path = url.parse(req.url, true).pathname;
+
+        console.log(`socket conn ${path}: ${ip}`);
+        if (path == "/website-dl" || path == "/chrome-extension") {
+            let callCount = 0;
+
+            ws.on("message", (msgData) => {
+                const data = JSON.parse(msgData);
+                if (callCount == 0) {
+                    socketMsg(ws, data.type, data);
+                } else if (data.type == "start") {
+                    let message = {
+                        type: "err",
+                        code: "00002",
+                        msg: "already active"
+                    };
+                    ws.send(JSON.message(message));
+                }
+                callCount++;
+            });
         }
     });
 }
-
+function getInfo(url, cbErr, cbSuc) {
+    ytdl.getInfo(url, [], (err, info) => {
+        if (err) {
+            if (err.code == 1) {
+                cbErr({
+                    type: "err",
+                    code: "f0001-1",
+                    msg: "invalid url"
+                });
+            } else {
+                console.log("::::: FFMPEG GETINFO UNKNOWN ERROR :::::");
+                console.log(err);
+                cbErr({
+                    type: err,
+                    code: "f0001-"+err.code,
+                    msg: "unable to get info from url"
+                });
+            }
+        } else {
+            cbSuc(info.title, info.uploader, info.webpage_url);
+        }
+    });
+}
 function download(info, cbErr, cbSuc) {
     const args = ["--ffmpeg-location", "/root/bin/"];
     if (info.audioOnly) args.push("-x");
@@ -50,6 +90,7 @@ function download(info, cbErr, cbSuc) {
             console.log("::::: FFMPEG GETINFO UNKNOWN ERROR :::::");
             console.log(err);
             cbErr({
+                type: "err",
                 code: "f0002-"+err.code,
                 msg: "unknown"
             });
@@ -58,90 +99,66 @@ function download(info, cbErr, cbSuc) {
         }
     });
 }
-
-
-
-function getInfo(url, cbErr, cbSuc) {
-    ytdl.getInfo(url, [], (err, info) => {
+function socketMsg(ws, type, data) {
+    const info = {};
+    info.format = data.format;
+    info.mp3 = (data.format == "mp3") ? true : false;
+    info.aac = (data.format == "aac") ? true : false;
+    info.mp4 = (data.format == "mp4") ? true : false;
+    if (info.mp3 || info.aac || info.mp4) {
+        info.id = b32(6);
+        info.audioOnly = (info.format != "mp4") ? true : false;
+        info.url = data.url;
+        getInfo(info.url, (err) => {
+            ws.send(JSON.stringify(err));
+        }, (title, uploader, url) => {
+            info.title = title;
+            info.uploader = uploader;
+            info.url = url;
+            let message = {
+                type: "info",
+                uploader: info.uploader,
+                url: info.url,
+                id: info.id
+            };
+            ws.send(JSON.stringify(message));
+            download(info, (err) => {
+                ws.send(JSON.stringify(err));
+            }, () => {
+                let message = {
+                    type: "downloaded"
+                };
+                ws.send(JSON.stringify(message));
+                const filename = `files/${info.id}/file.${info.format}`;
+                let newFilename = `${sanitize(info.title)}.${info.format}`;
+                newFilename = `files/${info.id}/${newFilename}`;
+                fs.rename(filename, newFilename, () => {
+                    let message = {
+                        type: "completed",
+                        id: info.id
+                    }
+                    ws.send(JSON.stringify(message));
+                    setTimeout(() => {
+                        deleteFile(`files/${info.id}`);
+                    }, 1000*60*60);
+                });
+            });
+        });
+    } else {
+        let message = {
+            type: "err",
+            code: "00001",
+            msg: "invalid format"
+        }
+        ws.send(JSON.stringify(message));
+    }
+}
+function deleteFile(path) {
+    // delete file
+    rimraf(path, (err) => {
         if (err) {
-            if (err.code == 1) {
-                cbErr({
-                    code: "f0001-1",
-                    msg: "invalidURL"
-                });
-            } else {
-                console.log("::::: FFMPEG GETINFO UNKNOWN ERROR :::::");
-                console.log(err);
-                cbErr({
-                    code: "f0001-"+err.code,
-                    msg: "unknown"
-                });
-            }
-        } else {
-            cbSuc(info.title, info.uploader, info.webpage_url);
+            console.log("::::: RIMRAF FOLDER DELETE ERROR :::::");
+            console.log(err);
         }
     });
 }
-
-module.exports.io = (socket) => {
-    console.log(`socket conn: ${socket.id}`);
-    let callCount = 0;
-    socket.on("start-dl", (data) => {
-        const info = {};
-        info.format = data.format;
-        info.mp3 = (info.format == "mp3") ? true : false;
-        info.aac = (info.format == "aac") ? true : false;
-        info.mp4 = (info.format == "mp4") ? true : false;
-        if (callCount == 0 && (info.mp3 || info.aac || info.mp4)) {
-            callCount++;
-            info.id = b32(6);
-            info.audioOnly = (info.format != "mp4") ? true : false;
-            info.url = data.url;
-            getInfo(info.url, (err) => {
-                socket.emit("err", err);
-            }, (title, uploader, url) => {
-                info.title = title;
-                info.uploader = uploader;
-                info.url = url;
-                socket.emit("info", {
-                    title: title,
-                    uploader: uploader,
-                    url: url,
-                    id: info.id
-                });
-                download(info, (err) => {
-                    socket.emit("err", err);
-                }, () => {
-                    socket.emit("downloaded", {});
-                    const filename = `files/${info.id}/file.${info.format}`;
-                    let newFilename = `${sanitize(info.title)}.${info.format}`;
-                    newFilename = `files/${info.id}/${newFilename}`;
-                    fs.rename(filename, newFilename, () => {
-                        socket.emit("completed", {
-                            id: info.id
-                        });
-                        setTimeout(() => {
-                            // delete file
-                            rimraf(`files/${info.id}`, (err) => {
-                                if (err) {
-                                    console.log("::::: RIMRAF FOLDER DELETE ERROR :::::");
-                                    console.log(err);
-                                }
-                            });
-                        }, 1000*60*60);
-                    });
-                });
-            });
-        } else if (callCount != 0) {
-            socket.emit("err", {
-                code: "00002",
-                msg: "alreadyActive"
-            });
-        } else {
-            socket.emit("err", {
-                code: "00001",
-                msg: "invalidFormat"
-            });
-        }
-    });
-};

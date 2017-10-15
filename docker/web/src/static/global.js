@@ -19,40 +19,43 @@ document.addEventListener("click", function() {
     updateLastFormat();
 });
 
+var ws, open = false;
+function socketConnect(callback) {
+    ws = new WebSocket("ws://"+window.location.hostname+"/website-dl");
+    ws.onopen = function() {
+        if (callback) callback();
+    }
+}
+function socketClose() {
+    ws.close();
+}
 var urlBar = document.querySelector("input.url");
-function socketConnect() {
-    socket = io.connect("http://"+window.location.hostname);
-}
-socketConnect();
-function DLfinished(socket) {
-    socket.close();
-    activeDL = false;
-}
-var activeDL = false;
 urlBar.addEventListener("keydown", function(e) {
-    if (e.which == 13) {
-        if (!activeDL) {
-            activeDL = true;
-
-            var middleDiv = document.querySelector(".middle");
-            middleDiv.id = "loading";
-            middleDiv.classList.add("loading");
-            var format = updateLastFormat();
-
-            urlBar.classList.add("locked");
-            urlBar.setAttribute("readonly", "");
-
-            socket.emit("start-dl", {
-                url: urlBar.value,
-                format: format
-            });
-            var errorMsgP = document.querySelector("p.errorMsg");
-            var errorCodeP = document.querySelector("p.errorCode");
-            socket.on("err", function(data) {
-                DLfinished(socket);
+    if (e.which != 13) return;
+    var format = updateLastFormat();
+    var middleDiv = document.querySelector(".middle");
+    middleDiv.id = "loading";
+    middleDiv.classList.add("loading");
+    socketConnect(function(err) {
+        if (err) return;
+        var message = {
+            url: urlBar.value,
+            format: format
+        };
+        ws.send(JSON.stringify(message));
+        var errorMsgP = document.querySelector("p.errorMsg");
+        var errorCodeP = document.querySelector("p.errorCode");
+        var titleP = document.querySelector("p.title");
+        var uploaderP = document.querySelector("p.uploader");
+        ws.onmessage = function(e) {
+            var data = JSON.parse(e.data);
+            var type = data.type;
+            console.log(data);
+            if (type == "err") {
+                ws.close();
                 console.log("err");
                 console.log(data);
-                if (data.msg == "invalidURL") {
+                if (data.msg == "invalid url") {
                     errorMsgP.innerHTML = "The URL is not valid";
                     errorCodeP.innerHTML = "Code: "+data.code;
                 } else {
@@ -63,23 +66,18 @@ urlBar.addEventListener("keydown", function(e) {
                 setTimeout(function() {
                     middleDiv.classList.remove("loading");
                 }, 300);
-            });
-            var titleP = document.querySelector("p.title");
-            var uploaderP = document.querySelector("p.uploader");
-            socket.on("info", function(data) {
+            } else if (type == "info") {
                 console.log("info");
                 console.log(data);
                 titleP.innerHTML = data.title;
                 uploaderP.innerHTML = data.uploader;
                 if (data.title) titleP.classList.add("visible");
                 if (data.uploader) uploaderP.classList.add("visible");
-            });
-            socket.on("downloaded", function(data) {
+            } else if (type == "downloaded") {
                 console.log("downloaded");
                 console.log(data);
-            });
-            socket.on("completed", function(data) {
-                DLfinished(socket);
+            } else if (type == "completed") {
+                ws.close();
                 console.log("completed");
                 console.log(data);
                 middleDiv.id = "success";
@@ -91,9 +89,8 @@ urlBar.addEventListener("keydown", function(e) {
                 urlBar.removeAttribute("readonly");
                 setTimeout(function() {
                     middleDiv.id = "options";
-                    socketConnect();
                 }, 1000);
-            });
+            }
         }
-    }
+    });
 });
