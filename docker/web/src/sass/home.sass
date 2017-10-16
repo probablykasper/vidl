@@ -15,12 +15,15 @@ body
     .container
         height: 100%
         width: 100%
+        min-height: 1000px
+        top: 50%
+        transform: translateY(-50%)
         position: fixed
-        top: 0px
         left: 0px
         background: linear-gradient(to bottom, #0d6872, #10054c)
         display: flex
         flex-direction: column
+        justify-content: center
         .app-bar
             width: 100%
             min-height: 72px
@@ -28,7 +31,8 @@ body
             justify-content: center
             align-items: center
             input.url
-                border: 1px solid #FFFFFF
+                border: none
+                background-color: rgba(#000000, 0.2)
                 width: 450px
                 margin: 15px
                 padding: 13px
@@ -41,7 +45,6 @@ body
                     opacity: 0.5
         .middle
             width: 100%
-            height: 100%
             display: flex
             justify-content: center
             align-items: center

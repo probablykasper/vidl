@@ -6,8 +6,10 @@
     "main": "server.js",
 
     "scripts": {
-        "start": "npm run nodemon",
-        "nodemon": "nodemon server.js"
+        "dev": "npm run start_dev",
+        "start_dev": "nodemon server.js",
+        "production": "npm run start_production",
+        "start_production": "node server.js"
     },
     "dependencies": {
         "nodemon": "1.11.0",

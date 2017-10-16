@@ -30,6 +30,7 @@ function socketClose() {
     ws.close();
 }
 var urlBar = document.querySelector("input.url");
+urlBar.focus();
 urlBar.addEventListener("keydown", function(e) {
     if (e.which != 13) return;
     var format = updateLastFormat();

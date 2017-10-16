@@ -101,4 +101,4 @@ WORKDIR /usr/src/app
 
 COPY src .
 
-CMD ["npm", "run", "start"]
+CMD npm run $VIDL_ENV

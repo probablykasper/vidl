@@ -1,2 +1,0 @@
-# vidl
-Download YouTube videos

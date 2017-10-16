@@ -10,7 +10,7 @@ function b32(x) {
     return base32.encode(crypto.randomBytes(x, "hex"));
 }
 
-module.exports = (app, ws) => {
+module.exports = (app, wss) => {
     // HOME
     app.get("/", (req, res) => {
         res.render("home");
@@ -27,25 +27,29 @@ module.exports = (app, ws) => {
         });
     });
     // SOCKET
-    ws.on("connection", (ws, req) => {
+    wss.on("connection", (ws, req) => {
         const ip = req.connection.remoteAddress;
         const path = url.parse(req.url, true).pathname;
+        let open = true;
 
-        console.log(`socket conn ${path}: ${ip}`);
+        console.log(`socket conn open ${path}: ${ip}`);
+        ws.on("close", () => {
+            open = false;
+            console.log(`socket conn close ${path}: ${ip}`);
+        });
         if (path == "/website-dl" || path == "/chrome-extension") {
             let callCount = 0;
-
             ws.on("message", (msgData) => {
                 const data = JSON.parse(msgData);
                 if (callCount == 0) {
-                    socketMsg(ws, data.type, data);
+                    socketMsg(ws, data);
                 } else if (data.type == "start") {
                     let message = {
                         type: "err",
                         code: "00002",
                         msg: "already active"
                     };
-                    ws.send(JSON.message(message));
+                    res(ws, open, message);
                 }
                 callCount++;
             });
@@ -99,18 +103,38 @@ function download(info, cbErr, cbSuc) {
         }
     });
 }
-function socketMsg(ws, type, data) {
+function res(ws, open, msg) {
+    if (open) {
+        ws.send(JSON.stringify(msg), (err) => {
+            if (err) {
+                console.log("Socket send error. Connection probably closed");
+                console.log(err);
+                ws.terminate();
+            }
+            if (msg.type == "err") {
+                ws.terminate();
+            }
+        });
+    } else {
+        console.log("Socket message not sent; Connection closed");
+    }
+}
+function socketMsg(ws, data) {
     const info = {};
     info.format = data.format;
     info.mp3 = (data.format == "mp3") ? true : false;
     info.aac = (data.format == "aac") ? true : false;
     info.mp4 = (data.format == "mp4") ? true : false;
+    let open = true;
+    ws.on("close", () => {
+        open = false;
+    });
     if (info.mp3 || info.aac || info.mp4) {
         info.id = b32(6);
         info.audioOnly = (info.format != "mp4") ? true : false;
         info.url = data.url;
         getInfo(info.url, (err) => {
-            ws.send(JSON.stringify(err));
+            res(ws, open, err);
         }, (title, uploader, url) => {
             info.title = title;
             info.uploader = uploader;
@@ -121,14 +145,14 @@ function socketMsg(ws, type, data) {
                 url: info.url,
                 id: info.id
             };
-            ws.send(JSON.stringify(message));
+            res(ws, open, message);
             download(info, (err) => {
-                ws.send(JSON.stringify(err));
+                res(ws, open, err);
             }, () => {
                 let message = {
                     type: "downloaded"
                 };
-                ws.send(JSON.stringify(message));
+                res(ws, open, message);
                 const filename = `files/${info.id}/file.${info.format}`;
                 let newFilename = `${sanitize(info.title)}.${info.format}`;
                 newFilename = `files/${info.id}/${newFilename}`;
@@ -137,10 +161,15 @@ function socketMsg(ws, type, data) {
                         type: "completed",
                         id: info.id
                     }
-                    ws.send(JSON.stringify(message));
-                    setTimeout(() => {
+                    res(ws, open, message);
+                    if (open) {
+                        setTimeout(() => {
+                            deleteFile(`files/${info.id}`);
+                            ws.terminate();
+                        }, 1000*60*60);
+                    } else {
                         deleteFile(`files/${info.id}`);
-                    }, 1000*60*60);
+                    }
                 });
             });
         });
@@ -150,7 +179,7 @@ function socketMsg(ws, type, data) {
             code: "00001",
             msg: "invalid format"
         }
-        ws.send(JSON.stringify(message));
+        res(ws, open, message);
     }
 }
 function deleteFile(path) {

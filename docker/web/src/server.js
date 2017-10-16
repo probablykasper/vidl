@@ -3,7 +3,7 @@
 const express = require("express");
 const app = express();
 // local modules
-// require("./modules/compile")();
+if (process.env.VIDL_PRODUCTION == "dev") require("./modules/compile")();
 require("./modules/init")();
 
 // load view engine
@@ -20,26 +20,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 
-// // routes
-// const routes = require("./modules/routes");
-// app.get("/", routes.home);
-// app.get("/dl/:id", routes.dl);
-
-
 // start server
 const server = app.listen(80, () => {
     console.log("Express server listening on 80");
 });
 
 const WebSocket = require("ws");
-const ws = new WebSocket.Server({server});
+const wss = new WebSocket.Server({server});
 
 // routes
-require("./modules/routes")(app, ws);
-
-
-
-// // socket setup
-// const socket = require("socket.io");
-// var io = socket(server);
-// io.on("connection", routes.io);
+require("./modules/routes")(app, wss);

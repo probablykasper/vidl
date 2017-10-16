@@ -1,13 +1,9 @@
-var hostURL = "vidl.kasp.io";
-var ws, open = false;
+var hostURL = "localhost";
 function socketConnect(callback) {
     ws = new WebSocket("ws://"+hostURL+"/chrome-extension");
     ws.onopen = function() {
-        if (callback) callback();
+        if (callback) callback(ws);
     }
-}
-function socketClose() {
-    ws.close();
 }
 
 chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
@@ -37,8 +33,7 @@ chrome.commands.onCommand.addListener(function(command) {
     }
 });
 function startDownload(url, format) {
-    socketConnect(function(err) {
-        if (err) return;
+    socketConnect(function(ws) {
         var message = {
             url: url,
             format: format
@@ -57,7 +52,6 @@ function startDownload(url, format) {
                 console.log("downloaded");
                 console.log(data);
             } else if (type == "completed") {
-                ws.close();
                 console.log("completed");
                 chrome.downloads.download({url:"http://"+hostURL+"/dl/"+data.id});
             }
