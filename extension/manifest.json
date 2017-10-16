@@ -1,0 +1,42 @@
+{
+    "manifest_version": 2,
+    "name": "vidl",
+    "version": "1.0",
+    "description": "Use vidl directly from Chrome",
+    "icons": {
+        "128": "icon128.png",
+        "48": "icon48.png",
+        "16": "icon16.png"
+    },
+    "browser_action": {
+        "default_icon": "icon16.png",
+        "default_popup": "popup.html"
+    },
+    "permissions": [
+        "tabs",
+        "downloads",
+        "notifications"
+    ],
+    "background": {
+        "scripts": ["event-page.js"],
+        "persistent": false
+    },
+    "commands": {
+        "dl_last": {
+            "suggested_key": {
+              "default": "Ctrl+Shift+S",
+              "mac": "MacCtrl+Shift+S"
+            },
+            "description": "Download current URL in last used format"
+        },
+        "dl_mp3": {
+            "description": "Download current URL in MP3"
+        },
+        "dl_aac": {
+            "description": "Download current URL in AAC"
+        },
+        "dl_mp4": {
+            "description": "Download current URL in MP4"
+        }
+    }
+}
