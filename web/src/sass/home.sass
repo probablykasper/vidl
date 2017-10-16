@@ -1,4 +1,4 @@
-p, input, label
+p, input, label, div
     font-family: "Roboto", sans-serif
 input, label
     border-radius: 3px
@@ -12,9 +12,33 @@ input, label
     100%
         transform: rotate(360deg)
 body
+    margin: 0px
     .chrome-extension
-        position: absolute
-        z-index: 500
+        position: fixed
+        align-items: center
+        z-index: 2
+        display: none
+        &.visible
+            display: flex
+        svg
+            margin: 12px
+            padding: 8px
+            cursor: pointer
+            width: 20px
+            height: 20px
+            &:hover + .chrome-extension-tooltip
+                opacity: 1
+                transform: translateX(0px) scale(1)
+        .chrome-extension-tooltip
+            color: white
+            height: 100%
+            background-color: rgba(#000000, 0.2)
+            padding: 8px
+            border-radius: 3px
+            opacity: 0
+            transform: translateX(-20px) scale(0.9)
+            pointer-events: none
+            transition: opacity $transition, transform $transition
     .container
         height: 100%
         width: 100%

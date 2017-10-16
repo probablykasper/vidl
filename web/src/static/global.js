@@ -97,12 +97,13 @@ urlBar.addEventListener("keydown", function(e) {
 });
 
 if (chrome && chrome.webstore && chrome.webstore.install) {
-    var container = document.querySelector(".container");
-    
-    container.addEventListener("click", function() {
+    var chromeExtensionDiv = document.querySelector(".chrome-extension");
+    chromeExtensionDiv.classList.add("visible");
+    var svg = chromeExtensionDiv.querySelector(" svg");
+    svg.addEventListener("click", function() {
         var extLink = "https://chrome.google.com/webstore/detail/ofojemljpdnbfmjenigkncgofkcoacag";
         chrome.webstore.install(extLink, function(suc) {
-
+            console.log(suc);
         }, function(err) {
             console.log(err);
         });
