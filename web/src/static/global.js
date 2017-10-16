@@ -95,3 +95,16 @@ urlBar.addEventListener("keydown", function(e) {
         }
     });
 });
+
+if (chrome && chrome.webstore && chrome.webstore.install) {
+    var container = document.querySelector(".container");
+    
+    container.addEventListener("click", function() {
+        var extLink = "https://chrome.google.com/webstore/detail/ofojemljpdnbfmjenigkncgofkcoacag";
+        chrome.webstore.install(extLink, function(suc) {
+
+        }, function(err) {
+            console.log(err);
+        });
+    });
+}

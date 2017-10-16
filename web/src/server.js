@@ -3,7 +3,7 @@
 const express = require("express");
 const app = express();
 // local modules
-if (process.env.VIDL_PRODUCTION == "dev") require("./modules/compile")();
+if (process.env.VIDL_ENV == "dev") require("./modules/compile")();
 require("./modules/init")();
 
 // load view engine
