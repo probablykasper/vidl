@@ -39,6 +39,15 @@ body
             transform: translateX(-20px) scale(0.9)
             pointer-events: none
             transition: opacity $transition, transform $transition
+            &::after
+                content: ''
+                position: absolute
+                left: -7px
+                top: 50%
+                transform: translateY(-50%)
+                border-top: 15px solid transparent
+                border-bottom: 15px solid transparent
+                border-right: 7px solid rgba(0, 0, 0, 0.2)
     .container
         height: 100%
         width: 100%
