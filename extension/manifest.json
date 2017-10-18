@@ -19,7 +19,7 @@
     ],
     "background": {
         "scripts": ["event-page.js"],
-        "persistent": false
+        "persistent": true
     },
     "commands": {
         "dl_last": {
