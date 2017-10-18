@@ -1,14 +1,3 @@
-var url;
-chrome.tabs.query({}, function(tabs) {
-    for (var i = 0; i < tabs.length; i++) {
-        if (tabs[i].active) {
-            var tab = tabs[i];
-            i = tabs.length;
-            url = tab.url;
-        }
-    }
-});
-
 var lastFormat = localStorage.getItem("lastFormat");
 if (lastFormat) {
     document.querySelector("#"+lastFormat).checked = true;

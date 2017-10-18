@@ -2,8 +2,7 @@
 Download YouTube videos
 
 # ToDo
-- Error reporting
-- Feedback when download starts
+- This list is emptier than me
 
 # Deployment
 ### Chrome extension

@@ -15,6 +15,7 @@
     "permissions": [
         "tabs",
         "downloads",
+        "notifications",
         "notifications"
     ],
     "background": {
