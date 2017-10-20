@@ -97,6 +97,10 @@ RUN npm install     fs-path@0.0.23
 RUN npm install     youtube-dl@1.12.2
 RUN npm install     node-sass@4.5.3
 
+RUN cd /node_modules/youtube-dl \
+    && npm run update \
+    && bin/youtube-dl --version
+
 WORKDIR /usr/src/app
 
 COPY src .

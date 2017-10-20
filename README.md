@@ -2,7 +2,8 @@
 Download YouTube videos
 
 # ToDo
-- This list is emptier than me
+- Embed uploader and title as song metadata
+- Detect artist/title by using " - " as separator. Let users choose.
 
 # Deployment
 - **VIDL_ENV** environment variable in docker-compose.yml

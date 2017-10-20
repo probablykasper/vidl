@@ -9,4 +9,4 @@ services:
             - ./web/src:/usr/src/app
         environment:
             - "NODEJS_VERSION=8.6.0"
-            - "VIDL_ENV=dev"
+            - "VIDL_ENV=production"
