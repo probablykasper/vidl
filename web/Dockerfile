@@ -64,6 +64,7 @@ RUN cd ~/ffmpeg_sources \
       --pkg-config-flags="--static" \
       --extra-cflags="-I$HOME/ffmpeg_build/include" \
       --extra-ldflags="-L$HOME/ffmpeg_build/lib" \
+      --extra-libs=-lpthread \
       --bindir="$HOME/bin" \
       --enable-gpl \
       --enable-libass \
