@@ -18,10 +18,20 @@ module.exports = (app, wss) => {
     // DL
     app.get("/dl/:id", (req, res) => {
         fs.readdir(`/usr/src/app/files/${req.params.id}`, (err, files) => {
-            for (var i = 0; i < files.length; i++) {
-                if (files[i].endsWith(".mp3") || files[i].endsWith(".aac")
-                || files[i].endsWith(".mp4")) {
-                    res.download(`/usr/src/app/files/${req.params.id}/${files[i]}`);
+            if (err) {
+                console.log("::::: err reading dirrrrr");
+                console.log(err);
+                res.status(404).end();
+            } else if (!files) {
+                console.log("::::: filessssss:");
+                console.log(files);
+                res.status(404).end();
+            } else {
+                for (var i = 0; i < files.length; i++) {
+                    if (files[i].endsWith(".mp3") || files[i].endsWith(".aac")
+                    || files[i].endsWith(".mp4")) {
+                        res.download(`/usr/src/app/files/${req.params.id}/${files[i]}`);
+                    }
                 }
             }
         });
