@@ -13,7 +13,9 @@ input, label
         transform: rotate(360deg)
 body
     margin: 0px
-    .chrome-extension
+    .opera-extension svg
+        filter: grayscale(1) brightness(3)
+    .chrome-extension, .opera-extension
         position: fixed
         align-items: center
         z-index: 2
@@ -26,10 +28,10 @@ body
             cursor: pointer
             width: 20px
             height: 20px
-            &:hover + .chrome-extension-tooltip
+            &:hover + .extension-tooltip
                 opacity: 1
                 transform: translateX(0px) scale(1)
-        .chrome-extension-tooltip
+        .extension-tooltip
             color: white
             height: 100%
             background-color: rgba(#000000, 0.2)

@@ -96,14 +96,43 @@ urlBar.addEventListener("keydown", function(e) {
     });
 });
 
-if (chrome && chrome.webstore && chrome.webstore.install) {
-    var chromeExtensionDiv = document.querySelector(".chrome-extension");
-    chromeExtensionDiv.classList.add("visible");
-    var svg = chromeExtensionDiv.querySelector(" svg");
+(function browserTests() {
+    // Opera 8.0+
+    window.isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+    // Firefox 1.0+
+    window.isFirefox = typeof InstallTrigger !== 'undefined';
+    // Safari 3.0+ "[object HTMLElementConstructor]"
+    window.isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification));
+    // Internet Explorer 6-11
+    window.isIE = /*@cc_on!@*/false || !!document.documentMode;
+    // Edge 20+
+    window.isEdge = !isIE && !!window.StyleMedia;
+    // Chrome 1+
+    window.isChrome = !!window.chrome && !!window.chrome.webstore;
+    // Blink engine detection
+    window.isBlink = (isChrome || isOpera) && !!window.CSS;
+})();
+
+if (isChrome) {
+    var extensionDiv = document.querySelector(".chrome-extension");
+    extensionDiv.classList.add("visible");
+    var svg = extensionDiv.querySelector("svg");
     svg.addEventListener("click", function() {
         var extLink = "https://chrome.google.com/webstore/detail/ofojemljpdnbfmjenigkncgofkcoacag";
         chrome.webstore.install(extLink, function(suc) {
             console.log(suc);
+        }, function(err) {
+            console.log(err);
+        });
+    });
+} else if (isOpera) {
+    var extensionDiv = document.querySelector(".opera-extension");
+    extensionDiv.classList.add("visible");
+    var svg = extensionDiv.querySelector("svg");
+    svg.addEventListener("click", function() {
+        var extId = "ogkhbifidiamoocnaibdpedkbldldjdo";
+        opr.addons.installExtension(extId, function() {
+            console.log("success ext install");
         }, function(err) {
             console.log(err);
         });
