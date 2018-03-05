@@ -3,6 +3,8 @@ services:
     vidl-web:
         build: ./web
         container_name: vidl-web
+        restart_policy:
+            condition: on-failure
         ports:
             - 80:80
         volumes:
