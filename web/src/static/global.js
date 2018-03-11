@@ -1,22 +1,17 @@
+$(document).ready(() => {
+
+
+
 var lastFormat = localStorage.getItem("lastFormat");
-if (lastFormat) {
-    document.querySelector("#"+lastFormat).checked = true;
-} else {
-    document.querySelector("#mp3").checked = true;
-}
-function updateLastFormat() {
-    var format = "";
-    var inputs = document.querySelectorAll(".options input");
-    for (var i = 0; i < inputs.length; i++) {
-        if (inputs[i].checked) {
-            format = inputs[i].id;
-        }
-    }
-    localStorage.setItem("lastFormat", format);
-    return format;
-}
-document.addEventListener("click", function() {
-    updateLastFormat();
+if (lastFormat) $("#"+lastFormat).addClass("checked");
+else $("#mp3").addClass("checked");
+
+$("button.format").on("click", function(e) {
+    $("button.format").removeClass("checked");
+    $(this).addClass("checked");
+    lastFormat = $("button.format.checked")[0].id;
+    localStorage.setItem("lastFormat", lastFormat);
+    start();
 });
 
 var ws, open = false;
@@ -29,11 +24,17 @@ function socketConnect(callback) {
 function socketClose() {
     ws.close();
 }
-var urlBar = document.querySelector("input.url");
-urlBar.focus();
-urlBar.addEventListener("keydown", function(e) {
+$(document).on("click", (e) => {
+    $("input.url").focus();
+});
+$("input.url").focus();
+$("input.url").on("keydown", function(e) {
     if (e.which != 13) return;
-    var format = updateLastFormat();
+    start();
+});
+function start() {
+    var format = $("button.format.checked")[0].id;
+    console.log(format);
     var middleDiv = document.querySelector(".middle");
     middleDiv.id = "loading";
     middleDiv.classList.add("loading");
@@ -94,7 +95,7 @@ urlBar.addEventListener("keydown", function(e) {
             }
         }
     });
-});
+}
 
 (function browserTests() {
     // Opera 8.0+
@@ -125,16 +126,8 @@ if (isChrome) {
             console.log(err);
         });
     });
-} else if (isOpera) {
-    var extensionDiv = document.querySelector(".opera-extension");
-    extensionDiv.classList.add("visible");
-    var svg = extensionDiv.querySelector("svg");
-    svg.addEventListener("click", function() {
-        var extId = "ogkhbifidiamoocnaibdpedkbldldjdo";
-        opr.addons.installExtension(extId, function() {
-            console.log("success ext install");
-        }, function(err) {
-            console.log(err);
-        });
-    });
 }
+
+
+
+});

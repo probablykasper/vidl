@@ -1,5 +1,5 @@
-p, input, label, div
-    font-family: "Roboto", sans-serif
+p, input, label, div, button
+    font-family: "Rubik", sans-serif
 input, label
     border-radius: 3px
     background-color: transparent
@@ -89,7 +89,7 @@ body
             transition: opacity $transition
             .options, .loading, .success, .error
                 opacity: 0
-                transition: opacity $transition-long, transform $transition-long
+                transition: opacity $transition-30, transform $transition-30
             &#options .options, &#loading .loading, &#error .error
                 opacity: 1
             &#success .success, &#error .error svg
@@ -109,6 +109,7 @@ body
                 transition: opacity $transition
             .loading
                 position: absolute
+                transform: translateY(30px)
                 .loader
                     margin: auto
                     width: 60px
@@ -154,23 +155,39 @@ body
                 p.errorCode
                     font-size: 14px
                     color: rgba(#FFFFFF, 0.6)
-            .button
-                input
-                    display: none
-                input + label
-                    display: block
-                    text-align: center
-                    border: 1px solid rgba(#FFFFFF, 0)
-                    cursor: pointer
-                    color: rgba(#FFFFFF, 0.7)
-                    font-size: 15px
-                    margin: 10px
-                    width: 70px
-                    padding: 10px 0px
-                    transition: all $transition
-                input:checked + label
-                    border-color: rgba(#FFFFFF, 0.5)
-                    color: rgba(#FFFFFF, 1)
+            button
+                background-color: transparent
+                outline: none
+                display: block
+                text-align: center
+                border: 1px solid rgba(#FFFFFF, 0)
+                cursor: pointer
+                // color: rgba(#FFFFFF, 0.7)
+                color: rgba(#FFFFFF, 0.9)
+                font-size: 15px
+                margin: 10px
+                width: 70px
+                padding: 10px 0px
+                position: relative
+                transition: all $transition
+                &:hover::before
+                    width: 35%
+                &.checked::before, &:focus::before
+                    width: 50%
+                    transform: translate(-50%, -2px)
+                &::before
+                    content: ""
+                    position: absolute
+                    transition: $transition-20 all
+                    background-color: #FFFFFF
+                    bottom: 0px
+                    transform: translate(-50%, 0px)
+                    left: 50%
+                    height: 2px
+                    width: 0%
+                    border-radius: 5px
+                &.checked
+                    // color: white
             .audio
                 display: flex
                 justify-content: flex-end

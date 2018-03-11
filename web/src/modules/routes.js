@@ -151,6 +151,7 @@ function socketMsg(ws, data) {
             info.url = url;
             let message = {
                 type: "info",
+                title: info.title,
                 uploader: info.uploader,
                 url: info.url,
                 id: info.id
@@ -164,7 +165,7 @@ function socketMsg(ws, data) {
                 };
                 res(ws, open, message);
                 const filename = `files/${info.id}/file.${info.format}`;
-                let newFilename = `${sanitize(info.title)}.${info.format}`;
+                let newFilename = `${sanitize(info.uploader)} - ${sanitize(info.title)}.${info.format}`;
                 newFilename = `files/${info.id}/${newFilename}`;
                 fs.rename(filename, newFilename, () => {
                     let message = {
