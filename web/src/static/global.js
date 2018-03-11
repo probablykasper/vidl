@@ -1,4 +1,4 @@
-$(document).ready(() => {
+$(document).ready(function() {
 
 
 
@@ -14,17 +14,7 @@ $("button.format").on("click", function(e) {
     start();
 });
 
-var ws, open = false;
-function socketConnect(callback) {
-    ws = new WebSocket("ws://"+window.location.hostname+"/website-dl");
-    ws.onopen = function() {
-        if (callback) callback();
-    }
-}
-function socketClose() {
-    ws.close();
-}
-$(document).on("click", (e) => {
+$(document).on("click", function(e) {
     $("input.url").focus();
 });
 $("input.url").focus();
@@ -32,6 +22,15 @@ $("input.url").on("keydown", function(e) {
     if (e.which != 13) return;
     start();
 });
+
+var ws, open = false;
+function socketConnect(callback) {
+    ws = new WebSocket("ws://"+window.location.hostname+"/website-dl");
+    ws.onopen = function() {
+        if (callback) callback();
+    }
+}
+
 function start() {
     var format = $("button.format.checked")[0].id;
     console.log(format);
@@ -41,7 +40,7 @@ function start() {
     socketConnect(function(err) {
         if (err) return;
         var message = {
-            url: urlBar.value,
+            url: $("input.url")[0].value,
             format: format
         };
         ws.send(JSON.stringify(message));
@@ -75,9 +74,6 @@ function start() {
                 uploaderP.innerHTML = data.uploader;
                 if (data.title) titleP.classList.add("visible");
                 if (data.uploader) uploaderP.classList.add("visible");
-            } else if (type == "downloaded") {
-                console.log("downloaded");
-                console.log(data);
             } else if (type == "completed") {
                 ws.close();
                 console.log("completed");
@@ -87,8 +83,8 @@ function start() {
                     middleDiv.classList.remove("loading");
                 }, 300);
                 window.location = "/dl/"+data.id;
-                urlBar.classList.remove("locked");
-                urlBar.removeAttribute("readonly");
+                $("input.url")[0].classList.remove("locked");
+                $("input.url")[0].removeAttribute("readonly");
                 setTimeout(function() {
                     middleDiv.id = "options";
                 }, 1000);

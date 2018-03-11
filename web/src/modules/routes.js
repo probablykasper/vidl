@@ -160,10 +160,6 @@ function socketMsg(ws, data) {
             download(info, (err) => {
                 res(ws, open, err);
             }, () => {
-                let message = {
-                    type: "downloaded"
-                };
-                res(ws, open, message);
                 const filename = `files/${info.id}/file.${info.format}`;
                 let newFilename = `${sanitize(info.uploader)} - ${sanitize(info.title)}.${info.format}`;
                 newFilename = `files/${info.id}/${newFilename}`;
@@ -173,14 +169,10 @@ function socketMsg(ws, data) {
                         id: info.id
                     }
                     res(ws, open, message);
-                    if (open) {
-                        setTimeout(() => {
-                            deleteFile(`files/${info.id}`);
-                            ws.terminate();
-                        }, 1000*60*60);
-                    } else {
+                    setTimeout(() => {
                         deleteFile(`files/${info.id}`);
-                    }
+                        ws.terminate();
+                    }, 1000*60*60);
                 });
             });
         });
