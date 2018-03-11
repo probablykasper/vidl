@@ -79,7 +79,7 @@ function getInfo(url, cbErr, cbSuc) {
                 console.log("::::: FFMPEG GETINFO UNKNOWN ERROR :::::");
                 console.log(err);
                 cbErr({
-                    type: err,
+                    type: "err",
                     code: "f0001-"+err.code,
                     msg: "unable to get info from url"
                 });
