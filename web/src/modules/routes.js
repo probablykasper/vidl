@@ -39,20 +39,21 @@ module.exports = (app, wss) => {
     // SOCKET
     wss.on("connection", (ws, req) => {
         const ip = req.connection.remoteAddress;
+        console.log(req.connection.remoteAddress);
         const path = url.parse(req.url, true).pathname;
         let open = true;
 
-        console.log(`socket conn open ${path}: ${ip}`);
+        console.log(`${path}: ${ip}     OPEN socket connection`);
         ws.on("close", () => {
             open = false;
-            console.log(`socket conn close ${path}: ${ip}`);
+            console.log(`${path}: ${ip}     CLOSE socket connection`);
         });
         if (path == "/website-dl" || path == "/chrome-extension") {
             let callCount = 0;
             ws.on("message", (msgData) => {
                 const data = JSON.parse(msgData);
                 if (callCount == 0) {
-                    socketMsg(ws, data);
+                    socketMsg(ws, data, ip, path);
                 } else if (data.type == "start") {
                     let message = {
                         type: "err",
@@ -66,7 +67,7 @@ module.exports = (app, wss) => {
         }
     });
 }
-function getInfo(url, cbErr, cbSuc) {
+function getInfo(url, ip, path, cbErr, cbSuc) {
     ytdl.getInfo(url, [], (err, info) => {
         if (err) {
             if (err.code == 1) {
@@ -85,6 +86,8 @@ function getInfo(url, cbErr, cbSuc) {
                 });
             }
         } else {
+            console.log(`${path}: ${ip}     ${info.uploader} - ${info.title}`);
+            console.log(`${path}: ${ip}     ${info.webpage_url}`);
             cbSuc(info.title, info.uploader, info.webpage_url);
         }
     });
@@ -129,7 +132,7 @@ function res(ws, open, msg) {
         console.log("Socket message not sent; Connection closed");
     }
 }
-function socketMsg(ws, data) {
+function socketMsg(ws, data, ip, path) {
     const info = {};
     info.format = data.format;
     info.mp3 = (data.format == "mp3") ? true : false;
@@ -143,7 +146,7 @@ function socketMsg(ws, data) {
         info.id = b32(6);
         info.audioOnly = (info.format != "mp4") ? true : false;
         info.url = data.url;
-        getInfo(info.url, (err) => {
+        getInfo(info.url, ip, path, (err) => {
             res(ws, open, err);
         }, (title, uploader, url) => {
             info.title = title;

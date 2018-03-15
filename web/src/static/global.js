@@ -14,8 +14,10 @@ $("button.format").on("click", function(e) {
     start();
 });
 
-$(document).on("click", function(e) {
-    $("input.url").focus();
+$(document).on("keydown", function(e) {
+    if (e.which != 13 && e.which != 9 && e.which != 32) { // enter tab space
+        $("input.url").focus();
+    }
 });
 $("input.url").focus();
 $("input.url").on("keydown", function(e) {
@@ -75,10 +77,10 @@ function start() {
                 if (data.title) titleP.classList.add("visible");
                 if (data.uploader) uploaderP.classList.add("visible");
             } else if (type == "completed") {
+                middleDiv.id = "success";
                 ws.close();
                 console.log("completed");
                 console.log(data);
-                middleDiv.id = "success";
                 setTimeout(function() {
                     middleDiv.classList.remove("loading");
                 }, 300);
@@ -88,6 +90,18 @@ function start() {
                 setTimeout(function() {
                     middleDiv.id = "options";
                 }, 1000);
+            }
+        }
+        ws.onclose = function(e) {
+            if (middleDiv.id != "success") {
+                console.log("err - connection closed unexpectedly");
+                console.log(e);
+                errorMsgP.innerHTML = "The server connection closed unexpectedly";
+                errorCodeP.innerHTML = "Code: "+e.code;
+                middleDiv.id = "error";
+                setTimeout(function() {
+                    middleDiv.classList.remove("loading");
+                }, 300);
             }
         }
     });
