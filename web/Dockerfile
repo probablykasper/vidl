@@ -121,7 +121,7 @@ RUN npm install     node-sass@4.5.3
 
 RUN cd /node_modules/youtube-dl \
     && npm run update \
-    && bin/youtube-dl --version
+    && bin/youtube-dl --version \
     && echo "woah"
 
 WORKDIR /usr/src/app
