@@ -87,7 +87,6 @@ function getInfo(url, ip, path, cbErr, cbSuc) {
             }
         } else {
             console.log(`${path}: ${ip}     ${info.uploader} - ${info.title}`);
-            console.log(`${path}: ${ip}     ${info.webpage_url}`);
             cbSuc(info.title, info.uploader, info.webpage_url);
         }
     });
@@ -146,6 +145,7 @@ function socketMsg(ws, data, ip, path) {
         info.id = b32(6);
         info.audioOnly = (info.format != "mp4") ? true : false;
         info.url = data.url;
+        console.log(`${path}: ${ip}     ${data.url}`);
         getInfo(info.url, ip, path, (err) => {
             res(ws, open, err);
         }, (title, uploader, url) => {
