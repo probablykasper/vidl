@@ -2,6 +2,10 @@ $(document).ready(function() {
 
 
 
+$(".middle").css({
+    opacity: 1
+});
+
 var lastFormat = localStorage.getItem("lastFormat");
 if (lastFormat) $("#"+lastFormat).addClass("checked");
 else $("#mp3").addClass("checked");
@@ -14,14 +18,19 @@ $("button.format").on("click", function(e) {
     start();
 });
 
+$("input.url").focus();
 $(document).on("keydown", function(e) {
-    if (e.which != 13 && e.which != 9 && e.which != 32) { // enter tab space
+    if (
+        e.which != 13 && // enter
+        e.which != 9 && // tab
+        e.which != 32 && // space
+        e.which != 16 // shift
+    ) {
         $("input.url").focus();
     }
 });
-$("input.url").focus();
 $("input.url").on("keydown", function(e) {
-    if (e.which != 13) return;
+    if (e.which != 13) return; // enter
     start();
 });
 
@@ -53,16 +62,16 @@ function start() {
         ws.onmessage = function(e) {
             var data = JSON.parse(e.data);
             var type = data.type;
-            console.log(data);
             if (type == "err") {
                 ws.close();
                 console.log("err");
                 console.log(data);
+                console.log(data.msg);
                 if (data.msg == "invalid url") {
-                    errorMsgP.innerHTML = "The URL is not valid";
+                    errorMsgP.innerHTML = data.msg;
                     errorCodeP.innerHTML = "Code: "+data.code;
                 } else {
-                    errorMsgP.innerHTML = "An unknown error occured";
+                    errorMsgP.innerHTML = data.msg;
                     errorCodeP.innerHTML = "Code: "+data.code;
                 }
                 middleDiv.id = "error";
@@ -93,7 +102,7 @@ function start() {
             }
         }
         ws.onclose = function(e) {
-            if (middleDiv.id != "success") {
+            if (middleDiv.id != "success" && middleDiv.id != "error") {
                 console.log("err - connection closed unexpectedly");
                 console.log(e);
                 errorMsgP.innerHTML = "The server connection closed unexpectedly";

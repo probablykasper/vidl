@@ -88,13 +88,16 @@ body
             align-items: center
             transition: opacity $transition
             .options, .loading, .success, .error
+                pointer-events: none
                 opacity: 0
                 transition: opacity $transition-30, transform $transition-30
             &#options .options, &#loading .loading, &#error .error
                 opacity: 1
+                pointer-events: all
             &#success .success, &#error .error svg
                 opacity: 1
                 transform: scale(1)
+                pointer-events: all
             .options
                 user-select: none
                 position: absolute
@@ -171,11 +174,18 @@ body
                 padding: 10px 0px
                 position: relative
                 transition: all $transition
-                &:hover::before
+                &.checked:hover::before, &:hover::before
                     width: 35%
-                &.checked::before, &:focus::before
+                    background-color: #FFFFFF
+                &.checked:focus::before, &:focus::before
                     width: 50%
                     transform: translate(-50%, -2px)
+                    background-color: #FFFFFF
+                // &.checked
+                //     ::before
+                //         background-color: rgba(#FFFFFF, 0.3)
+                //     &:hover::before, &:focus::before
+                //         background-color: #FFFFFF
                 &::before
                     content: ""
                     position: absolute
@@ -187,8 +197,9 @@ body
                     height: 2px
                     width: 0%
                     border-radius: 5px
-                &.checked
-                    // color: white
+                &.checked::before
+                    width: 35%
+                    background-color: rgba(#FFFFFF, 0.4)
             .audio
                 display: flex
                 justify-content: flex-end

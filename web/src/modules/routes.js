@@ -43,7 +43,7 @@ module.exports = (app, wss) => {
         const path = url.parse(req.url, true).pathname;
         let open = true;
 
-        console.log(`${path}: ${ip}     OPEN socket connection`);
+        console.log(`${path}: ${ip}     OPEN  socket connection`);
         ws.on("close", () => {
             open = false;
             console.log(`${path}: ${ip}     CLOSE socket connection`);
@@ -57,8 +57,8 @@ module.exports = (app, wss) => {
                 } else if (data.type == "start") {
                     let message = {
                         type: "err",
-                        code: "00002",
-                        msg: "already active"
+                        code: "001",
+                        msg: "A download is already active"
                     };
                     res(ws, open, message);
                 }
@@ -73,16 +73,16 @@ function getInfo(url, ip, path, cbErr, cbSuc) {
             if (err.code == 1) {
                 cbErr({
                     type: "err",
-                    code: "f0001-1",
-                    msg: "invalid url"
+                    code: "002",
+                    msg: "The URL is invalid"
                 });
             } else {
                 console.log("::::: FFMPEG GETINFO UNKNOWN ERROR :::::");
                 console.log(err);
                 cbErr({
                     type: "err",
-                    code: "f0001-"+err.code,
-                    msg: "unable to get info from url"
+                    code: "003-"+err.code,
+                    msg: `Unable to get info from URL`
                 });
             }
         } else {
@@ -100,15 +100,14 @@ function download(info, cbErr, cbSuc) {
     if (info.audioOnly) args.push("--audio-quality", "0");
     if (!info.audioOnly) args.push("--format", info.format);
     if (info.mp3) args.push("--embed-thumbnail");
-
     ytdl.exec(info.url, args, {}, function exec(err, output) {
         if (err) {
             console.log("::::: FFMPEG GETINFO UNKNOWN ERROR :::::");
             console.log(err);
             cbErr({
                 type: "err",
-                code: "f0002-"+err.code,
-                msg: "unknown"
+                code: "004-"+err.code,
+                msg: "An unknown error occured"
             });
         } else {
             cbSuc();
@@ -182,8 +181,8 @@ function socketMsg(ws, data, ip, path) {
     } else {
         let message = {
             type: "err",
-            code: "00001",
-            msg: "invalid format"
+            code: "005",
+            msg: "The requested format is invalid"
         }
         res(ws, open, message);
     }
