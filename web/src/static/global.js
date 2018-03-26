@@ -36,7 +36,7 @@ $("input.url").on("keydown", function(e) {
 
 var ws, open = false;
 function socketConnect(callback) {
-    ws = new WebSocket("ws://"+window.location.hostname+"/website-dl");
+    ws = new WebSocket("wss://"+window.location.hostname+"/website-dl");
     ws.onopen = function() {
         if (callback) callback();
     }
