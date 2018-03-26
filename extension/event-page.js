@@ -1,6 +1,6 @@
 var hostURL = "localhost";
 function socketConnect(callback) {
-    ws = new WebSocket("ws://"+hostURL+"/chrome-extension");
+    ws = new WebSocket("wss://"+hostURL+"/chrome-extension");
     ws.onopen = function() {
         if (callback) callback(ws);
     }
@@ -79,9 +79,6 @@ function startDownload(url, format) {
                 } else if (title) {
                     notify("Download Started", title);
                 }
-            } else if (type == "downloaded") {
-                console.log("downloaded");
-                console.log(data);
             } else if (type == "completed") {
                 console.log("completed");
                 console.log(data);

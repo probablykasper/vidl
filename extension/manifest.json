@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "vidl",
-    "version": "1.1",
+    "version": "1.1.1",
     "description": "Use vidl directly from your browser",
     "icons": {
         "128": "icon128.png",
