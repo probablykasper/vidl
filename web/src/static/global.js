@@ -72,13 +72,8 @@ function start() {
                 console.log("err");
                 console.log(data);
                 console.log(data.msg);
-                if (data.msg == "invalid url") {
-                    errorMsgP.innerHTML = data.msg;
-                    errorCodeP.innerHTML = "Code: "+data.code;
-                } else {
-                    errorMsgP.innerHTML = data.msg;
-                    errorCodeP.innerHTML = "Code: "+data.code;
-                }
+                errorMsgP.innerHTML = data.msg;
+                errorCodeP.innerHTML = "Code: "+data.code;
                 middleDiv.id = "error";
                 setTimeout(function() {
                     middleDiv.classList.remove("loading");

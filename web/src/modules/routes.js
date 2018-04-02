@@ -58,7 +58,7 @@ module.exports = (app, wss) => {
                     let message = {
                         type: "err",
                         code: "001",
-                        msg: "A download is already active"
+                        msg: "A download is already active."
                     };
                     res(ws, open, message);
                 }
@@ -74,7 +74,7 @@ function getInfo(url, ip, path, cbErr, cbSuc) {
                 cbErr({
                     type: "err",
                     code: "002",
-                    msg: "The URL is invalid"
+                    msg: "The URL is invalid."
                 });
             } else {
                 console.log("::::: FFMPEG GETINFO UNKNOWN ERROR :::::");
@@ -82,7 +82,7 @@ function getInfo(url, ip, path, cbErr, cbSuc) {
                 cbErr({
                     type: "err",
                     code: "003-"+err.code,
-                    msg: `Unable to get info from URL`
+                    msg: `Unable to get info from URL.`
                 });
             }
         } else {
@@ -116,7 +116,7 @@ function download(info, cbErr, cbSuc, filename) {
             cbErr({
                 type: "err",
                 code: "004-"+err.code,
-                msg: "An unknown error occured"
+                msg: "An unknown error occured."
             });
         } else {
             cbSuc(filename);
@@ -160,17 +160,23 @@ function socketMsg(ws, data, ip, path) {
         }, (infos) => {
             let message = {
                 type: "info",
-                title: infos[0].title,
-                uploader: infos[0].uploader,
                 url: infos[0].url,
-                id: infos[0].id
-            };
+                id: infos[0].id,
+            }
+            if (infos.length == 1) {
+                message.title    = infos[0].title;
+                message.uploader = infos[0].uploader;
+                message.multiple = false;
+            } else {
+                message.multiple = true;
+            }
             res(ws, open, message);
             let filesDownloaded = 0;
             function anotherFileDownloaded() {
                 filesDownloaded++;
                 return (filesDownloaded == infos.length);
             }
+            info.totalFiles = infos.length;
             for (var i = 0; i < infos.length; i++) {
                 const index = i+1;
                 console.log(`${path}: ${ip}     ${infos[i].uploader} - ${infos[i].title}`);
@@ -203,6 +209,9 @@ function socketMsg(ws, data, ip, path) {
                             type: "file",
                             id: `${info.id}-${index}`,
                             lastFile: lastFile,
+                            totalFiles: info.totalFiles,
+                            title:      downloadInfo.title,
+                            uploader:   downloadInfo.uploader,
                         }
                         res(ws, open, message, () => {
                             if (lastFile) {
@@ -222,7 +231,7 @@ function socketMsg(ws, data, ip, path) {
         let message = {
             type: "err",
             code: "005",
-            msg: "The requested format is invalid"
+            msg: "The requested format is invalid."
         }
         res(ws, open, message);
     }
