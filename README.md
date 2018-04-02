@@ -5,6 +5,6 @@ Download YouTube videos
 - This list is emptier than me
 
 # Deployment
-- **hostURL** variable in extension/event-page.js:1
+- **VIDL_ENV** variable in extension/event-page.js:1
     - Dev: **localhost**
     - Production: **vidl.kasp.io**

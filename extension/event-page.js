@@ -1,6 +1,15 @@
-var hostURL = "vidl.kasp.io";
+var VIDL_ENV = "production";
+if (VIDL_ENV == "production") {
+    var hostURL = "vidl.kasp.io";
+} else {
+    var hostURL = "localhost";
+}
 function socketConnect(callback) {
-    ws = new WebSocket("wss://"+hostURL+"/chrome-extension");
+    if (VIDL_ENV == "production") {
+        ws = new WebSocket("wss://"+hostURL+"/chrome-extension");
+    } else {
+        ws = new WebSocket("ws://"+hostURL+"/chrome-extension");
+    }
     ws.onopen = function() {
         if (callback) callback(ws);
     }
@@ -56,17 +65,15 @@ function startDownload(url, format) {
         };
         ws.send(JSON.stringify(message));
         var uploader, title;
+        var downloadCount = 0;
         ws.onmessage = function(e) {
             var data = JSON.parse(e.data);
             var type = data.type;
             if (type == "err") {
                 console.log("err");
                 console.log(data);
-                if (data.msg == "invalid url") {
-                    notify("Error Downloading Video", "Invalid URL", true);
-                } else {
-                    notify("Error Downloading Video", "Unknown error. Code: "+data.code, true);
-                }
+                console.log(data.msg);
+                notify("Error Downloading Video", data.msg+" Code: "+data.code);
             } else if (type == "info") {
                 console.log("info");
                 console.log(data);
@@ -79,15 +86,22 @@ function startDownload(url, format) {
                 } else if (title) {
                     notify("Download Started", title);
                 }
-            } else if (type == "completed") {
-                console.log("completed");
+            } else if (type == "file") {
+                console.log("file");
                 console.log(data);
-                if (uploader && title) {
-                    notify("Download Complete", uploader+" - "+title, true);
-                } else if (uploader) {
-                    notify("Download Complete", uploader, true);
-                } else if (title) {
-                    notify("Download Complete", title, true);
+                var notificationTitle = "Download Complete";
+                downloadCount++;
+                if (!data.lastOne) {
+                    notificationTitle = "Download "+downloadCount+" of "+data.totalFiles+" Complete";
+                } else {
+                    ws.close();
+                }
+                if (data.uploader && data.title) {
+                    notify(notificationTitle, data.uploader+" - "+data.title, true);
+                } else if (data.uploader) {
+                    notify(notificationTitle, data.uploader, true);
+                } else if (data.title) {
+                    notify(notificationTitle, data.title, true);
                 }
                 chrome.downloads.download({url:"http://"+hostURL+"/dl/"+data.id});
             }
