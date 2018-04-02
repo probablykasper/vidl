@@ -1,3 +1,4 @@
+var VIDL_ENV = "dev";
 $(document).ready(function() {
 
 
@@ -36,7 +37,11 @@ $("input.url").on("keydown", function(e) {
 
 var ws, open = false;
 function socketConnect(callback) {
-    ws = new WebSocket("wss://"+window.location.hostname+"/website-dl");
+    if (VIDL_ENV == "dev") {
+        ws = new WebSocket("ws://"+window.location.hostname+"/website-dl");
+    } else {
+        ws = new WebSocket("wss://"+window.location.hostname+"/website-dl");
+    }
     ws.onopen = function() {
         if (callback) callback();
     }
@@ -85,20 +90,27 @@ function start() {
                 uploaderP.innerHTML = data.uploader;
                 if (data.title) titleP.classList.add("visible");
                 if (data.uploader) uploaderP.classList.add("visible");
-            } else if (type == "completed") {
-                middleDiv.id = "success";
-                ws.close();
-                console.log("completed");
+            } else if (type == "file") {
+                console.log("file");
                 console.log(data);
-                setTimeout(function() {
-                    middleDiv.classList.remove("loading");
-                }, 300);
-                window.location = "/dl/"+data.id;
-                $("input.url")[0].classList.remove("locked");
-                $("input.url")[0].removeAttribute("readonly");
-                setTimeout(function() {
-                    middleDiv.id = "options";
-                }, 1000);
+                $("a.download-link").attr("download", "");
+                $("a.download-link").attr("href", "/dl/"+data.id);
+                $("a.download-link")[0].click();
+                if (data.lastFile) {
+                    middleDiv.id = "success";
+                    ws.close();
+                    // console.log("completed");
+                    // console.log(data);
+                    setTimeout(function() {
+                        middleDiv.classList.remove("loading");
+                    }, 300);
+                    // window.location = "/dl/"+data.id;
+                    $("input.url")[0].classList.remove("locked");
+                    $("input.url")[0].removeAttribute("readonly");
+                    setTimeout(function() {
+                        middleDiv.id = "options";
+                    }, 1000);
+                }
             }
         }
         ws.onclose = function(e) {

@@ -86,16 +86,25 @@ function getInfo(url, ip, path, cbErr, cbSuc) {
                 });
             }
         } else {
-            console.log(`${path}: ${ip}     ${info.uploader} - ${info.title}`);
-            cbSuc(info.title, info.uploader, info.webpage_url);
+            var infos = [];
+            if (Array.isArray(info)) infos = info;
+            else infos[0] = info;
+            cbSuc(infos);
         }
     });
 }
-function download(info, cbErr, cbSuc) {
+function download(info, cbErr, cbSuc, filename) {
     const args = ["--ffmpeg-location", "/root/bin/"];
     if (info.audioOnly) args.push("-x");
-    args.push("-o", `files/${info.id}/file.%(ext)s`);
-    args.push("--restrict-filenames");
+
+    var uploader = sanitize(info.uploader);
+    if (info.title.includes(" - ")) uploader = "";
+    var title = sanitize(info.title);
+    var filename = `${info.id}-${info.index}/${uploader}${title}.${info.format}`;
+    var filePath = `files/${filename}`;
+    args.push("-o", filePath);
+
+    // args.push("--restrict-filenames");
     if (info.audioOnly) args.push("--audio-format", info.format);
     if (info.audioOnly) args.push("--audio-quality", "0");
     if (!info.audioOnly) args.push("--format", info.format);
@@ -110,11 +119,11 @@ function download(info, cbErr, cbSuc) {
                 msg: "An unknown error occured"
             });
         } else {
-            cbSuc();
+            cbSuc(filename);
         }
     });
 }
-function res(ws, open, msg) {
+function res(ws, open, msg, callback) {
     if (open) {
         ws.send(JSON.stringify(msg), (err) => {
             if (err) {
@@ -125,6 +134,7 @@ function res(ws, open, msg) {
             if (msg.type == "err") {
                 ws.terminate();
             }
+            if (callback) callback();
         });
     } else {
         console.log("Socket message not sent; Connection closed");
@@ -147,36 +157,66 @@ function socketMsg(ws, data, ip, path) {
         console.log(`${path}: ${ip}     ${data.url}`);
         getInfo(info.url, ip, path, (err) => {
             res(ws, open, err);
-        }, (title, uploader, url) => {
-            info.title = title;
-            info.uploader = uploader;
-            info.url = url;
+        }, (infos) => {
             let message = {
                 type: "info",
-                title: info.title,
-                uploader: info.uploader,
-                url: info.url,
-                id: info.id
+                title: infos[0].title,
+                uploader: infos[0].uploader,
+                url: infos[0].url,
+                id: infos[0].id
             };
             res(ws, open, message);
-            download(info, (err) => {
-                res(ws, open, err);
-            }, () => {
-                const filename = `files/${info.id}/file.${info.format}`;
-                let newFilename = `${sanitize(info.uploader)} - ${sanitize(info.title)}.${info.format}`;
-                newFilename = `files/${info.id}/${newFilename}`;
-                fs.rename(filename, newFilename, () => {
-                    let message = {
-                        type: "completed",
-                        id: info.id
-                    }
-                    res(ws, open, message);
-                    setTimeout(() => {
-                        deleteFile(`files/${info.id}`);
-                        ws.terminate();
-                    }, 1000*60*60);
+            let filesDownloaded = 0;
+            function anotherFileDownloaded() {
+                filesDownloaded++;
+                return (filesDownloaded == infos.length);
+            }
+            for (var i = 0; i < infos.length; i++) {
+                const index = i+1;
+                console.log(`${path}: ${ip}     ${infos[i].uploader} - ${infos[i].title}`);
+                const downloadInfo = {
+                    title:      infos[i].title,
+                    uploader:   infos[i].uploader,
+                    url:        infos[i].webpage_url,
+                    format:     info.format,
+                    audioOnly:  info.audioOnly,
+                    mp3:        info.mp3,
+                    aac:        info.aac,
+                    mp4:        info.mp4,
+                    id:         info.id,
+                    index:      index,
+                };
+                download(downloadInfo, (err) => {
+                    anotherFileDownloaded();
+                    res(ws, open, err);
+                }, () => {
+                    // const filename = `files/${info.id}/file.${info.format}`;
+
+                    // var uploader = sanitize(info.uploader);
+                    // if (info.title.includes(" - ")) uploader = "";
+                    // var title = sanitize(info.title);
+                    // var newFilename = `files/${info.id}/${uploader}${title}.${info.format}`;
+
+                    // fs.rename(filename, newFilename, () => {
+                        const lastFile = anotherFileDownloaded();
+                        let message = {
+                            type: "file",
+                            id: `${info.id}-${index}`,
+                            lastFile: lastFile,
+                        }
+                        res(ws, open, message, () => {
+                            if (lastFile) {
+                                setTimeout(() => {
+                                    ws.terminate();
+                                }, 1000*1);
+                            }
+                        });
+                        setTimeout(() => {
+                            deleteFile(`files/${info.id}-${index}`);
+                        }, 1000*60*60);
+                    // });
                 });
-            });
+            }
         });
     } else {
         let message = {
