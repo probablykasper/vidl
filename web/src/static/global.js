@@ -1,4 +1,4 @@
-var VIDL_ENV = "dev";
+var VIDL_ENV = "production";
 $(document).ready(function() {
 
 
