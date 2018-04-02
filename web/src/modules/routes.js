@@ -97,7 +97,7 @@ function download(info, cbErr, cbSuc, filename) {
     const args = ["--ffmpeg-location", "/root/bin/"];
     if (info.audioOnly) args.push("-x");
 
-    var uploader = sanitize(info.uploader);
+    var uploader = sanitize(info.uploader+" - ");
     if (info.title.includes(" - ")) uploader = "";
     var title = sanitize(info.title);
     var filename = `${info.id}-${info.index}/${uploader}${title}.${info.format}`;
