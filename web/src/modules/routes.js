@@ -177,7 +177,8 @@ function socketMsg(ws, data, ip, path) {
                 return (filesDownloaded == infos.length);
             }
             info.totalFiles = infos.length;
-            for (var i = 0; i < infos.length; i++) {
+            let i = 0;
+            function startADownload() {
                 const index = i+1;
                 console.log(`${path}: ${ip}     ${infos[i].uploader} - ${infos[i].title}`);
                 const downloadInfo = {
@@ -196,6 +197,8 @@ function socketMsg(ws, data, ip, path) {
                     anotherFileDownloaded();
                     res(ws, open, err);
                 }, () => {
+                    i++;
+                    if (i < infos.length) startADownload();
                     // const filename = `files/${info.id}/file.${info.format}`;
 
                     // var uploader = sanitize(info.uploader);
@@ -204,28 +207,31 @@ function socketMsg(ws, data, ip, path) {
                     // var newFilename = `files/${info.id}/${uploader}${title}.${info.format}`;
 
                     // fs.rename(filename, newFilename, () => {
-                        const lastFile = anotherFileDownloaded();
-                        let message = {
-                            type: "file",
-                            id: `${info.id}-${index}`,
-                            lastFile: lastFile,
-                            totalFiles: info.totalFiles,
-                            title:      downloadInfo.title,
-                            uploader:   downloadInfo.uploader,
+                    const lastFile = anotherFileDownloaded();
+                    let message = {
+                        type: "file",
+                        id: `${info.id}-${index}`,
+                        lastFile: lastFile,
+                        totalFiles: info.totalFiles,
+                        title:      downloadInfo.title,
+                        uploader:   downloadInfo.uploader,
+                    }
+                    res(ws, open, message, () => {
+                        if (lastFile) {
+                            setTimeout(() => {
+                                ws.terminate();
+                            }, 1000*1);
                         }
-                        res(ws, open, message, () => {
-                            if (lastFile) {
-                                setTimeout(() => {
-                                    ws.terminate();
-                                }, 1000*1);
-                            }
-                        });
-                        setTimeout(() => {
-                            deleteFile(`files/${info.id}-${index}`);
-                        }, 1000*60*60);
+                    });
+                    setTimeout(() => {
+                        deleteFile(`files/${info.id}-${index}`);
+                    }, 1000*60*60);
                     // });
                 });
             }
+            startADownload();
+            // for (var i = 0; i < infos.length; i++) {
+            // }
         });
     } else {
         let message = {
