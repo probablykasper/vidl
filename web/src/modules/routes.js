@@ -100,8 +100,8 @@ function download(info, cbErr, cbSuc, filename) {
     var uploader = sanitize(info.uploader+" - ");
     if (info.title.includes(" - ")) uploader = "";
     var title = sanitize(info.title);
-    var filename = `"${info.id}-${info.index}/${uploader}${title}.${info.format}"`;
-    var filePath = `files/${filename}`;
+    var filename = `${info.id}-${info.index}/${uploader}${title}.${info.format}`;
+    var filePath = `"files/${filename}"`;
     args.push("-o", filePath);
 
     // args.push("--restrict-filenames");
