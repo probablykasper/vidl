@@ -100,8 +100,8 @@ function download(info, cbErr, cbSuc, filename) {
     var uploader = sanitize(info.uploader+" - ");
     if (info.title.includes(" - ")) uploader = "";
     var title = sanitize(info.title);
-    var filename = `${info.id}-${info.index}/${uploader}${title}.${info.format}`;
-    var filePath = `"files/${filename}"`;
+    var filename = `${info.id}-${info.index}/${uploader}${title}.%(ext)s`;
+    var filePath = `files/${filename}`;
     args.push("-o", filePath);
 
     // args.push("--restrict-filenames");
@@ -111,12 +111,18 @@ function download(info, cbErr, cbSuc, filename) {
     if (info.mp3) args.push("--embed-thumbnail");
     ytdl.exec(info.url, args, {}, function exec(err, output) {
         if (err) {
-            console.log("::::: FFMPEG GETINFO UNKNOWN ERROR :::::");
+            console.log("::::: FFMPEG DOWNLOAD UNKNOWN ERROR :::::");
             console.log(err);
+            let msg = "";
+            if (err.code == 1) {
+                msg = `The format "${info.format}" not available for this URL.`
+            } else {
+                msg = "An unknown error occured."
+            }
             cbErr({
                 type: "err",
                 code: "004-"+err.code,
-                msg: "An unknown error occured."
+                msg: msg
             });
         } else {
             cbSuc(filename);
