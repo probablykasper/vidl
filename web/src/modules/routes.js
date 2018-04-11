@@ -6,6 +6,7 @@ const base32 = require("base32");
 const rimraf = require("rimraf");
 const sanitize = require("sanitize-filename");
 const ytdl = require('youtube-dl');
+const ffmetadata = require("ffmetadata");
 function b32(x) {
     return base32.encode(crypto.randomBytes(x, "hex"));
 }
@@ -100,16 +101,14 @@ function download(info, cbErr, cbSuc, filename) {
     const uploader = info.uploader+" - ";
     if (info.title.includes(" - ")) uploader = "";
     const uploaderAndTitle = sanitize(uploader+info.title);
-    filename = `${info.id}-${info.index}/${uploaderAndTitle}.%(ext)s`;
-    const filePath = `files/${filename}`;
-    args.push("-o", filePath);
+    filename = `files/${info.id}-${info.index}/x${uploaderAndTitle}.%(ext)s`;
+    args.push("-o", filename);
 
     // args.push("--restrict-filenames");
     if (info.audioOnly) args.push("--audio-format", info.format);
     if (info.audioOnly) args.push("--audio-quality", "0");
     if (!info.audioOnly) args.push("--format", info.format);
     if (info.mp3) args.push("--embed-thumbnail");
-    console.log(args);
     ytdl.exec(info.url, args, {}, function exec(err, output) {
         if (err) {
             console.log("::::: FFMPEG DOWNLOAD UNKNOWN ERROR :::::");
@@ -126,7 +125,94 @@ function download(info, cbErr, cbSuc, filename) {
                 msg: msg
             });
         } else {
-            cbSuc(filename);
+            changeMD(info, `files/${info.id}-${info.index}`, cbErr, cbSuc);
+        }
+    });
+}
+function changeMD(info, dir, cbErr, cbSuc) {
+    fs.readdir(dir, (err, files) => {
+        if (err) {
+            console.log("::::: err reading dir to change md");
+            console.log(err);
+            cbErr({
+                type: "err",
+                code: "006-"+err.code,
+                msg: "Unable to read the directory the downloaded file is in",
+            });
+        } else if (!files) {
+            console.log("::::: err no files to change md");
+            console.log(files);
+            cbErr({
+                type: "err",
+                code: "007-"+err.code,
+                msg: "No files returned when reading directory the downloaded file is in",
+            });
+        } else {
+            for (var i = 0; i < files.length; i++) {
+                if (files[i].endsWith(".mp3") || files[i].endsWith(".aac")
+                || files[i].endsWith(".mp4")) {
+                    // const md = {
+                    //     artist: "yyy",
+                    //     // album: "xxx",
+                    //     title: "xxx",
+                    //     track: "9/9",
+                    //     // disc
+                    //     // label
+                    //     date: "2002",
+                    //     album_artist: "xxx",
+                    // }
+                    // info: title, uploader, url, format, audioOnly, mp3, aac, mp4, id, index
+                    // ffmpeg -i inputfile -metadata title="Movie Title" -metadata year="2010" outputfile
+                    const cmd = require("node-cmd");
+                    let md = `-metadata title="${info.title}" `;
+                    md +=    `-metadata artist="${info.uploader}" `;
+                    const file = files[i];
+                    // md +=    `-metadata artist="${info.title}"`;
+                    cmd.get(
+                        `~/bin/ffmpeg -i '${dir}/${file}' ${md} '${dir}/${file.substr(1)}' -y`,
+                        (err, data, stderr) => {
+                            console.log(".._.._.._.._.._.._err");
+                            console.log(err);
+                            console.log(".._.._.._.._.._.._data");
+                            console.log(data);
+                            console.log(".._.._.._.._.._.._stderr");
+                            console.log(stderr);
+                            console.log("xxx::: ", `${file}`);
+                            fs.unlink(`${dir}/${file}`, err => {
+                                if (err) {
+                                    console.log("::::: DELETEFOLDER x ERROR :::::");
+                                    console.log(err);
+                                    cbErr({
+                                        type: "err",
+                                        code: "008-"+err.code,
+                                        msg: "Error deleting temp file",
+                                    });
+                                } else {
+                                    cbSuc();
+                                }
+                            });
+                        }
+                    );
+                    // ffmetadata.write(`${dir}/${files[i]}`, md, err => {
+                    //     if (err) {
+                    //         console.log("========== ========== ========== err");
+                    //         console.log(err);
+                    //     } else {
+                    //         console.log("successies");
+                    //         cbSuc();
+                    //     }
+                    // });
+                    // mmd.parseFile(`${dir}/${files[i]}`, {native: true}).then(metadata => {
+                    //     console.log("-_-_-__________________metadata");
+                    //     console.log(metadata);
+                    //     cbSuc();
+                    // }).catch(err => {
+                    //     console.log("-_-_-__________________err");
+                    //     console.log(err);
+                    //     console.log(output);
+                    // });
+                }
+            }
         }
     });
 }
@@ -206,14 +292,6 @@ function socketMsg(ws, data, ip, path) {
                 }, () => {
                     i++;
                     if (i < infos.length) startADownload();
-                    // const filename = `files/${info.id}/file.${info.format}`;
-
-                    // var uploader = sanitize(info.uploader);
-                    // if (info.title.includes(" - ")) uploader = "";
-                    // var title = sanitize(info.title);
-                    // var newFilename = `files/${info.id}/${uploader}${title}.${info.format}`;
-
-                    // fs.rename(filename, newFilename, () => {
                     const lastFile = anotherFileDownloaded();
                     let message = {
                         type: "file",
@@ -237,8 +315,6 @@ function socketMsg(ws, data, ip, path) {
                 });
             }
             startADownload();
-            // for (var i = 0; i < infos.length; i++) {
-            // }
         });
     } else {
         let message = {
