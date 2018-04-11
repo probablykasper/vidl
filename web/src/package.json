@@ -19,12 +19,14 @@
         "rimraf": "2.6.2",
 
         "express": "4.15.4",
+        "body-parser": "1.18.x",
         "ws": "3.2.0",
 
         "pug": "2.0.0-rc.4",
         "node-sass": "4.5.3",
         "fs-path": "0.0.23",
 
-        "youtube-dl": "1.12.2"
+        "youtube-dl": "1.12.x",
+        "music-metadata": "0.9.x"
     }
 }

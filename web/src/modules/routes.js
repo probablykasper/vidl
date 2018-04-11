@@ -97,11 +97,11 @@ function download(info, cbErr, cbSuc, filename) {
     const args = ["--ffmpeg-location", "/root/bin/"];
     if (info.audioOnly) args.push("-x");
 
-    var uploader = sanitize(info.uploader+" - ");
+    const uploader = info.uploader+" - ";
     if (info.title.includes(" - ")) uploader = "";
-    var title = sanitize(info.title);
-    var filename = `${info.id}-${info.index}/${uploader}${title}.%(ext)s`;
-    var filePath = `files/${filename}`;
+    const uploaderAndTitle = sanitize(uploader+info.title);
+    filename = `${info.id}-${info.index}/${uploaderAndTitle}.%(ext)s`;
+    const filePath = `files/${filename}`;
     args.push("-o", filePath);
 
     // args.push("--restrict-filenames");
@@ -109,6 +109,7 @@ function download(info, cbErr, cbSuc, filename) {
     if (info.audioOnly) args.push("--audio-quality", "0");
     if (!info.audioOnly) args.push("--format", info.format);
     if (info.mp3) args.push("--embed-thumbnail");
+    console.log(args);
     ytdl.exec(info.url, args, {}, function exec(err, output) {
         if (err) {
             console.log("::::: FFMPEG DOWNLOAD UNKNOWN ERROR :::::");

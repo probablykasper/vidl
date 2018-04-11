@@ -104,20 +104,10 @@ RUN cd ~/ffmpeg_sources \
     && hash -r
 
 
+COPY src/package.json .
 RUN npm install -g  nodemon@1.12.1
+RUN npm install && echo "woah x.x"
 
-RUN npm install     base32@0.0.6
-RUN npm install     sanitize-filename@1.6.1
-RUN npm install     rimraf@2.6.2
-
-RUN npm install     express@4.16.1
-RUN npm install     ws@3.2.0
-
-RUN npm install     pug@2.0.0-rc.4
-RUN npm install     fs-path@0.0.23
-
-RUN npm install     node-sass@4.5.3
-RUN npm install     youtube-dl@1.12.x
 
 RUN cd /node_modules/youtube-dl \
     && npm run update \
