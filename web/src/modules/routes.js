@@ -98,9 +98,11 @@ function download(info, cbErr, cbSuc, filename) {
     const args = ["--ffmpeg-location", "/root/bin/"];
     if (info.audioOnly) args.push("-x");
 
-    const uploader = info.uploader+" - ";
-    if (info.title.includes(" - ")) uploader = "";
-    const uploaderAndTitle = sanitize(uploader+info.title);
+    const uploaderAndTitle = sanitize(info.uploader+" - "+info.title);
+    console.log("__--_----++++++uploaderAndTitle");
+    console.log(info.uploader);
+    console.log(info.title);
+    console.log(uploaderAndTitle);
     filename = `files/${info.id}-${info.index}/x${uploaderAndTitle}.%(ext)s`;
     args.push("-o", filename);
 
@@ -286,6 +288,14 @@ function socketMsg(ws, data, ip, path) {
                     id:         info.id,
                     index:      index,
                 };
+
+                downloadInfo.uploader = infos[i].uploader;
+                downloadInfo.title = infos[i].title;
+                if (downloadInfo.title.indexOf(" - ") >= 1) {
+                    downloadInfo.uploader = downloadInfo.title.substr(0, downloadInfo.title.indexOf(" - "));
+                    downloadInfo.title = downloadInfo.title.substr(downloadInfo.title.indexOf(" - ")+3);
+                }
+
                 download(downloadInfo, (err) => {
                     anotherFileDownloaded();
                     res(ws, open, err);
