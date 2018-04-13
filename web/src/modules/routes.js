@@ -153,66 +153,43 @@ function changeMD(info, dir, cbErr, cbSuc) {
             for (var i = 0; i < files.length; i++) {
                 if (files[i].endsWith(".mp3") || files[i].endsWith(".aac")
                 || files[i].endsWith(".mp4")) {
-                    // const md = {
-                    //     artist: "yyy",
-                    //     // album: "xxx",
-                    //     title: "xxx",
-                    //     track: "9/9",
-                    //     // disc
-                    //     // label
-                    //     date: "2002",
-                    //     album_artist: "xxx",
-                    // }
-                    // info: title, uploader, url, format, audioOnly, mp3, aac, mp4, id, index
-                    // ffmpeg -i inputfile -metadata title="Movie Title" -metadata year="2010" outputfile
                     const cmd = require("node-cmd");
                     let md = `-metadata title="${info.title}" `;
-                    md +=    `-metadata artist="${info.uploader}" `;
+                    md += `-metadata artist="${info.uploader}" `;
+                    // if (info.multiple) md += `-metadata track="${info.index}/${info.fileCount}" `;
                     const file = files[i];
-                    // md +=    `-metadata artist="${info.title}"`;
                     cmd.get(
                         `~/bin/ffmpeg -i '${dir}/${file}' ${md} '${dir}/${file.substr(1)}' -y`,
                         (err, data, stderr) => {
-                            console.log(".._.._.._.._.._.._err");
-                            console.log(err);
-                            console.log(".._.._.._.._.._.._data");
-                            console.log(data);
-                            console.log(".._.._.._.._.._.._stderr");
-                            console.log(stderr);
-                            console.log("xxx::: ", `${file}`);
-                            fs.unlink(`${dir}/${file}`, err => {
-                                if (err) {
-                                    console.log("::::: DELETEFOLDER x ERROR :::::");
-                                    console.log(err);
-                                    cbErr({
-                                        type: "err",
-                                        code: "008-"+err.code,
-                                        msg: "Error deleting temp file",
-                                    });
-                                } else {
-                                    cbSuc();
-                                }
-                            });
+                            if (err) {
+                                cbErr({
+                                    type: "err",
+                                    code: "008",
+                                    msg: "Could not execute ffmpeg metadata command, node-cmd error",
+                                });
+                            } else if (!stderr) {
+                                cbErr({
+                                    type: "err",
+                                    code: "009",
+                                    msg: "Could not execute ffmpeg metadata command, node-cmd error",
+                                });
+                            } else {
+                                fs.unlink(`${dir}/${file}`, err => {
+                                    if (err) {
+                                        console.log("::::: DELETEFOLDER x ERROR :::::");
+                                        console.log(err);
+                                        cbErr({
+                                            type: "err",
+                                            code: "008-"+err.code,
+                                            msg: "Error deleting temp file",
+                                        });
+                                    } else {
+                                        cbSuc();
+                                    }
+                                });
+                            }
                         }
                     );
-                    // ffmetadata.write(`${dir}/${files[i]}`, md, err => {
-                    //     if (err) {
-                    //         console.log("========== ========== ========== err");
-                    //         console.log(err);
-                    //     } else {
-                    //         console.log("successies");
-                    //         cbSuc();
-                    //     }
-                    // });
-                    // mmd.parseFile(`${dir}/${files[i]}`, {native: true}).then(metadata => {
-                    //     console.log("-_-_-__________________metadata");
-                    //     console.log(metadata);
-                    //     cbSuc();
-                    // }).catch(err => {
-                    //     console.log("-_-_-__________________err");
-                    //     console.log(err);
-                    //     console.log(output);
-                    // });
                 }
             }
         }
@@ -287,6 +264,7 @@ function socketMsg(ws, data, ip, path) {
                     mp4:        info.mp4,
                     id:         info.id,
                     index:      index,
+                    fileCount:   infos[i].length,
                 };
 
                 downloadInfo.uploader = infos[i].uploader;
