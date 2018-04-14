@@ -1,10 +1,13 @@
-# vidl-web
+# vidl
 Video/audio download site
 
-# Deployment
-- **VIDL_ENV** environment variable in docker-compose.yml
-    - Dev: **dev**
-    - Production: **production**
-- **VIDL_ENV** variable in web/src/static/global.js
-    - Dev: **dev**
-    - Production: **production**
+# Website
+The website source code is located in the website folder.
+## Get started
+- Install [NPM](https://www.npmjs.com/get-npm)
+- `npm install`: install the dependencies.
+- `npm run build-development`: build the website. The output is located inside the `docs` folder, so it can be hosted on GitHub Pages for free.
+- `npm run build-development`: Just like the above, but for development.
+
+# Server
+# Browser extension

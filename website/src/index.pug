@@ -1,0 +1,8 @@
+//
+    If you want to merge browser-extension into web:
+
+    cd /Users/kasp/dev/vidl/web
+    git remote add browser-extension /Users/kasp/dev/vidl/browser-extension
+    git fetch browser-extension
+    git merge --allow-unrelated-histories browser-extension/master # or whichever branch you want to merge
+    git remote remove browser-extension
