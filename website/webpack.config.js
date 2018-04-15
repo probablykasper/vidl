@@ -57,8 +57,8 @@ module.exports = (env) => {
                 );
                 arr.push(
                     new CopyWebpackPlugin([
-                        {from: "src/favicon", to: ""},
-                        {from: "src/static", to: ""},
+                        {from: "./src/favicon", to: ""},
+                        {from: "./src/static", to: ""},
                     ])
                 );
                 return arr;
