@@ -1,3 +1,1 @@
-var y = 5;
-const x = "bops";
-alert(x);
+const VIDL_ENV = "production";
