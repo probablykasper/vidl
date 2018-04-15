@@ -1,2 +1,3 @@
 web/src/files/
 vidl-web/web/src/files/
+**/node_modules

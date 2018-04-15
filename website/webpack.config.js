@@ -1,12 +1,13 @@
 const path = require("path");
 const webpack = require("webpack");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = (env) => {
     let ifProduction = true;
     let ifDevelopment = false;
-    if (env && env.development) {
-        ifProduction = true;
+    if (env == "development") {
+        ifProduction = false;
         ifDevelopment = true;
     }
     return [
@@ -28,6 +29,10 @@ module.exports = (env) => {
                             }
                         },
                     },
+                    {
+                        test: /\.pug$/,
+                        use: "pug-loader",
+                    }
                 ]
             },
             plugins: (() => {
@@ -42,6 +47,13 @@ module.exports = (env) => {
                         })
                     );
                 }
+                arr.push(
+                    new HtmlWebpackPlugin({
+                        hash: ifDevelopment,
+                        template: "./src/index.pug",
+                        // minify: ifProduction,
+                    })
+                )
                 return arr;
             })()
         },
@@ -56,8 +68,21 @@ module.exports = (env) => {
                     {
                         test: /\.sass$/,
                         use: ExtractTextPlugin.extract({
-                            // fallback: "syle-loader",
-                            use: ["css-loader", "sass-loader"],
+                            use: [
+                                "css-loader",
+                                {
+                                    loader: "sass-loader",
+                                    options: {
+                                        outputStyle: (() => {
+                                            if (ifProduction) {
+                                                return "compressed";
+                                            } else {
+                                                return "nested"
+                                            }
+                                        })()
+                                    }
+                                }
+                            ]
                         })
                     }
                 ]
