@@ -22,12 +22,12 @@ html
             .bg
             input(placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ")
         .spacer
-        .middle-container.format-selection
+        .middle-container.format-selection(data-view="format-selection")
             .format-selection.visible
-                button.clickable.clickable-light.format.mp3.checked MP3
+                button.clickable.clickable-light.format.mp3.checked(data-format="mp3") MP3
                     .bg
                 .spacer
-                button.clickable.clickable-light.format.mp4 MP4
+                button.clickable.clickable-light.format.mp4(data-format="mp4") MP4
                     .bg
             .loading-view
                 .spinner

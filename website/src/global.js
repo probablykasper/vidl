@@ -1,11 +1,15 @@
 require("./focus-within-polyfill")("focus-within");
 
+document.querySelector(".url input").focus();
+
 const middleContainer = document.querySelector(".middle-container");
-window.changeView = function(fromView, toView) {
+window.changeToView = function(toView) {
+    const fromView = middleContainer.attributes["data-view"].value;
     middleContainer.classList.remove(fromView);
     middleContainer.querySelector(`.${fromView}`).classList.remove("visible");
     setTimeout(() => {
         middleContainer.classList.add(toView);
+        middleContainer.setAttribute("data-view", toView);
         middleContainer.querySelector(`.${toView}`).classList.add("visible");
     }, 280/4);
 }
@@ -24,11 +28,11 @@ window.hideUploader = function() {
     middleContainer.classList.remove("uploader-visible");
 }
 
-setTimeout(() => {
-    changeView("format-selection", "loading-view");
-}, 0);
+require("./dl");
 
-
+// setTimeout(() => {
+//     changeToView("loading-view");
+// }, 100);
 
 const isChrome = !!window.chrome && !!window.chrome.webstore;
 if (isChrome) {
