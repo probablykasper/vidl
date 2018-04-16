@@ -51,6 +51,7 @@ module.exports = (env) => {
                 arr.push(
                     new HtmlWebpackPlugin({
                         hash: ifDevelopment,
+                        inject: false,
                         template: "./src/index.pug",
                         // minify: ifProduction,
                     })

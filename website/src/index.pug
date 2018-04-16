@@ -16,10 +16,12 @@ html
         link(rel="shortcut icon", href="/favicon.ico?v=2")
         meta(name="theme-color", content="#1a4172")
     body
-        input.url(placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+        .url.clickable.clickable-dark
+            input(placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ")
         .spacer
         .middle-container
             .format-selection
-                button.format.mp3.checked MP3
+                button.clickable.clickable-light.format.mp3.checked MP3
                 .spacer
-                button.format.mp4 MP4
+                button.clickable.clickable-light.format.mp4 MP4
+        script(src="/global.js")

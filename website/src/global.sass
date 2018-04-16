@@ -23,8 +23,9 @@ body
     flex-direction: column
     justify-content: center
     align-items: center
-    input.url
-        background-color: rgba(#000000, 0.1)
+    .url input
+        // background-color: rgba(#000000, 0.1)
+        background-color: rgba(#000000, 0)
         border: 0px
         border-radius: 5px
         outline: none
@@ -43,15 +44,15 @@ body
                 border-radius: 2px
                 box-sizing: content-box
                 min-width: 64px
-                height: 36px
                 font-size: 16px
                 color: white
                 cursor: pointer
                 border: 0px
-                padding: 0px 16px
+                padding: 9px 16px
                 background: rgba(#FFFFFF, 0)
                 transition: all $transition-28
                 position: relative
+            //
                 &:hover::before
                     transform: scale(0.9, 0.9)
                     background-color: rgba(#FFFFFF, 0.18)
@@ -78,37 +79,44 @@ body
                     // top: 0px
                     left: 0px
                     border-radius: 5px
-
-            // button.format
-            //     background-color: transparent
-            //     color: white
-            //     outline: none
-            //     border: 0px
-            //     padding: 10px 0px
-            //     width: 70px
-            //     position: relative
-            //     cursor: pointer
-            //     font-size: 16px
-            //     transition: all $transition-28
-            //     margin: 0px 10px
-            //     &.checked:hover::before, &:hover::before
-            //         width: 35%
-            //         background-color: #FFFFFF
-            //     &.checked:focus::before, &:focus::before
-            //         width: 50%
-            //         transform: translate(-50%, -2px)
-            //         background-color: #FFFFFF
-            //     &::before
-            //         content: ""
-            //         position: absolute
-            //         transition: $transition-28 all
-            //         background-color: #FFFFFF
-            //         bottom: 0px
-            //         transform: translate(-50%, 0px)
-            //         left: 50%
-            //         height: 2px
-            //         width: 0%
-            //         border-radius: 5px
-            //     &.checked::before
-            //         width: 35%
-            //         background-color: rgba(#FFFFFF, 0.4)
+=cliackable($color, $base-opacity: 0, $scalePercent: 1)
+    $scaleDivider: 1/$scalePercent
+    &::before
+        background-color: rgba($color, $base-opacity + 0.12)
+    &:hover::before
+        background-color: rgba($color, $base-opacity + 0.12 + 0.06/$scaleDivider)
+        transform: scale(1 - 0.1/$scaleDivider)
+    &:focus::before, &:focus-within::before
+        background-color: rgba($color, $base-opacity + 0.12 + 0.24)
+        height: 5%
+        // transform: scale(1 - 0.25, 1.0)
+        transform: scale(1 - 0, 1.0)
+    &:hover:focus::before, &:focus-within:hover::before
+        background-color: rgba($color, $base-opacity + 0.12 + 0.24)
+        // transform: scale(1 - 0.4, 1.0)
+        transform: scale(1 - 0.1/$scaleDivider, 1.0)
+.clickable-light
+    +cliackable(#FFFFFF)
+    &.checked
+        +cliackable(#FFFFFF, 0.10)
+.clickable.url
+    +cliackable(#FFFFFF, 0, 0.3)
+.clickable
+    position: relative
+    &::before
+        content: ""
+        position: absolute
+        pointer-events: none
+        width: 100%
+        height: 100%
+        transition: $transition-28 all
+        bottom: 0px
+        left: 0px
+        border-radius: 5px
+    // &:hover::before
+    //     transform: scale(0.9, 0.9)
+    // &:focus::before, &:focus-within::before
+    //     height: 5%
+    //     transform: scale(0.75, 1.0)
+    // &:hover:focus::before, &:focus-within:hover::before
+    //     transform: scale(0.6, 1.0)
