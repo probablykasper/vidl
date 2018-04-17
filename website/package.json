@@ -4,8 +4,8 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "build-production": "webpack --env=production",
-        "build-development": "webpack-dev-server --env=development --watch"
+        "build-prod": "webpack --env=prod",
+        "build-dev": "webpack-dev-server --env=dev --watch"
     },
     "devDependencies": {
         "babel-core": "6.26",
@@ -19,6 +19,7 @@
         "pug": "2.0",
         "pug-loader": "2.4",
         "sass-loader": "7.0",
+        "string-replace-loader": "2.1",
         "webpack": "3.11",
         "webpack-cli": "2.0",
         "webpack-dev-server": "2.11"

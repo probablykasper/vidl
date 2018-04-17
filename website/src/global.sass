@@ -92,18 +92,18 @@ body
                     border-radius: 50%
                 .circle
                     position: absolute
-                    background-color: rgba(#FFFFFF, 0.5)
+                    background-color: #FFFFFF
                     animation: scaleCircle 2s $transition-bezier infinite
                     @keyframes scaleCircle
                         0%
                             transform: scale(0.6)
-                            opacity: 0.5
+                            opacity: 0.25
                         50%
                             transform: scale(0.3)
-                            opacity: 1
+                            opacity: 0.5
                         100%
                             transform: scale(0.6)
-                            opacity: 0.5
+                            opacity: 0.25
                 .lines
                     position: absolute
                     width: 48px
@@ -122,17 +122,17 @@ body
                         @keyframes scaleLine
                             0%
                                 transform: scale(1)
-                                opacity: 0.8
+                                opacity: 0.4
                             50%
                                 transform: scale(0.8)
-                                opacity: 1
+                                opacity: 0.5
                             100%
                                 transform: scale(1)
-                                opacity: 0.8
+                                opacity: 0.4
                     .line-1
-                        border-left-color: rgba(#FFFFFF, 0.5)
+                        border-left-color: #FFFFFF
                     .line-2
-                        border-right-color: rgba(#FFFFFF, 0.5)
+                        border-right-color: #FFFFFF
             p
                 opacity: 0
                 transition: all $transition-28

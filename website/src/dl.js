@@ -1,19 +1,43 @@
-let lastFormat = localStorage.getItem("lastFormat");
-if (lastFormat) document.querySelector(`button.${lastFormat}`).classList.add("checked");
-else {
-    lastFormat = "mp3";
-    document.querySelector(`button.mp3`).classList.add("checked");
+const VIDL_ENV = "§VIDL_ENV§";
+const VIDL_URL_DEV = "§VIDL_URL_DEV§";
+const VIDL_URL_PROD = "§VIDL_URL_PROD§";
+function wsConnect(openCallback, errorCallback) {
+    if (VIDL_ENV == "dev") {
+        return new WebSocket(VIDL_URL_DEV);
+    } else {
+        return new WebSocket(VIDL_URL_PROD);
+    }
 }
 
-document.addEventListener("click", (e) => {
-    if (e.target.classList.contains("format")) {
-        document.querySelector(`button.${lastFormat}`).classList.remove("checked");
-        lastFormat = e.target.attributes["data-format"].value;
-        localStorage.setItem("lastFormat", lastFormat);
-        startDownload();
-    }
-});
+const fn = require("./functions.js");
 
-function startDownload() {
-    changeToView("loading-view");
+const middleContainer = document.querySelector(".middle-container");
+const urlBar = document.querySelector(".url input");
+module.exports = {};
+module.exports.start = (url, format) => {
+    fn.changeToView("loading-view");
+    setTimeout(() => {
+        fn.changeToView("format-selection");
+    }, 2000);
+
+    const ws = wsConnect();
+    ws.onerror = () => {
+        console.log(9);
+    }
+    ws.onclose = () => {
+        console.log(7);
+
+    }
+    ws.onopen = () => {
+        console.log(6);
+        const message = {
+            url: urlBar.value,
+            format: format,
+        }
+
+    }
+    ws.onmessage = () => {
+        console.log(8);
+
+    }
 }

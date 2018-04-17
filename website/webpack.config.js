@@ -3,15 +3,54 @@ const webpack = require("webpack");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const config = require("./config");
 
 module.exports = (env) => {
-    let ifProduction = true;
-    let ifDevelopment = false;
-    if (env == "development") {
-        ifProduction = false;
-        ifDevelopment = true;
+    let ifProd = true;
+    let ifDev = false;
+    if (env.VIDL_ENV == "dev") {
+        ifProd = false;
+        ifDev = true;
+    } else {
+        VIDL_ENV = "prod";
     }
     return [
+        {
+            entry: "./src/global.sass",
+            output: {
+                path: path.join(__dirname, "./../docs"),
+                filename: "global.css",
+            },
+            module: {
+                rules: [
+                    {
+                        test: /\.sass$/,
+                        use: ExtractTextPlugin.extract({
+                            use: [
+                                "css-loader",
+                                {
+                                    loader: "sass-loader",
+                                    options: {
+                                        outputStyle: (() => {
+                                            if (ifProd) {
+                                                return "compressed";
+                                            } else {
+                                                return "nested"
+                                            }
+                                        })()
+                                    }
+                                }
+                            ]
+                        })
+                    }
+                ]
+            },
+            plugins: [
+                new ExtractTextPlugin({
+                    filename: "global.css"
+                })
+            ]
+        },
         {
             entry: "./src/global.js",
             output: {
@@ -33,12 +72,23 @@ module.exports = (env) => {
                     {
                         test: /\.pug$/,
                         use: "pug-loader",
-                    }
+                    },
+                    {
+                        test: /\.js$/,
+                        loader: 'string-replace-loader',
+                        options: {
+                            multiple: [
+                                {search: "§VIDL_ENV§", replace: env.VIDL_ENV},
+                                {search: "§VIDL_URL_DEV§", replace: config.VIDL_URL_DEV},
+                                {search: "§VIDL_URL_PROD§", replace: config.VIDL_URL_PROD},
+                            ]
+                        }
+                    },
                 ]
             },
             plugins: (() => {
                 let arr = [];
-                if (ifProduction) {
+                if (ifProd) {
                     arr.push(
                         new webpack.optimize.UglifyJsPlugin({
                             compress: {
@@ -50,10 +100,10 @@ module.exports = (env) => {
                 }
                 arr.push(
                     new HtmlWebpackPlugin({
-                        hash: ifDevelopment,
+                        hash: ifDev,
                         inject: false,
                         template: "./src/index.pug",
-                        // minify: ifProduction,
+                        // minify: ifProd,
                     })
                 );
                 arr.push(
@@ -64,42 +114,6 @@ module.exports = (env) => {
                 );
                 return arr;
             })()
-        },
-        {
-            entry: "./src/global.sass",
-            output: {
-                path: path.join(__dirname, "./../docs"),
-                filename: "global.css",
-            },
-            module: {
-                rules: [
-                    {
-                        test: /\.sass$/,
-                        use: ExtractTextPlugin.extract({
-                            use: [
-                                "css-loader",
-                                {
-                                    loader: "sass-loader",
-                                    options: {
-                                        outputStyle: (() => {
-                                            if (ifProduction) {
-                                                return "compressed";
-                                            } else {
-                                                return "nested"
-                                            }
-                                        })()
-                                    }
-                                }
-                            ]
-                        })
-                    }
-                ]
-            },
-            plugins: [
-                new ExtractTextPlugin({
-                    filename: "global.css"
-                })
-            ]
         }
     ]
 }
