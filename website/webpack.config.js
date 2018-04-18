@@ -71,7 +71,13 @@ module.exports = (env) => {
                     },
                     {
                         test: /\.pug$/,
-                        use: "pug-loader",
+                        exclude: /node_modules/,
+                        use: {
+                            loader: "pug-loader",
+                            query: {
+                                pretty: ifDev
+                            }
+                        }
                     },
                     {
                         test: /\.js$/,
@@ -105,13 +111,12 @@ module.exports = (env) => {
                         hash: ifDev,
                         inject: false,
                         template: "./src/index.pug",
-                        // minify: ifProd,
+                        filename: "index.html",
                     })
                 );
                 arr.push(
                     new CopyWebpackPlugin([
                         {from: "./src/favicon", to: ""},
-                        {from: "./src/static", to: ""},
                     ])
                 );
                 return arr;

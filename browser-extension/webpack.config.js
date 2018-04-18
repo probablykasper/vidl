@@ -16,15 +16,16 @@ module.exports = (env) => {
     }
     return [
         {
-            entry: "./src/global.sass",
+            entry: "./src/popup.sass",
             output: {
-                path: path.join(__dirname, "./../docs"),
-                filename: "global.css",
+                path: path.join(__dirname, "./dist/chrome"),
+                filename: "popup.css",
             },
             module: {
                 rules: [
                     {
                         test: /\.sass$/,
+                        exclude: /node_modules/,
                         use: ExtractTextPlugin.extract({
                             use: [
                                 "css-loader",
@@ -47,15 +48,18 @@ module.exports = (env) => {
             },
             plugins: [
                 new ExtractTextPlugin({
-                    filename: "global.css"
+                    filename: "popup.css"
                 })
             ]
         },
         {
-            entry: "./src/global.js",
+            entry: {
+                "event-page": "./src/event-page.js",
+                "popup": "./src/popup.js",
+            },
             output: {
-                path: path.join(__dirname, "./../docs"),
-                filename: "global.js",
+                path: path.join(__dirname, "./dist/chrome"),
+                filename: "[name].js",
             },
             module: {
                 rules: [
@@ -71,10 +75,17 @@ module.exports = (env) => {
                     },
                     {
                         test: /\.pug$/,
-                        use: "pug-loader",
+                        exclude: /node_modules/,
+                        use: {
+                            loader: "pug-loader",
+                            query: {
+                                pretty: ifDev
+                            }
+                        }
                     },
                     {
                         test: /\.js$/,
+                        exclude: /node_modules/,
                         loader: 'string-replace-loader',
                         options: {
                             multiple: [
@@ -104,14 +115,13 @@ module.exports = (env) => {
                     new HtmlWebpackPlugin({
                         hash: ifDev,
                         inject: false,
-                        template: "./src/index.pug",
-                        // minify: ifProd,
+                        template: "./src/popup.pug",
+                        filename: "popup.html",
                     })
                 );
                 arr.push(
                     new CopyWebpackPlugin([
-                        {from: "./src/favicon", to: ""},
-                        {from: "./src/static", to: ""},
+                        {from: "./src/extension-files", to: ""},
                     ])
                 );
                 return arr;

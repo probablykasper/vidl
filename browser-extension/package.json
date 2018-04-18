@@ -3,8 +3,8 @@
     "version": "2.0.0",
     "description": "",
     "scripts": {
-        "build-prod": "webpack --env=prod",
-        "build-dev": "webpack-dev-server --env.VIDL_ENV=dev --watch"
+        "build-prod": "webpack --env.VIDL_ENV=prod",
+        "build-dev": "webpack --env.VIDL_ENV=dev --watch"
     },
     "devDependencies": {
         "babel-core": "6.26",
@@ -20,7 +20,6 @@
         "sass-loader": "7.0",
         "string-replace-loader": "2.1",
         "webpack": "3.11",
-        "webpack-cli": "2.0",
-        "webpack-dev-server": "2.11"
+        "webpack-cli": "2.0"
     }
 }
