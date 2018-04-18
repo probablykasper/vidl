@@ -33,22 +33,23 @@ chrome.commands.onCommand.addListener(command => {
 
 let lastNotifId = null;
 function notify(title, msg, id, lastNotif) {
-    console.log(id);
-    chrome.notifications.create({
-        type: "basic",
-        title: title,
-        message: msg,
-        iconUrl: "icon128.png",
+    chrome.notifications.clear(id, () => {
+        chrome.notifications.create(id, {
+            type: "basic",
+            title: title,
+            message: msg,
+            iconUrl: "icon128.png",
+        });
     });
 }
 
 let idIndex = 0;
-const getId = () => idIndex++;
+const getId = () => String(idIndex++);
 
 const dl = {};
 dl.init = (url, format, pageTitle) => {
     const id = getId();
-    notify("Download Started", pageTitle, id);
+    notify("Download Started", null, id);
     let finished = false;
     let downloadCount = 0;
 

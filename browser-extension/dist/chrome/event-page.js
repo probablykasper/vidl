@@ -103,24 +103,25 @@ chrome.commands.onCommand.addListener(function (command) {
 
 var lastNotifId = null;
 function notify(title, msg, id, lastNotif) {
-    console.log(id);
-    chrome.notifications.create({
-        type: "basic",
-        title: title,
-        message: msg,
-        iconUrl: "icon128.png"
+    chrome.notifications.clear(id, function () {
+        chrome.notifications.create(id, {
+            type: "basic",
+            title: title,
+            message: msg,
+            iconUrl: "icon128.png"
+        });
     });
 }
 
 var idIndex = 0;
 var getId = function getId() {
-    return idIndex++;
+    return String(idIndex++);
 };
 
 var dl = {};
 dl.init = function (url, format, pageTitle) {
     var id = getId();
-    notify("Download Started", pageTitle, id);
+    notify("Download Started", null, id);
     var finished = false;
     var downloadCount = 0;
 
