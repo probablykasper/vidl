@@ -47,20 +47,16 @@ body
     .middle-container
         position: relative
         transition: all $transition-28
-        height: 36px
-        &.format-selection
-            height: 36px
-        &.loading-view
-            height: 48px
-            &.title-visible p.title, &.uploader-visible p.uploader
-                opacity: 1
-                transform: scale(1)
-            &.title-visible
-                height: 48px + 20px + 23px
-            &.uploader-visible
-                height: 48px + 20px + 23px
-            &.uploader-visible.title-visible
-                height: 48px + 20px + 23px*2
+        // &.loading-view
+        //     &.title-visible p.title, &.uploader-visible p.uploader
+        //         opacity: 1
+        //         transform: scale(1)
+        //     &.title-visible
+        //         height: 48px + 20px + 23px
+        //     &.uploader-visible
+        //         height: 48px + 20px + 23px
+        //     &.uploader-visible.title-visible
+        //         height: 48px + 20px + 23px*2
         > div
             position: absolute
             top: 0px
@@ -133,19 +129,45 @@ body
                         border-left-color: #FFFFFF
                     .line-2
                         border-right-color: #FFFFFF
+            .spacer:not(.visible)
+                height: 0px
             p
                 opacity: 0
-                transition: all $transition-28
+                height: 0px
+                padding: 0px
+                transition: transform $transition-28, opacity $transition-28
                 transform: scale(0.75)
-                text-align: center
-                margin: 0px
-                padding: 2px
-            p.title
+                &.visible
+                    transform: scale(1)
+                    opacity: 1
+                &.title
+                    color: rgba(#FFFFFF, 1)
+                    font-size: 16px
+                &.uploader
+                    color: rgba(#FFFFFF, 0.8)
+                    font-size: 15px
+        p
+            width: 400px
+            text-align: center
+            margin: 0px
+            padding: 2px
+        .error-view
+            svg
+                display: block
+                margin: auto
+                width: 48px
+                height: 48px
+            .spacer
+                height: 10px
+            p.error-message
                 color: rgba(#FFFFFF, 1)
                 font-size: 16px
-            p.uploader
+            p.error-code
                 color: rgba(#FFFFFF, 0.8)
                 font-size: 15px
+        .success-view
+            width: 48px
+            height: 48px
 
 
 =cliackable($color, $base-opacity: 0, $scalePercent: 1)

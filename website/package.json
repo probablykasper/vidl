@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "build-prod": "webpack --env=prod",
-        "build-dev": "webpack-dev-server --env=dev --watch"
+        "build-dev": "webpack-dev-server --env.VIDL_ENV=dev --watch"
     },
     "devDependencies": {
         "babel-core": "6.26",
