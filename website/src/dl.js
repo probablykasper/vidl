@@ -1,13 +1,11 @@
 const VIDL_ENV = "§VIDL_ENV§";
 const VIDL_URL = (() => {
-    return "§VIDL_URL_PROD§";
-    // if (VIDL_ENV == "dev") return "§VIDL_URL_PROD§"
-    // else return "§VIDL_URL_PROD§";
+    if (VIDL_ENV == "dev") return "§VIDL_URL_PROD§"
+    else return "§VIDL_URL_PROD§";
 })();
 const VIDL_DL_URL = (() => {
-    return "§VIDL_DL_URL_PROD§";
-    // if (VIDL_ENV == "dev") return "§VIDL_DL_URL_PROD§"
-    // else return "§VIDL_DL_URL_PROD§";
+    if (VIDL_ENV == "dev") return "§VIDL_DL_URL_PROD§"
+    else return "§VIDL_DL_URL_PROD§";
 })();
 
 const fn = require("./functions.js");
@@ -58,7 +56,6 @@ module.exports.init = (url, format) => {
             console.log("file");
             console.log(data);
             dlLink.setAttribute("href", VIDL_DL_URL+data.id);
-            console.log(VIDL_DL_URL);
             dlLink.click();
             if (data.lastFile) {
                 fn.changeToView("success-view");

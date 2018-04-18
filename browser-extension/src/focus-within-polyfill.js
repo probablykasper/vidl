@@ -1,7 +1,9 @@
+const invisibleButton = document.querySelector("button.invisible-button");
 module.exports = function(className) {
     if (!className) className = "focus-within";
     var focusedElements = [];
     function update() {
+        invisibleButton.style.display = "none";
         var focusedElement;
         while (focusedElement = focusedElements.pop()) {
             focusedElement.classList.remove(className);

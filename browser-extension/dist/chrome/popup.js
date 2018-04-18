@@ -71,10 +71,6 @@
 "use strict";
 
 
-setInterval(function () {
-    window.location.reload();
-}, 3000);
-
 var lastFormat = localStorage.getItem("lastFormat");
 if (lastFormat) document.querySelector("button." + lastFormat).classList.add("checked");else {
     lastFormat = "mp3";
@@ -92,9 +88,7 @@ var dl = {
 
 document.addEventListener("click", function (e) {
     if (e.target.classList.contains("format")) {
-        lastFormat = e.target.attributes["data-format"].value;
-        localStorage.setItem("lastFormat", lastFormat);
-        dl.init(lastFormat);
+        dl.init(e.target.attributes["data-format"].value);
     }
 });
 
@@ -102,6 +96,14 @@ document.addEventListener("keydown", function (e) {
     if (e.which != 13) return;
     dl.init(lastFormat);
 });
+
+function removeAutoFocus(e) {
+    if (e.target.classList.contains("invisible-button")) {
+        e.target.style.display = "none";
+        document.removeEventListener("focus", removeAutoFocus);
+    }
+}
+document.addEventListener("focus", removeAutoFocus, true);
 
 __webpack_require__(2)("focus-within");
 
@@ -112,10 +114,12 @@ __webpack_require__(2)("focus-within");
 "use strict";
 
 
+var invisibleButton = document.querySelector("button.invisible-button");
 module.exports = function (className) {
     if (!className) className = "focus-within";
     var focusedElements = [];
     function update() {
+        invisibleButton.style.display = "none";
         var focusedElement;
         while (focusedElement = focusedElements.pop()) {
             focusedElement.classList.remove(className);

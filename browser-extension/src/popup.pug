@@ -18,7 +18,8 @@ html
         link(rel="shortcut icon", href="/favicon.ico?v=2")
         meta(name="theme-color", content="#1a4172")
     body
-        a.dl-link(download)
+        // invisible button so that the browser won't auto focus the other buttons
+        button.invisible-button
         .middle-container.format-selection(data-view="format-selection")
             .format-selection.visible
                 button.clickable.clickable-light.format.mp3(data-format="mp3") MP3

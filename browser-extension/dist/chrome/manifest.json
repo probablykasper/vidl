@@ -32,9 +32,6 @@
             },
             "description": "Download MP3"
         },
-        "dl_aac": {
-            "description": "Download AAC"
-        },
         "dl_mp4": {
             "description": "Download MP4"
         }
