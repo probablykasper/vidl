@@ -46,8 +46,17 @@ if (isChrome) {
 
     const extLink = "https://chrome.google.com/webstore/detail/ofojemljpdnbfmjenigkncgofkcoacag";
     const extensionDiv = document.querySelector(".extension.chrome");
+    const extensionTooltip = document.querySelector(".extension.chrome .extension-tooltip");
     const svg = extensionDiv.querySelector("svg");
-    svg.addEventListener("click", function() {
+    svg.addEventListener("mouseenter", () => {
+        console.log("ant");
+        extensionTooltip.classList.add("visible");
+    });
+    extensionDiv.addEventListener("mouseleave", () => {
+        console.log("leaf");
+        extensionTooltip.classList.remove("visible");
+    });
+    svg.addEventListener("click", () => {
         chrome.webstore.install(extLink, function(suc) {
             console.log(suc);
         }, function(err) {
