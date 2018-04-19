@@ -64,24 +64,6 @@ document.addEventListener("click", (e) => {
     }
 });
 
-
-// document.addEventListener("keydown", (e) => {
-//     if (
-//         e.which != 13 && // enter
-//         e.which != 9 && // tab
-//         e.which != 32 && // space
-//         e.which != 16 // shift
-//     ) {
-//         urlBar.focus();
-//     }
-//     if (e.target.classList.contains("url-bar")) {
-//         if (e.which != 13) return; // enter
-//         dl.init(urlBar.value, lastFormat);
-//     }
-// });
-
-
-
 // press X to go back to format-selection
 document.addEventListener("click", (e) => {
     if (e.target.classList.contains("go-back-on-click")) {
