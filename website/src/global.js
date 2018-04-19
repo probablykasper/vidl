@@ -8,12 +8,52 @@ else {
 require("./focus-within-polyfill")("focus-within");
 const dl = require("./dl");
 
-// setTimeout(() => {
-//     fn.changeToView("loading-view");
-// }, 100);
-
 const urlBar = document.querySelector(".url input");
 
+// focus url bar on paste
+document.addEventListener("paste", (e) => {
+    if (
+        !document.activeElement ||
+        !document.activeElement.classList ||
+        !document.activeElement.classList.contains("url-bar")
+    ) {
+        urlBar.focus();
+    }
+});
+// focus url bar on keypress
+document.addEventListener("keypress", (e) => {
+    if (e.which != 13) { //enter
+        urlBar.focus();
+    }
+});
+document.addEventListener("keydown", (e) => {
+    if (
+        e.which == 37 || // arrow left
+        e.which == 38 || // arrow up
+        e.which == 39 || // arrow right
+        e.which == 40 || // arrow down
+        e.which == 46 || // delete
+        e.which ==  8    // backspace
+    ) {
+        urlBar.focus();
+    }
+});
+
+// press enter to download
+document.addEventListener("keydown", (e) => {
+    if (e.which == 13) {
+        if (
+            e.target.classList.contains("url-bar") ||
+            document.activeElement.nodeName == "BODY"
+        ) {
+            if (e.which != 13) return; // enter
+            dl.init(urlBar.value, lastFormat);
+        }
+    }
+});
+
+
+// press button to download
 document.addEventListener("click", (e) => {
     if (e.target.classList.contains("format")) {
         document.querySelector(`button.${lastFormat}`).classList.remove("checked");
@@ -24,22 +64,30 @@ document.addEventListener("click", (e) => {
     }
 });
 
-document.addEventListener("keydown", (e) => {
-    if (
-        e.which != 13 && // enter
-        e.which != 9 && // tab
-        e.which != 32 && // space
-        e.which != 16 // shift
-    ) {
-        urlBar.focus();
-    }
-    if (e.target.classList.contains("url-bar")) {
-        if (e.which != 13) return; // enter
-        dl.init(urlBar.value, lastFormat);
+
+// document.addEventListener("keydown", (e) => {
+//     if (
+//         e.which != 13 && // enter
+//         e.which != 9 && // tab
+//         e.which != 32 && // space
+//         e.which != 16 // shift
+//     ) {
+//         urlBar.focus();
+//     }
+//     if (e.target.classList.contains("url-bar")) {
+//         if (e.which != 13) return; // enter
+//         dl.init(urlBar.value, lastFormat);
+//     }
+// });
+
+
+
+// press X to go back to format-selection
+document.addEventListener("click", (e) => {
+    if (e.target.classList.contains("go-back-on-click")) {
+        fn.changeToView("format-selection");
     }
 });
-
-
 
 const isChrome = !!window.chrome && !!window.chrome.webstore;
 if (isChrome) {
@@ -47,21 +95,21 @@ if (isChrome) {
     const extLink = "https://chrome.google.com/webstore/detail/ofojemljpdnbfmjenigkncgofkcoacag";
     const extensionDiv = document.querySelector(".extension.chrome");
     const extensionTooltip = document.querySelector(".extension.chrome .extension-tooltip");
-    const svg = extensionDiv.querySelector("svg");
+    const svg = extensionDiv.querySelector(".svg");
     svg.addEventListener("mouseenter", () => {
-        console.log("ant");
         extensionTooltip.classList.add("visible");
     });
     extensionDiv.addEventListener("mouseleave", () => {
-        console.log("leaf");
         extensionTooltip.classList.remove("visible");
     });
-    svg.addEventListener("click", () => {
-        chrome.webstore.install(extLink, function(suc) {
-            console.log(suc);
-        }, function(err) {
-            console.log(err);
-        });
+    document.addEventListener("click", (e) => {
+        if (e.target.classList.contains("chrome-icon")) {
+            chrome.webstore.install(extLink, function(suc) {
+                console.log(suc);
+            }, function(err) {
+                console.log(err);
+            });
+        }
     });
     extensionDiv.classList.add("visible");
 
