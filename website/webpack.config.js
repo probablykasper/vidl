@@ -3,7 +3,10 @@ const webpack = require("webpack");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+
 const config = require("./config");
+
+const hash = "?"+Math.random().toString(36).substr(2, 5);
 
 module.exports = (env) => {
     let ifProd = true;
@@ -75,12 +78,13 @@ module.exports = (env) => {
                         use: {
                             loader: "pug-loader",
                             query: {
-                                pretty: !(ifProd && config.minify)
+                                pretty: !(ifProd && config.minify),
                             }
                         }
                     },
                     {
-                        test: /\.js$/,
+                        test: /(\.js|\.pug|\.sass)$/,
+                        exclude: /node_modules/,
                         loader: 'string-replace-loader',
                         options: {
                             multiple: [
@@ -89,6 +93,7 @@ module.exports = (env) => {
                                 {flags: "g", search: "§VIDL_URL_PROD§", replace: config.VIDL_URL_PROD},
                                 {flags: "g", search: "§VIDL_DL_URL_DEV§", replace: config.VIDL_DL_URL_DEV},
                                 {flags: "g", search: "§VIDL_DL_URL_PROD§", replace: config.VIDL_DL_URL_PROD},
+                                {flags: "g", search: "§HASH§", replace: hash},
                             ]
                         }
                     },
@@ -108,8 +113,7 @@ module.exports = (env) => {
                 }
                 arr.push(
                     new HtmlWebpackPlugin({
-                        // hash: ifDev,
-                        hash: true,
+                        hash: false,
                         inject: false,
                         template: "./src/index.pug",
                         filename: "index.html",
