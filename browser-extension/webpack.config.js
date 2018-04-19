@@ -3,7 +3,9 @@ const webpack = require("webpack");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const FileManagerPlugin = require('filemanager-webpack-plugin');
 const config = require("./config");
+const dirBrowserExtension = __dirname;
 
 module.exports = (env) => {
     let ifProd = true;
@@ -18,7 +20,7 @@ module.exports = (env) => {
         {
             entry: "./src/popup.sass",
             output: {
-                path: path.join(__dirname, "./dist/chrome"),
+                path: path.join(dirBrowserExtension, "./dist/chrome"),
                 filename: "popup.css",
             },
             module: {
@@ -58,7 +60,7 @@ module.exports = (env) => {
                 "popup": "./src/popup.js",
             },
             output: {
-                path: path.join(__dirname, "./dist/chrome"),
+                path: path.join(dirBrowserExtension, "./dist/chrome"),
                 filename: "[name].js",
             },
             module: {
@@ -124,6 +126,20 @@ module.exports = (env) => {
                         {from: "./src/extension-files", to: ""},
                     ])
                 );
+                if (ifProd) {
+                    arr.push(
+                        new FileManagerPlugin({
+                            onEnd: {
+                                archive: [
+                                    {
+                                        source: path.join(dirBrowserExtension, "./dist/chrome"),
+                                        destination: path.join(dirBrowserExtension, "./dist/chrome.zip"),
+                                    },
+                                ]
+                            }
+                        })
+                    );
+                }
                 return arr;
             })()
         }
