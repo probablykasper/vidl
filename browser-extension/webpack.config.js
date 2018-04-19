@@ -89,11 +89,11 @@ module.exports = (env) => {
                         loader: 'string-replace-loader',
                         options: {
                             multiple: [
-                                {search: "§VIDL_ENV§", replace: env.VIDL_ENV},
-                                {search: "§VIDL_URL_DEV§", replace: config.VIDL_URL_DEV},
-                                {search: "§VIDL_URL_PROD§", replace: config.VIDL_URL_PROD},
-                                {search: "§VIDL_DL_URL_DEV§", replace: config.VIDL_DL_URL_DEV},
-                                {search: "§VIDL_DL_URL_PROD§", replace: config.VIDL_DL_URL_PROD},
+                                {flags: "g", search: "§VIDL_ENV§", replace: env.VIDL_ENV},
+                                {flags: "g", search: "§VIDL_URL_DEV§", replace: config.VIDL_URL_DEV},
+                                {flags: "g", search: "§VIDL_URL_PROD§", replace: config.VIDL_URL_PROD},
+                                {flags: "g", search: "§VIDL_DL_URL_DEV§", replace: config.VIDL_DL_URL_DEV},
+                                {flags: "g", search: "§VIDL_DL_URL_PROD§", replace: config.VIDL_DL_URL_PROD},
                             ]
                         }
                     },
