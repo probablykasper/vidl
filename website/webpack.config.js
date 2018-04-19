@@ -32,7 +32,7 @@ module.exports = (env) => {
                                     loader: "sass-loader",
                                     options: {
                                         outputStyle: (() => {
-                                            if (ifProd) {
+                                            if (ifProd && config.minify) {
                                                 return "compressed";
                                             } else {
                                                 return "nested"
@@ -75,7 +75,7 @@ module.exports = (env) => {
                         use: {
                             loader: "pug-loader",
                             query: {
-                                pretty: ifDev
+                                pretty: !(ifProd && config.minify)
                             }
                         }
                     },
@@ -96,7 +96,7 @@ module.exports = (env) => {
             },
             plugins: (() => {
                 let arr = [];
-                if (ifProd) {
+                if (ifProd && config.minify) {
                     arr.push(
                         new webpack.optimize.UglifyJsPlugin({
                             compress: {
@@ -108,7 +108,8 @@ module.exports = (env) => {
                 }
                 arr.push(
                     new HtmlWebpackPlugin({
-                        hash: ifDev,
+                        // hash: ifDev,
+                        hash: true,
                         inject: false,
                         template: "./src/index.pug",
                         filename: "index.html",
