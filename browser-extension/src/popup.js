@@ -10,7 +10,7 @@ const dl = {
         chrome.runtime.sendMessage({
             format: format,
         });
-        // window.close();
+        window.close();
     }
 };
 
