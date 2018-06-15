@@ -3,6 +3,9 @@
 const express = require("express");
 const app = express();
 
+// local modules
+require("./modules/init");
+
 const bodyParser = require("body-parser");
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
