@@ -22,6 +22,7 @@ button
 .spacer
     height: $spacing
     width: $spacing
+    flex-shrink: 0
 html
     width: 100%
     height: 100%
@@ -127,7 +128,7 @@ body
                 height: 0px
             p
                 opacity: 0
-                height: 0px
+                // height: 0px
                 padding: 0px
                 transition: transform $transition-28, opacity $transition-28
                 transform: scale(0.75)
@@ -137,9 +138,10 @@ body
                 &.title
                     color: rgba(#FFFFFF, 1)
                     font-size: 16px
+                    margin-bottom: 2px
                 &.uploader
                     color: rgba(#FFFFFF, 0.8)
-                    font-size: 15px
+                    font-size: 14px
         p
             width: 400px
             text-align: center

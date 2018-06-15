@@ -51,7 +51,7 @@ module.exports.init = (url, format) => {
             console.log("info");
             console.log(data);
             if (data.title) fn.showTitle(data.title);
-            if (data.uploader) fn.showTitle(data.uploader);
+            if (data.uploader) fn.showUploader(data.uploader);
         } else if (type == "file") {
             console.log("file");
             console.log(data);
