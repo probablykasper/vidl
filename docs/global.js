@@ -187,10 +187,10 @@ module.exports = function (className) {
 
 var VIDL_ENV = "prod";
 var VIDL_URL = function () {
-    if (VIDL_ENV == "dev") return "wss://apividl.kasp.io/website-dl";else return "wss://apividl.kasp.io/website-dl";
+    if (VIDL_ENV == "dev") return "wss://apividl.kasp.io/website-dl/";else return "wss://apividl.kasp.io/website-dl/";
 }();
 var VIDL_DL_URL = function () {
-    if (VIDL_ENV == "dev") return "https://apividl.kasp.io/dl";else return "https://apividl.kasp.io/dl";
+    if (VIDL_ENV == "dev") return "https://apividl.kasp.io/dl/";else return "https://apividl.kasp.io/dl/";
 }();
 
 var fn = __webpack_require__(3);

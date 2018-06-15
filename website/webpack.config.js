@@ -17,7 +17,7 @@ module.exports = (env) => {
     } else {
         VIDL_ENV = "prod";
     }
-    return [
+    const value = [
         {
             entry: "./src/global.sass",
             output: {
@@ -128,4 +128,10 @@ module.exports = (env) => {
             })()
         }
     ]
+    if (ifDev) {
+        value[0].devServer = {
+            port: config.VIDL_DEV_SERVER_PORT,
+        };
+    }
+    return value;
 }

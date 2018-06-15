@@ -9,12 +9,14 @@ The website source code is located in the website folder.
 - `npm run build-prod`: build the website. The output is located inside the `docs` folder, so it can be hosted on GitHub Pages for free.
 - `npm run build-dev`: Just like `build-prod`, but for development (it watches for changes).
 - In `config.js`, you'll find the websocket URLs that the website connects to. One URL for local development and one for production.
+In dev mode, the website is hosted on localhost:8080. You can change the port in `config.js`.
 
 # Server
 ## Get started
 - Install [Docker](https://store.docker.com/search?type=edition&offering=community)
 - `docker-compose build`: Build the thing and install the NPM dependencies. This will build youtube-dl from source, so it will take a while.
 - `docker-compose up`: Starts it. To choose between dev and production mode, open docker-compose.yml and change `VIDL_ENV` to either `production` or `dev`.
+
 # Browser extension
 Note: Only Chrome is officially supported at the moment.
 The browser extension source code is located in the browser-extension folder.
