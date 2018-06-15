@@ -1,10 +1,10 @@
 const VIDL_ENV = "§VIDL_ENV§";
 const VIDL_URL = (() => {
-    if (VIDL_ENV == "dev") return "§VIDL_URL_PROD§"
+    if (VIDL_ENV == "dev") return "§VIDL_URL_DEV§"
     else return "§VIDL_URL_PROD§";
 })();
 const VIDL_DL_URL = (() => {
-    if (VIDL_ENV == "dev") return "§VIDL_DL_URL_PROD§"
+    if (VIDL_ENV == "dev") return "§VIDL_DL_URL_DEV§"
     else return "§VIDL_DL_URL_PROD§";
 })();
 
