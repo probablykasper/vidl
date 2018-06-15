@@ -11,8 +11,12 @@ The website source code is located in the website folder.
 - In `config.js`, you'll find the websocket URLs that the website connects to. One URL for local development and one for production.
 
 # Server
+## Get started
+- Install [Docker](https://store.docker.com/search?type=edition&offering=community)
+- `docker-compose build`: Build the thing and install the NPM dependencies. This will build youtube-dl from source, so it will take a while.
+- `docker-compose up`: Starts it. To choose between dev and production mode, open docker-compose.yml and change `VIDL_ENV` to either `production` or `dev`.
 # Browser extension
-Only supports Chrome at the moment.
+Note: Only Chrome is officially supported at the moment.
 The browser extension source code is located in the browser-extension folder.
 ## Get started
 - Install [NPM](https://www.npmjs.com/get-npm)

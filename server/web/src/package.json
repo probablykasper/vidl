@@ -1,7 +1,7 @@
 {
-    "name": "vidl-web",
+    "name": "vidl-server",
     "version": "1.0.0",
-    "description": "vidl website",
+    "description": "vidl server",
     "author": "KH kasperkh.kh@gmail.com",
     "main": "server.js",
 
@@ -21,10 +21,6 @@
         "express": "4.15.4",
         "body-parser": "1.18.x",
         "ws": "3.2.0",
-
-        "pug": "2.0.0-rc.4",
-        "node-sass": "4.5.3",
-        "fs-path": "0.0.23",
 
         "youtube-dl": "1.12.x",
         "ffmetadata": "1.5.x",
