@@ -1,3 +1,4 @@
-web/src/files/
+web/src/files/*
+!web/src/files/.gitkeep
 vidl-web/web/src/files/
 **/node_modules

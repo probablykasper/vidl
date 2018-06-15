@@ -12,10 +12,6 @@ function b32(x) {
 }
 
 module.exports = (app, wss) => {
-    // HOME
-    app.get("/", (req, res) => {
-        res.render("home");
-    });
     // DL
     app.get("/dl/:id", (req, res) => {
         fs.readdir(`/usr/src/app/files/${req.params.id}`, (err, files) => {
