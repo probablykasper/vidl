@@ -16,3 +16,5 @@ const server = app.listen(80, () => {
 
 const WebSocket = require("ws");
 const wss = new WebSocket.Server({server});
+// routes
+require("./modules/routes")(app, wss);
