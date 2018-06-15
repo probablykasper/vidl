@@ -16,7 +16,8 @@ button {
 
 .spacer {
   height: 20px;
-  width: 20px; }
+  width: 20px;
+  flex-shrink: 0; }
 
 html {
   width: 100%;
@@ -125,7 +126,6 @@ body {
       height: 0px; }
     body .middle-container .loading-view p {
       opacity: 0;
-      height: 0px;
       padding: 0px;
       transition: transform 280ms cubic-bezier(0.4, 0, 0.2, 1), opacity 280ms cubic-bezier(0.4, 0, 0.2, 1);
       transform: scale(0.75); }
@@ -134,10 +134,11 @@ body {
         opacity: 1; }
       body .middle-container .loading-view p.title {
         color: white;
-        font-size: 16px; }
+        font-size: 16px;
+        margin-bottom: 2px; }
       body .middle-container .loading-view p.uploader {
         color: rgba(255, 255, 255, 0.8);
-        font-size: 15px; }
+        font-size: 14px; }
     body .middle-container p {
       width: 400px;
       text-align: center;
