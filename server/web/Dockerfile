@@ -118,4 +118,4 @@ WORKDIR /usr/src/app
 
 COPY src .
 
-CMD npm run $VIDL_ENV
+CMD npm run start_${VIDL_ENV}

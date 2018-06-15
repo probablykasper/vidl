@@ -1,0 +1,7 @@
+{
+    "description": "",
+    "scripts": {
+        "prod": "VIDL_ENV=prod docker-compose up",
+        "dev": "VIDL_ENV=dev docker-compose up"
+    }
+}

@@ -15,7 +15,8 @@ In dev mode, the website is hosted on localhost:8080. You can change the port in
 ## Get started
 - Install [Docker](https://store.docker.com/search?type=edition&offering=community)
 - `docker-compose build`: Build the thing and install the NPM dependencies. This will build youtube-dl from source, so it will take a while.
-- `docker-compose up`: Starts it. To choose between dev and production mode, open docker-compose.yml and change `VIDL_ENV` to either `production` or `dev`.
+- `npm run prod`: Starts the server in production mode. All it does is run `VIDL_ENV=prod docker-compose up`
+- `npm run dev`: Starts the server in dev mode. All it does is run `VIDL_ENV=dev docker-compose up`
 
 # Browser extension
 Note: Only Chrome is officially supported at the moment.
