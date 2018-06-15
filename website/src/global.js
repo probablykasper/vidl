@@ -74,7 +74,6 @@ document.addEventListener("click", (e) => {
 const isChrome = !!window.chrome && !!window.chrome.webstore;
 if (isChrome) {
 
-    const extLink = "https://chrome.google.com/webstore/detail/ofojemljpdnbfmjenigkncgofkcoacag";
     const extensionDiv = document.querySelector(".extension.chrome");
     const extensionTooltip = document.querySelector(".extension.chrome .extension-tooltip");
     const svg = extensionDiv.querySelector(".svg");
@@ -83,15 +82,6 @@ if (isChrome) {
     });
     extensionDiv.addEventListener("mouseleave", () => {
         extensionTooltip.classList.remove("visible");
-    });
-    document.addEventListener("click", (e) => {
-        if (e.target.classList.contains("chrome-icon")) {
-            chrome.webstore.install(extLink, function(suc) {
-                console.log(suc);
-            }, function(err) {
-                console.log(err);
-            });
-        }
     });
     extensionDiv.classList.add("visible");
 

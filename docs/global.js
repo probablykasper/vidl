@@ -137,7 +137,6 @@ document.addEventListener("click", function (e) {
 var isChrome = !!window.chrome && !!window.chrome.webstore;
 if (isChrome) {
 
-    var extLink = "https://chrome.google.com/webstore/detail/ofojemljpdnbfmjenigkncgofkcoacag";
     var extensionDiv = document.querySelector(".extension.chrome");
     var extensionTooltip = document.querySelector(".extension.chrome .extension-tooltip");
     var svg = extensionDiv.querySelector(".svg");
@@ -146,15 +145,6 @@ if (isChrome) {
     });
     extensionDiv.addEventListener("mouseleave", function () {
         extensionTooltip.classList.remove("visible");
-    });
-    document.addEventListener("click", function (e) {
-        if (e.target.classList.contains("chrome-icon")) {
-            chrome.webstore.install(extLink, function (suc) {
-                console.log(suc);
-            }, function (err) {
-                console.log(err);
-            });
-        }
     });
     extensionDiv.classList.add("visible");
 }
@@ -200,7 +190,7 @@ var VIDL_URL = function () {
     if (VIDL_ENV == "dev") return "wss://apividl.kasp.io/website-dl";else return "wss://apividl.kasp.io/website-dl";
 }();
 var VIDL_DL_URL = function () {
-    if (VIDL_ENV == "dev") return "https://apividl.kasp.io/dl/";else return "https://apividl.kasp.io/dl/";
+    if (VIDL_ENV == "dev") return "https://apividl.kasp.io/dl";else return "https://apividl.kasp.io/dl";
 }();
 
 var fn = __webpack_require__(3);
