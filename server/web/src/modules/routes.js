@@ -36,32 +36,29 @@ module.exports = (app, wss) => {
     // SOCKET
     wss.on("connection", (ws, req) => {
         const ip = req.connection.remoteAddress;
-        console.log(req.connection.remoteAddress);
         const path = url.parse(req.url, true).pathname;
         let open = true;
 
-        console.log(`${path}: ${ip}     OPEN  socket connection`);
+        console.log(`${path}: ${ip}     OPEN socket connection`);
         ws.on("close", () => {
             open = false;
             console.log(`${path}: ${ip}     CLOSE socket connection`);
         });
-        if (path == "/website-dl" || path == "/chrome-extension") {
-            let callCount = 0;
-            ws.on("message", (msgData) => {
-                const data = JSON.parse(msgData);
-                if (callCount == 0) {
-                    socketMsg(ws, data, ip, path);
-                } else if (data.type == "start") {
-                    let message = {
-                        type: "err",
-                        code: "001",
-                        msg: "A download is already active."
-                    };
-                    res(ws, open, message);
-                }
-                callCount++;
-            });
-        }
+        let callCount = 0;
+        ws.on("message", (msgData) => {
+            const data = JSON.parse(msgData);
+            if (callCount == 0) {
+                socketMsg(ws, data, ip, path);
+            } else if (data.type == "start") {
+                let message = {
+                    type: "err",
+                    code: "001",
+                    msg: "A download is already active."
+                };
+                res(ws, open, message);
+            }
+            callCount++;
+        });
     });
 }
 function getInfo(url, ip, path, cbErr, cbSuc) {
@@ -95,10 +92,6 @@ function download(info, cbErr, cbSuc, filename) {
     if (info.audioOnly) args.push("-x");
 
     const uploaderAndTitle = sanitize(info.uploader+" - "+info.title);
-    console.log("__--_----++++++uploaderAndTitle");
-    console.log(info.uploader);
-    console.log(info.title);
-    console.log(uploaderAndTitle);
     filename = `files/${info.id}-${info.index}/x${uploaderAndTitle}.%(ext)s`;
     args.push("-o", filename);
 
