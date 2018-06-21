@@ -1,8 +1,8 @@
 version: "2"
 services:
-    vidl-web:
+    prod:
         build: ./web
-        container_name: vidl-web
+        container_name: vidl-server
         restart: always
         ports:
             - 80:80
@@ -10,4 +10,15 @@ services:
             - ./web/src:/usr/src/app
         environment:
             - "NODEJS_VERSION=8.6.0"
-            - "VIDL_ENV=start_${VIDL_ENV}"
+            - "VIDL_ENV=prod"
+    dev:
+        build: ./web
+        container_name: vidl-server
+        restart: always
+        ports:
+            - 80:80
+        volumes:
+            - ./web/src:/usr/src/app
+        environment:
+            - "NODEJS_VERSION=8.6.0"
+            - "VIDL_ENV=dev"

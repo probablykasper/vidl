@@ -17,6 +17,10 @@ const server = app.listen(80, () => {
     console.log("Express server listening on 80");
 });
 
+app.get("/", (req, res) => {
+    res.send("Nice, it works :)");
+});
+
 const WebSocket = require("ws");
 const wss = new WebSocket.Server({server});
 // routes
