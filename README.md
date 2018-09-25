@@ -1,29 +1,34 @@
 # vidl
-Video/audio download site
+Bash script that downloads video/audio
 
-# Website
-The website source code is located in the website folder.
-## Get started
-- Install [NPM](https://www.npmjs.com/get-npm)
-- `npm install`: install the dependencies.
-- `npm run build-prod`: build the website. The output is located inside the `docs` folder, so it can be hosted on GitHub Pages for free.
-- `npm run build-dev`: Just like `build-prod`, but for development (it watches for changes).
-- In `config.js`, you'll find the websocket URLs that the website connects to. One URL for local development and one for production.
-In dev mode, the website is hosted on localhost:8080. You can change the port in `config.js`.
+# Installation
+This assumes you're using macOS.
 
-# Server
-## Get started
-- Install [Docker](https://store.docker.com/search?type=edition&offering=community)
-- `docker-compose build`: Build the thing and install the NPM dependencies. This will build youtube-dl from source, so it will take a while.
-- `npm run prod`: Starts the server in production mode. All it does is run `VIDL_ENV=prod docker-compose up`
-- `npm run dev`: Starts the server in dev mode. All it does is run `VIDL_ENV=dev docker-compose up`
+### How to make the script global:  
+Drag the `vidl` file into the `usr-local-bin` folder, which points to `/usr/local/bin`.  
+You can now use vidl by typing `vidl` in the terminal from any directory.
 
-# Browser extension
-Note: Only Chrome is officially supported at the moment.
-The browser extension source code is located in the browser-extension folder.
-## Get started
-- Install [NPM](https://www.npmjs.com/get-npm)
-- `npm install`: install the dependencies.
-- `npm run build-prod`: build the website. It outputs a chrome folder that can be added as an unpackaged extension, and a chrome.zip file that can be added as a real extension.
-- `npm run build-dev`: Just like `build-prod`, but for development (it watches for changes).
-- In `config.js`, you'll find the websocket URLs that the website connects to. One URL for local development and one for production.
+### How to use vidl through shortcuts
+1. Create a macOS Service.
+    1. Open the Automator app.
+    2. Choose File > New, and select Service.
+    3. Select "Service receives selected `URLs` in `any application`". If you want the shortcut to only work in one app, select that app instead of `any application`.
+    4. Select "Input is `only URLs`".
+    5. Double click the action "Run Shell Script". You can find it by using the search field.
+    6. In the "Run Shell Script" section, select `as arguments` in the "Pass input" dropdown.
+    7. In the "Run Shell Script" section, paste in the script that you can find below.
+        ```
+        for f in "$@"
+        do
+            /usr/local/bin/vidl "$f"
+        done
+        ```
+    8. Choose File > Save. Type in `vidl`.
+2. Next, you need to tie a shortcut to the Service.
+    1. Open the System preferences app.
+    2. Go to Keyboard, and select the Shortcuts tab.
+    3. Select Services from the left column, and locate vidl (should be under Internet). Add your preferred shortcut.
+
+# Usage
+To use the script, run `vidl [mp3|mp4|wav|m4a] <url>`.
+To use it by shortcut, select some text that contains one or more URLs and press your shortcut.
