@@ -1,6 +1,0 @@
-{
-    "scripts": {
-        "prod": "docker-compose up prod",
-        "dev": "docker-compose up dev"
-    }
-}

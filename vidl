@@ -1,0 +1,51 @@
+#! /bin/bash
+
+#DIR="$(cd ~/bin; pwd)"
+
+URL=$2
+
+if [[ $1 == "mp4" ]]; then
+	VIDEO=true
+	FORMAT=mp4
+	EMBED=--embed-thumbnail
+elif [[ $1 == "wav" ]]; then
+	FORMAT=wav
+elif [[ $1 == "m4a" ]]; then
+	FORMAT=m4a
+	EMBED=--embed-thumbnail
+elif [[ $1 == "mp3" ]]; then
+	FORMAT=mp3
+	EMBED=--embed-thumbnail
+else
+	FORMAT=mp3
+	EMBED=--embed-thumbnail
+	URL=$1
+fi
+
+if [[ $URL ]]; then
+
+	cd ~/Downloads
+
+	if [[ $VIDEO == true ]]
+	then
+		youtube-dl    -f 'bestvideo+bestaudio' --recode-video ${FORMAT} --audio-quality 0 -o '%(uploader)s - %(title)s.%(ext)s' ${EMBED} ${URL}
+	else
+		youtube-dl -x -f 'best'                --audio-format ${FORMAT} --audio-quality 0 -o '%(uploader)s - %(title)s.%(ext)s' ${EMBED} ${URL}
+	fi
+
+else
+
+	SCRIPT_FILENAME=${0##*/}
+
+	# Colors
+	GREEN='\033[0;32m'
+	RESET='\033[0m'
+
+	echo    ""
+	#echo -e "---==={ ${GREEN}$SCRIPT_FILENAME${RESET} }===---"
+	echo -e "${GREEN}$SCRIPT_FILENAME${RESET}"
+	echo -e "usage: $SCRIPT_FILENAME [mp3|mp4|wav|m4a] <url>"
+	#echo -e "---==={         }===---"
+	echo    ""
+
+fi
