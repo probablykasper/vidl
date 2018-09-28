@@ -1,0 +1,91 @@
+#! /bin/bash
+
+help() {
+	SCRIPT_FILENAME=${0##*/}
+	# Colors
+	GREEN='\033[0;32m'
+	RESET='\033[0m'
+	echo    ""
+	#echo -e "---==={ ${GREEN}$SCRIPT_FILENAME${RESET} }===---"
+	echo -e "${GREEN}Usage:${RESET}"
+	echo -e "  $SCRIPT_FILENAME [mp3|mp4|wav|m4a] [other options] <url>"
+	echo ''
+	echo -e "${GREEN}Options:${RESET}"
+	echo -e "  <format>       mp3, mp4, wav or m4a. Default mp3"
+	echo -e "  -q, --quiet    Don't ask for metadata input"
+	#echo -e "---==={         }===---"
+	echo    ""
+	exit
+}
+
+if [[ $# == 0 ]]; then
+	help
+fi
+
+INDEX=-1
+for ARG in "$@"; do
+	let INDEX=${INDEX}+1
+
+	# if only one argument and it's -h/--help
+	if [[ $# == 1 ]] && [[ $ARG == '-h' 	]]; then help; fi
+	if [[ $# == 1 ]] && [[ $ARG == '--help' ]]; then help; fi
+
+	if   [[ $arg == 'mp4' ]]; then
+		FORMAT=mp4
+		EMBED=--embed-thumbnail
+		VIDEO=true
+	elif [[ $arg == 'wav' ]]; then
+		FORMAT=wav
+	elif [[ $arg == 'm4a' ]]; then
+		FORMAT=m4a
+		EMBED=--embed-thumbnail
+	elif [[ $arg == 'mp3' ]]; then
+		FORMAT=mp3
+		EMBED=--embed-thumbnail
+	elif [[ $arg == '-q' || $arg == '--quiet' ]]; then
+		QUIET=true
+	else
+		URL=$ARG
+	fi
+
+done
+
+if [[ $URL ]]; then
+
+	if [[ $FORMAT == '' ]]; then
+		FORMAT='mp3'
+	fi
+	if [[ $FORMAT == 'mp3' && QUIET != true ]]; then
+		read -p '      Artist: ' ARTIST
+		read -p '       Title: ' TITLE
+		read -p '       Album: ' ALBUM
+		read -p 'Album Artist: ' ALBUM_ARTIST
+		read -p '       Genre: ' GENRE
+		read -p '        Year: ' YEAR
+		read -p 'Track Number: ' TRACK_NUMBER
+		echo -en "\033[1A\033[2K"
+		read -p "Track Number: $TRACK_NUMBER of " TRACK_AMOUNT
+	fi
+	cd ~/Downloads
+	if [[ $VIDEO == true ]]; then
+		youtube-dl \
+			-f 'bestvideo+bestaudio' \
+			--recode-video ${FORMAT} --audio-quality 0 \
+			-o '%(uploader)s - %(title)s.%(ext)s' \
+			${EMBED} ${URL}
+	else
+		youtube-dl \
+			-f 'best' \
+			-x --audio-format ${FORMAT} --audio-quality 0 \
+			-o '%(uploader)s - %(title)s.%(ext)s' \
+			${EMBED} ${URL}
+	fi
+
+	# --write-info-json
+	# make python script
+		# read & update metadata
+	# recreate everything in python?
+	
+else
+	help
+fi
