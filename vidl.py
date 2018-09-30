@@ -1,8 +1,11 @@
+"""Python script to download video/audio, built with youtube-dl"""
+__version__ = '3.0'
+
 import youtube_dl
 import pprint; pprint = pprint.PrettyPrinter(indent=4).pprint
 
 ytdl_options_audio = {
-    'outtmpl': '/Users/kasper/Downloads/%(id)s.%(ext)s',
+    'outtmpl': '~/Downloads/%(id)s.%(ext)s',
 }
 
 with youtube_dl.YoutubeDL(ytdl_options_audio) as ytdl:

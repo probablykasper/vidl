@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "vidl"
+version = "3.0"
+description = "Python script to download video/audio, built with youtube-dl"
+authors = ["KH <kasperkh.kh@gmail.com>"]
+
+readme = 'README.md'
+
+repository = "https://github.com/spectralkh/vidl"
+homepage = "https://vidl.kasp.io"
+
+keywords = ['youtube', 'download', 'video', 'audio', 'music']
+
+[tool.poetry.dependencies]
+python = "^3.2"
+youtube-dl = "^2018.9"
+
+[tool.poetry.dev-dependencies]
+pylint = "*"
