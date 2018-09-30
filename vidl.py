@@ -1,18 +1,15 @@
 """Python script to download video/audio, built with youtube-dl"""
-__version__ = '3.0'
 
 import youtube_dl
 import pprint; pprint = pprint.PrettyPrinter(indent=4).pprint
 
-ytdl_options_audio = {
-    'outtmpl': '~/Downloads/%(id)s.%(ext)s',
-}
+output_template = '~/Downloads/%(author)s - %(title)s.%(ext)s'
 
-with youtube_dl.YoutubeDL(ytdl_options_audio) as ytdl:
+with youtube_dl.YoutubeDL({'outtmpl': output_template}) as ytdl:
     result = ytdl.extract_info(
         # 'http://www.youtube.com/watch?v=BaW_jenozKc',
-        # 'https://soundcloud.com/unlikepluto/ladida',
-        'https://soundcloud.com/unlikepluto/sets/bitter-paradise',
+        'https://soundcloud.com/unlikepluto/ladida',
+        # 'https://soundcloud.com/unlikepluto/sets/bitter-paradise',
         download=False
     )
     # filename = ytdl.prepare_filename(result)
@@ -20,15 +17,33 @@ with youtube_dl.YoutubeDL(ytdl_options_audio) as ytdl:
 if 'entries' in result:
     videos = result['entries']
 else:
-    videos = {
-        'entries': [result]
-    }
+    videos = [result]
+
+file_format = 'mp3'
+audio_quality = '0'
+embed_thumbnail = ''
+if file_format in ['mp3', 'm4a', 'mp4']:
+    embed_thumbnail = '--embed-thumbnail'
+url = 'https://soundcloud.com/unlikepluto/ladida'
+ytdl_args = [
+    '-f', 'best',
+    '-x',
+    '--audio-format', file_format,
+    '--audio-quality', audio_quality,
+    '-o', output_template,
+    embed_thumbnail,
+    url,
+]
 
 for video in videos:
     pprint('andanotherone')
     filename = ytdl.prepare_filename(video)
     print(filename)
+    video['formats'] = None
+    video['requested_formats'] = None
     pprint(video)
+
+    youtube_dl.main(ytdl_args)
 
 # pprint(result)
 # pprint(filename)

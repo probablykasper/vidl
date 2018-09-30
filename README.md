@@ -1,7 +1,13 @@
+# vidl
 vidl is a script designed to easily download video/audio from anywere, using youtube-dl.
 
 # Installation
 Installation using PyPI isn't possible yet.
+1. Install Python (Python 3.7 works, probably other versions too)
+2. Run `pip install vidl`
+
+# Usage
+Hmmmmmmmmm
 
 # Dev Instructions
 ### Installation
@@ -9,12 +15,21 @@ Installation using PyPI isn't possible yet.
 2. Install [Poetry](https://poetry.eustace.io)
 3. Run `poetry install` to install Python package dependencies.
 
+For VSCode to detect the Python virtual environment that Poetry creates, I ran `poetry config settings.virtualenvs.in-project true`. This command makes Poetry create your Python virtual environment inside the project folder. Now, you can set the `python.pythonPath` setting to `${workspaceFolder}/.venv/bin/python` in your workspace settings (or global if you want this to be the default).
+
+### Running vidl.py
+Run `poetry run python vidl.py`. Alternatively you can run `poetry shell` to enter into the virtual environment's own CLI, then run `python vidl.py` as you normally would.
 
 
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 
-Outdated stuff below
 
-
+# Outdated stuff below
 
 # vidl
 Bash script that downloads video/audio
@@ -57,9 +72,3 @@ Now, you need to tie a shortcut to the Service:
 # Usage
 To use the script, run `vidl [mp3|mp4|wav|m4a] <url>`.
 To use it by shortcut, select some text that contains one or more URLs and press your shortcut.
-
-
-
-# New python stuff
-install python
-install pipenv

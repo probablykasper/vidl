@@ -129,7 +129,7 @@ python-versions = "*"
 version = "2018.9.26"
 
 [metadata]
-content-hash = "ae8a31f93dcb094ba1a973b538c0803c9300091569e508ecdd167111a803880a"
+content-hash = "a9344a66994236493c3d02a8554b84de06c40239c23fb0cd082f9aa746f13fb9"
 platform = "*"
 python-versions = "^3.2"
 
