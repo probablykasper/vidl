@@ -1,5 +1,5 @@
 # vidl
-vidl is a script designed to easily download video/audio from anywere, using youtube-dl.
+vidl is a script designed to easily download video/audio from anywere, using youtube-dl. It automatically embeds thumbnails to mp3/mp4/m4a files and adds metadata like artist/title to mp3s.
 
 # Installation
 Installation using PyPI isn't possible yet.
