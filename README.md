@@ -4,7 +4,7 @@ vidl is a script designed to easily download video/audio from anywere, using you
 # Installation
 Installation using PyPI isn't possible yet.
 1. Install Python (Python 3.7 works, probably other versions too)
-2. Install [ffmpeg](https://evermeet.cx/ffmpeg/#ffmpeg) and [ffprobe](https://evermeet.cx/ffmpeg/#ffprobe)
+2. Install [ffmpeg and ffprobe](https://www.ffmpeg.org/)
 3. Run `pip install vidl`
 
 # Usage
@@ -13,7 +13,7 @@ Hmmmmmmmmm
 # Dev Instructions
 ### Installation
 1. Install Python (Python 3.7 works, probably other versions too)
-2. Install [ffmpeg](https://evermeet.cx/ffmpeg/#ffmpeg) and [ffprobe](https://evermeet.cx/ffmpeg/#ffprobe)
+2. Install [ffmpeg and ffprobe](https://www.ffmpeg.org/)
 3. Install [Poetry](https://poetry.eustace.io)
 4. Run `poetry install` to install Python package dependencies.
 
