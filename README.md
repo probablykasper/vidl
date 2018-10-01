@@ -4,7 +4,8 @@ vidl is a script designed to easily download video/audio from anywere, using you
 # Installation
 Installation using PyPI isn't possible yet.
 1. Install Python (Python 3.7 works, probably other versions too)
-2. Run `pip install vidl`
+2. Install [ffmpeg](https://evermeet.cx/ffmpeg/#ffmpeg) and [ffprobe](https://evermeet.cx/ffmpeg/#ffprobe)
+3. Run `pip install vidl`
 
 # Usage
 Hmmmmmmmmm
@@ -12,8 +13,9 @@ Hmmmmmmmmm
 # Dev Instructions
 ### Installation
 1. Install Python (Python 3.7 works, probably other versions too)
-2. Install [Poetry](https://poetry.eustace.io)
-3. Run `poetry install` to install Python package dependencies.
+2. Install [ffmpeg](https://evermeet.cx/ffmpeg/#ffmpeg) and [ffprobe](https://evermeet.cx/ffmpeg/#ffprobe)
+3. Install [Poetry](https://poetry.eustace.io)
+4. Run `poetry install` to install Python package dependencies.
 
 For VSCode to detect the Python virtual environment that Poetry creates, I ran `poetry config settings.virtualenvs.in-project true`. This command makes Poetry create your Python virtual environment inside the project folder. Now, you can set the `python.pythonPath` setting to `${workspaceFolder}/.venv/bin/python` in your workspace settings (or global if you want this to be the default).
 
