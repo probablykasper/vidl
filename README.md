@@ -20,7 +20,12 @@ Hmmmmmmmmm
 For VSCode to detect the Python virtual environment that Poetry creates, I ran `poetry config settings.virtualenvs.in-project true`. This command makes Poetry create your Python virtual environment inside the project folder. Now, you can set the `python.pythonPath` setting to `${workspaceFolder}/.venv/bin/python` in your workspace settings (or global if you want this to be the default).
 
 ### Running vidl.py
-Run `poetry run python vidl.py`. Alternatively you can run `poetry shell` to enter into the virtual environment's own CLI, then run `python vidl.py` as you normally would.
+Run `poetry run python vidl`. Alternatively you can run `poetry shell` to enter into the virtual environment's own CLI, then run `python vidl` as you normally would.
+
+
+
+
+
 
 
 <p>&nbsp;</p>
