@@ -1,6 +1,6 @@
 import sys, os, youtube_dl, mutagen
 from mutagen.easyid3 import EasyID3
-from colorboy import cyan
+from colorboy import cyan, green
 from deep_filter import deep_filter
 import pprint; pprint = pprint.PrettyPrinter(indent=4).pprint
 
@@ -39,9 +39,11 @@ def main():
         'output_template': config.load('output_template'),
         'add_metadata': config.load('add_metadata'),
     }
-
     def log(*args, **named_args):
         vidl_log(*args, **named_args, quiet=options['quiet'])
+    if options['download_folder'] == None:
+        script_filename = sys.argv[0]
+        log('download_folder config has not been set. To set it, run '+green(script_filename+' config download_folder <path>'), error=True)
 
     video_formats = ['mp4']
     audio_formats = ['mp3', 'wav', 'm4a']

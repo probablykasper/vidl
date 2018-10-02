@@ -1,5 +1,5 @@
 import sys
-from colorboy import green, cyan, red
+from colorboy import green, cyan, red, magenta, yellow, bright
 
 def log(*args, error=False, quiet=False):
     vidl_text = cyan('[vidl]')
@@ -12,11 +12,10 @@ def log(*args, error=False, quiet=False):
 def vidl_help():
     script_filename = sys.argv[0]
     print(          '')
-    print(green(    'Download:'))
-    print(          '  '+cyan(script_filename)+' [format] [options] <URL>')
-    print(          '    Download a URL.')
+    print(green(    'Usage:'))
+    print(          '    '+cyan(script_filename)+' [format] [options] <URL>')
     print(          '')
-    print(green(    '  Options:'))
+    print(green(    'Options:'))
     print(cyan(     '    format             ')+'mp3, mp4, wav or m4a. Default mp3.')
     print(cyan(     '    --no-md            ')+'Don\'t add metadata to downloaded files.')
     print(cyan(     '    -q, --quiet        ')+'Only log errors.')
@@ -24,8 +23,8 @@ def vidl_help():
     print(cyan(     '    -h, --help         ')+'Display this help message.')
     print(          '')
     print(green(    'Configuration:'))
-    print(          '  '+cyan(script_filename)+' config <key> [value]')
-    print(          '')
+    print(          '  '+cyan(script_filename)+' config <key> [new_value]')
+    print(          '  ')
     print(green(    'Available Configs:'))
     print(cyan(     '    download_folder    ')+'The folder that vidl downloads to.')
     print(cyan(     '    output_template    ')+'youtube-dl output template.')
