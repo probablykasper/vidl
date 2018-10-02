@@ -33,6 +33,7 @@ def main():
         'url': '',
         'file_format': 'mp3',
         'audio_only': True,
+        'no_md': False,
         'quiet': False,
         'verbose': False,
         'download_folder': config.load('download_folder'),
@@ -58,6 +59,8 @@ def main():
         elif arg in video_formats:
             options['audio_only'] = False
             options['file_format'] = arg
+        elif arg in ['--no-md']:
+            options['no_md'] = True
         elif arg in ['-q', '--quiet']:
             options['quiet'] = True
         elif arg in ['-v', '--verbose']:
@@ -126,7 +129,7 @@ def main():
         except:
             pass
         log('Saved as', filename)
-        if options['file_format'] in id3_metadata_formats:
+        if options['file_format'] in id3_metadata_formats and not options['no_md']:
             log('Adding metadata to file')
 
             # Create ID3 tag
