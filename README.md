@@ -1,82 +1,95 @@
 # vidl
-vidl is a script designed to easily download video/audio from anywere, using youtube-dl. It automatically embeds thumbnails to mp3/mp4/m4a files and adds metadata like artist/title to mp3s.
+vidl is a script designed to easily download video/audio from anywere, using youtube-dl. It automatically embeds thumbnails to mp3/mp4/m4a files.
+
+vidl will add metadata to mp3 files if it's found. The `--no-md` option turns this off.
+`title`, `artist` and `year` metadata is added, but if the URL is a playlist, it also adds `album`, `album artist`, `track number`, `track count`.
+If the title contains " - ", vidl often uses what comes before and after it as artist and title respectively. The `--dont-extract-md` option turns off this behaviour.
 
 # Installation
-Installation using PyPI isn't possible yet.
-1. Install Python (Python 3.7 works, probably other versions too)
+1. Install Python (3.7 is recommended)
 2. Install [ffmpeg and ffprobe](https://www.ffmpeg.org/)
 3. Run `pip install vidl`
-4. Run `vidl `
+4. If you're not on macOS or Windows, you need to specify where vidl will download files to by running `vidl config download_folder '<path>'`.
+If you're on macOS, I strongly recommend [setting up shortcuts for vidl](#macos-shortcut-setup)
 
 # Usage
-Hmmmmmmmmm
+Examples:
+`vidl https://www.youtube.com/watch?v=ta_ZVS7HkwI`
+- Downloads the video as mp3, and adds metadata it detects.
 
-# Dev Instructions
-### Installation
-1. Install Python (Python 3.7 works, probably other versions too)
-2. Install [ffmpeg and ffprobe](https://www.ffmpeg.org/)
-3. Install [Poetry](https://poetry.eustace.io)
-4. Run `poetry install` to install Python package dependencies.
+`vidl mp3 https://www.youtube.com/watch?v=ta_ZVS7HkwI --no-md`
+- Downloads the video as mp3, without adding metadata.
 
-For VSCode to detect the Python virtual environment that Poetry creates, I ran `poetry config settings.virtualenvs.in-project true`. This command makes Poetry create your Python virtual environment inside the project folder. Now, you can set the `python.pythonPath` setting to `${workspaceFolder}/.venv/bin/python` in your workspace settings (or global if you want this to be the default).
+`vidl config download_folder "~/Downloads"`
+- Set the folder that vidl downloads to `~/Downloads`.
 
-### Running vidl.py
-Run `poetry run python vidl`. Alternatively you can run `poetry shell` to enter into the virtual environment's own CLI, then run `python vidl` as you normally would.
+`vidl`
+- Prints vidl's help menu, which looks like this:
+```
+Usage:
+    vidl [format] [options] <URL>
 
+Options:
+    format             mp3, mp4, wav or m4a. Default mp3.
+    --no-md            Don't add metadata to downloaded files.
+    --no-smart-md      Don't extract artist and song name from title.
+    -v, --verbose      Display all logs.
+    -h, --help         Display this help message.
 
+Configuration:
+  vidl config <key> [new_value]
 
+Available Configs:
+    download_folder    The folder that vidl downloads to.
+    output_template    youtube-dl output template.
+```
 
+# <a name="#macos-shortcut-setup"></a>Set up shortcuts for vidl (macOS)
+You'll be able to select any piece of text, press your chosen shortcut and the link(s) in your selected text will be downloaded! A little tedious to set up, but well worth it.
 
-
-
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-
-
-# Outdated stuff below
-
-# vidl
-Bash script that downloads video/audio
-
-# Installation
-This assumes you're using macOS.
-
-You need to install [youtube-dl](https://rg3.github.io/youtube-dl/download.html)
-
-### How to make the script global:  
-Move the `vidl` file into `/usr/local/bin`.  
-You can now use vidl by typing `vidl` in the terminal from any directory.
-
-### How to use vidl through shortcuts
-First, create a macOS Service:
+First, we need to create a macOS Service:
 1. Open the Automator app.
 2. Choose File > New, and select Service.
-3. Select "Service receives selected `URLs` in `any application`". If you want the shortcut to only work in one app, select that app instead of `any application`.
-4. Select "Input is `only URLs`".
-5. Double click the action "Run Shell Script". You can find it by using the search field.
-6. In the "Run Shell Script" section, select `as arguments` in the "Pass input" dropdown.
-7. In the "Run Shell Script" section, paste in the script that you can find below.
-    ```
+3. (TLDR; Add `Run Shell Script`) In the window that just popped up, there are two columns on the left (if not, click the `Library` button in the status bar). Select `Utilities` in the first column, and in the second column, drag `Run Shell Script` into the main part of the window.
+4. Make your settings match these:
+![Service receives selected [URLs] in [any application]. Input is [only URLs]. In your Run Shell Script box; Shell: [/bin/bash]. Pass input: [as arguments]](https://raw.githubusercontent.com/SpectralKH/vidl/master/macos-service-screenshot.png)
+If you want the shortcut to only work in one app, select that app instead of `any application`.
+5. In the text box in the "Run Shell Script" box, paste in the following script:
+    ```bash
     for f in "$@"
     do
-        # AppleScript doesn't look for scripts like the terminal does, so
-        # we need to make it look in the folder where vidl is. If you have
-        # youtube-dl installed elsewhere, you need to add that as well.
-        export PATH=/usr/local/bin:$PATH
+        # AppleScript doesn't look for scripts in the same places as the terminal,
+        # so we need to make it look in the proper folders.
+        export PATH=<VIDL_DIR>:$PATH
+        export PATH=<FFMPEG_DIR>:$PATH
+        export PATH=<FFPROBE_DIR>:$PATH
         vidl --quiet "$f"
     done
     ```
-8. Choose File > Save. Type in `vidl`.
+    Replace <VIDL_DIR>, <FFMPEG_DIR> and <FFPROBE_DIR> with the paths you get from running `which vidl ffmpeg ffprobe` in the terminal.
+6. Choose File > Save. Type in vidl.
 
-Now, you need to tie a shortcut to the Service:
-1. Open the System preferences app.
-2. Go to Keyboard, and select the Shortcuts tab.
+Almost done, you just need to tie a shortcut to the macOS Service you just created:
+1. Open the System Preferences app.
+2. Go to Keyboard and select the Shortcuts tab.
 3. Select Services from the left column, and locate vidl (should be under Internet). Add your preferred shortcut.
 
-# Usage
-To use the script, run `vidl [mp3|mp4|wav|m4a] <url>`.
-To use it by shortcut, select some text that contains one or more URLs and press your shortcut.
+# Dev Instructions
+### Installation
+1. Install Python (3.7 is recommended)
+2. Install [ffmpeg and ffprobe](https://www.ffmpeg.org/)
+3. Install [Poetry](https://poetry.eustace.io)
+4. Run `poetry install` to install Python package dependencies.
+4. Make sure your `download_path` is set in `vidl/config.json`.
+
+For VSCode to detect the Python virtual environment that Poetry creates, I ran `poetry config settings.virtualenvs.in-project true`. This command makes Poetry create your Python virtual environment inside the project folder. Now, you can set the `python.pythonPath` setting to `${workspaceFolder}/.venv/bin/python` in your workspace settings (or global if you want this to be the default).
+
+### Running
+Run `poetry run vidl`. Alternatively you can run `poetry shell` to enter into the virtual environment's own CLI, then run `vidl` as you normally would.
+
+# ToDo
+- For future config possibilities, replace options like `--no-md` with `--md` and `--!md`. Maybe call it `defaults` instead of `config`?
+    - Add all configs as options, for instance add download_folder option.
+    - Add all options as configs, for instance add md option. 
+    - Add config/option for individual metadata
+- Allow passing youtube-dl arguments directly
