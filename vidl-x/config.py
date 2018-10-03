@@ -1,7 +1,6 @@
 import sys, json, os
 from colorboy import green
-from vidl.app import vidl_help, log
-from pprint import pformat
+from .vidl import vidl_help, log
 
 def path(*args, **options):
     DIR = os.path.dirname(os.path.abspath(__file__))
@@ -34,11 +33,10 @@ def main():
         vidl_help()
     if len(sys.argv) == 3:
         key = sys.argv[2]
-        value = load(key)
-        log('Config', key+':', green(pformat(value)))
+        log('Config', sys.argv[2]+':', green(load(key)))
     if len(sys.argv) == 4:
         key = sys.argv[2]
         value = sys.argv[3]
         set(key, value)
         save()
-        log(key, 'was set to:', green(pformat(value)))
+        log(sys.argv[2], 'was set to:', green(value))

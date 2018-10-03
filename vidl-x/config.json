@@ -1,0 +1,5 @@
+{
+  "download_folder": null,
+  "output_template": "%(uploader)s - %(title)s.%(ext)s",
+  "add_metadata": true
+}

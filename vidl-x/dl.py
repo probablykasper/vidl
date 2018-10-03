@@ -6,17 +6,28 @@ from colorboy import cyan, green
 from deep_filter import deep_filter
 import pprint; pprint = pprint.PrettyPrinter(indent=4).pprint
 
-from vidl import app, config
+from .vidl import vidl_help, log as vidl_log
+from vidl import config
 
 class Dicty(dict):
     __getattr__ = dict.__getitem__
     __setattr__ = dict.__setitem__
+
 def is_int(number):
     try:
         int(number)
         return True
     except ValueError:
         return False
+def list_to_dict(array):
+    dictionary = {}
+    i = 0
+    for value in array:
+        dictionary[str(i)] = value
+        i += 1
+
+def del_if(value):
+    if value == None: del value
 
 def main():
 
@@ -32,9 +43,10 @@ def main():
         'add_metadata': config.load('add_metadata'),
     }
     def log(*args, **named_args):
-        app.log(*args, **named_args, quiet=options['quiet'])
+        vidl_log(*args, **named_args, quiet=options['quiet'])
     if options['download_folder'] == None:
-        log('download_folder config has not been set. To set it, run '+green(app.script_filename+' config download_folder <path>'), error=True)
+        script_filename = sys.argv[0]
+        log('download_folder config has not been set. To set it, run '+green(script_filename+' config download_folder <path>'), error=True)
 
     video_formats = ['mp4']
     audio_formats = ['mp3', 'wav', 'm4a']
@@ -56,13 +68,13 @@ def main():
         elif arg in ['-v', '--verbose']:
             options['verbose'] = True
         elif arg in ['-h', '--help']:
-            app.vidl_help()
+            vidl_help()
         elif '.' in arg:
             options['url'] = arg
         else:
             log('Unknown argument:', arg, error=True)
     if len(sys.argv) <= 1: # no arguments provided
-        app.vidl_help()
+        vidl_help()
     if options['url'] == '':
         log('No URL provided', error=True)
 

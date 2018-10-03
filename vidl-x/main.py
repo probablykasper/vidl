@@ -32,13 +32,14 @@ def vidl_help():
     quit()
 
 def main():
+    print(2999)
     if len(sys.argv) <= 1:
         vidl_help()
     elif sys.argv[1] == 'config':
-        import config
-        config.main()
+        from vidl.config import main
+        main()
     else:
-        import dl
-        dl.main()
+        from vidl.dl import main
+        main()
 if __name__ == '__main__':
     main()

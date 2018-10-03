@@ -21,3 +21,6 @@ deep-filter = "^1.0"
 
 [tool.poetry.dev-dependencies]
 pylint = "*"
+
+[tool.poetry.scripts]
+vidl = 'vidl.app:main'
