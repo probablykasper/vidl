@@ -1,12 +1,11 @@
-import sys, os, youtube_dl, mutagen
-from mutagen.mp3 import MP3
-from mutagen.id3 import ID3NoHeaderError
-from mutagen.id3 import ID3, TIT2, TALB, TPE1, TPE2, COMM, USLT, TCOM, TCON, TDRC
+import sys, os
+import pprint; pprint = pprint.PrettyPrinter(indent=4).pprint
+import youtube_dl
 from colorboy import cyan, green
 from deep_filter import deep_filter
-import pprint; pprint = pprint.PrettyPrinter(indent=4).pprint
 
 from vidl import app, config
+from vidl.app import log
 
 class Dicty(dict):
     __getattr__ = dict.__getitem__
@@ -25,14 +24,11 @@ def main():
         'file_format': 'mp3',
         'audio_only': True,
         'no_md': False,
-        'quiet': False,
         'verbose': False,
         'download_folder': config.load('download_folder'),
         'output_template': config.load('output_template'),
         'add_metadata': config.load('add_metadata'),
     }
-    def log(*args, **named_args):
-        app.log(*args, **named_args, quiet=options['quiet'])
     if options['download_folder'] == None:
         log('download_folder config has not been set. To set it, run '+green(app.script_filename+' config download_folder <path>'), error=True)
 
@@ -51,8 +47,6 @@ def main():
             options['file_format'] = arg
         elif arg in ['--no-md']:
             options['no_md'] = True
-        elif arg in ['-q', '--quiet']:
-            options['quiet'] = True
         elif arg in ['-v', '--verbose']:
             options['verbose'] = True
         elif arg in ['-h', '--help']:
@@ -68,7 +62,11 @@ def main():
 
     # get info
     log('Fetching URL info')
-    with youtube_dl.YoutubeDL({'outtmpl': ytdl_output_template, 'quiet': True}) as ytdl:
+    ytdl_get_info_options = {
+        'outtmpl': ytdl_output_template,
+        'quiet': False if options['verbose'] else True,
+    }
+    with youtube_dl.YoutubeDL(ytdl_get_info_options) as ytdl:
         try:
             info_result = ytdl.extract_info(options['url'], download=False)
         except:
@@ -81,6 +79,7 @@ def main():
         return value != None
     cleaned_info_result = deep_filter(info_result.copy(), callback)
 
+    # restructure
     if 'entries' in cleaned_info_result:
         videos = cleaned_info_result['entries']
         playlist_info = cleaned_info_result.copy()
@@ -98,12 +97,12 @@ def main():
     else:
         ytdl_args += ['-f', 'bestvideo+bestaudio']
         ytdl_args += ['--recode-video', options['file_format']]
+    ytdl_args += ['--audio-quality', '0']
+    ytdl_args += ['-o', ytdl_output_template]
     if options['file_format'] in ['mp3', 'm4a', 'mp4']:
         ytdl_args += ['--embed-thumbnail']
     if not options['verbose']:
         ytdl_args += ['--quiet']
-    ytdl_args += ['--audio-quality', '0']
-    ytdl_args += ['-o', ytdl_output_template]
     # ytdl_args += [options['url']]
 
     video_index = -1
@@ -113,6 +112,9 @@ def main():
             filename = ytdl.prepare_filename(video)
         except:
             quit()
+        filename_split = filename.split('.')
+        filename_split[len(filename_split)-1] = options['file_format']
+        filename = '.'.join(filename_split)
         log('Downloading')
         try:
             youtube_dl.main(ytdl_args+[video['webpage_url']])
@@ -122,9 +124,8 @@ def main():
         if options['file_format'] in id3_metadata_formats and not options['no_md']:
             log('Adding metadata to file')
 
-            # Create ID3 tag
-            tags = ID3()
             md = Dicty()
+            playlist = True if len(videos) > 1 else False
 
             # title / artist
             if 'track' in video:
@@ -141,7 +142,7 @@ def main():
                     md.title = split_title[1]
             elif 'uploader' in video:
                 md.artist = video['artist']
-            if len(videos) > 1: # playlist
+            if playlist:
                 #album
                 if 'title' in playlist_info:
                     md.album = playlist_info['title']
@@ -173,26 +174,5 @@ def main():
             elif 'upload_date' in video and is_int(video['upload_date'][:4]):
                 md.year = video['upload_date'][:4]
             
-            # album
-            # albumartist
-            # tracknumber #/#
-            # genre
-            # date
-            
-            pprint(md)
-            if 'title'  in md: tags["TIT2"] = TIT2(encoding=3, text=md.title)
-            if 'artist' in md: tags["TPE1"] = TPE1(encoding=3, text=md.artist)
-            # album
-                # tags["TALB"] = TALB(encoding=3, text=u'mutagen Album Name')
-            # albumartist
-            # tracknumber
-                # tags["TRCK"] = TRCK(encoding=3, text=u'track_number')
-            # genre
-                # tags["TCON"] = TCON(encoding=3, text=u'mutagen Genre')
-            if 'year'   in md: tags["TDRC"] = TDRC(encoding=3, text=md.year)
-
-            # if len(videos) > 1:
-            #     print('gotta add album stuff')
-
-
-            tags.save(filename)
+            import md as md_module
+            md_module.add_metadata(filename, md)

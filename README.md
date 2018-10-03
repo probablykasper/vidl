@@ -6,6 +6,7 @@ Installation using PyPI isn't possible yet.
 1. Install Python (Python 3.7 works, probably other versions too)
 2. Install [ffmpeg and ffprobe](https://www.ffmpeg.org/)
 3. Run `pip install vidl`
+4. Run `vidl `
 
 # Usage
 Hmmmmmmmmm

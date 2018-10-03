@@ -1,13 +1,13 @@
 import sys
 from colorboy import green, cyan, red, magenta, yellow, bright
 
-def log(*args, error=False, quiet=False):
+def log(*args, error=False, quiet=False, **named_args):
     vidl_text = cyan('[vidl]')
     if error:
-        print(vidl_text, red('error:'), *args)
+        print(vidl_text, red('error:'), *args, **named_args)
         quit()
     elif quiet == False:
-        print(vidl_text, *args)
+        print(vidl_text, *args, **named_args)
 
 script_filename = sys.argv[0]
 def vidl_help():
@@ -18,7 +18,6 @@ def vidl_help():
     print(green(    'Options:'))
     print(cyan(     '    format             ')+'mp3, mp4, wav or m4a. Default mp3.')
     print(cyan(     '    --no-md            ')+'Don\'t add metadata to downloaded files.')
-    print(cyan(     '    -q, --quiet        ')+'Only log errors.')
     print(cyan(     '    -v, --verbose      ')+'Display all logs.')
     print(cyan(     '    -h, --help         ')+'Display this help message.')
     print(          '')
