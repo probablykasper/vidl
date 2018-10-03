@@ -18,6 +18,7 @@ def vidl_help():
     print(green(    'Options:'))
     print(cyan(     '    format             ')+'mp3, mp4, wav or m4a. Default mp3.')
     print(cyan(     '    --no-md            ')+'Don\'t add metadata to downloaded files.')
+    print(cyan(     '    --no-smart-md      ')+'Don\'t extract artist and song name from title.')
     print(cyan(     '    -v, --verbose      ')+'Display all logs.')
     print(cyan(     '    -h, --help         ')+'Display this help message.')
     print(          '')

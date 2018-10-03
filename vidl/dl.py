@@ -24,6 +24,7 @@ def main():
         'file_format': 'mp3',
         'audio_only': True,
         'no_md': False,
+        'no_smart_md': False,
         'verbose': False,
         'download_folder': config.load('download_folder'),
         'output_template': config.load('output_template'),
@@ -47,6 +48,8 @@ def main():
             options['file_format'] = arg
         elif arg in ['--no-md']:
             options['no_md'] = True
+        elif arg in ['--no-smart-md']:
+            options['no_smart_md'] = True
         elif arg in ['-v', '--verbose']:
             options['verbose'] = True
         elif arg in ['-h', '--help']:
@@ -135,7 +138,7 @@ def main():
             if 'artist' in video:
                 md.artist = video['artist']
             # get artist/title from title
-            elif 'title' in md and 'track' not in video:
+            elif 'title' in video and 'track' not in video and 'no_smart_md' not in options:
                 if md.title.count(' - ') == 1:
                     split_title = md.title.split(' - ')
                     md.artist = split_title[0]
