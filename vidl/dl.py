@@ -127,24 +127,32 @@ def main():
         if options['file_format'] in id3_metadata_formats and not options['no_md']:
             log('Adding metadata to file')
 
+            # get artist/title from title
+            parsed_title = {}
+            if 'title' in video and video['title'].count(' - ') == 1:
+                if not options['no_smart_md']:
+                    split_title = video['title'].split(' - ')
+                    parsed_title['artist'] = split_title[0]
+                    parsed_title['title'] = split_title[1]
+
             md = Dicty()
             playlist = True if len(videos) > 1 else False
 
-            # title / artist
+            # title
             if 'track' in video:
                 md.title = video['track']
+            elif 'title' in parsed_title:
+                md.title = parsed_title['title']
             elif 'title' in video:
                 md.title = video['title']
+            # artist
             if 'artist' in video:
                 md.artist = video['artist']
-            # get artist/title from title
-            elif 'title' in video and 'track' not in video and 'no_smart_md' not in options:
-                if md.title.count(' - ') == 1:
-                    split_title = md.title.split(' - ')
-                    md.artist = split_title[0]
-                    md.title = split_title[1]
+            if 'artist' in parsed_title:
+                md.artist = parsed_title['artist']
             elif 'uploader' in video:
                 md.artist = video['uploader']
+
             if playlist:
                 #album
                 if 'title' in playlist_info:
@@ -158,12 +166,11 @@ def main():
                     md.album_artist = playlist_info['uploader']
                 elif 'playlist_uploader' in video:
                     md.album_artist = video['playlist_uploader']
-
                 # track_number
                 if 'playlist_index' in video:
                     md.track_number = video['playlist_index']
                 else:
-                    md.track_number = video_index+1
+                    md.track_number = video_index+1                   
                 # track_count
                 if 'n_entries' in video:
                     md.track_count = video['n_entries']

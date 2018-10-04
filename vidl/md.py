@@ -1,9 +1,10 @@
-from mutagen.id3 import ID3, TIT2, TALB, TPE1, TPE2, COMM, USLT, TCOM, TCON, TDRC
-import pprint; pprint = pprint.PrettyPrinter(indent=4).pprint
+from mutagen.id3 import ID3, TIT2, TPE1, TALB, TPE2, TRCK, TCON, TDRC
+# http://id3.org/id3v2.4.0-frames - COMM comment, USLT lyrics, TCOM composer
+from pprint import pformat
+from vidl.app import log
 
 def add_metadata(filename, md):
     tags = ID3(filename)
-    print(filename)
 
     if 'title' in md:           tags["TIT2"] = TIT2(encoding=3, text=md.title)
     if 'artist' in md:          tags["TPE1"] = TPE1(encoding=3, text=md.artist)
@@ -17,6 +18,9 @@ def add_metadata(filename, md):
     if 'genre' in md:           tags["TCON"] = TCON(encoding=3, text=md.genre)
     if 'year'   in md:          tags["TDRC"] = TDRC(encoding=3, text=md.year)
     
-    pprint(md)
+    for key, value in md.items():
+        whitespace = ' ' * (10 - len(key))
+        log('  '+key+':'+whitespace+pformat(value))
+        
     
     tags.save(filename)

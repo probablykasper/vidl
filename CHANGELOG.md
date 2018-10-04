@@ -1,5 +1,7 @@
 ## 3.0.2 - 2018 Oct 4
+- Fixed extracting artist/title metadata from title
 - Fixed md module not loading
+- some logging changes
 
 ## 3.0.1 - 2018 Oct 4
 - Fixed crashes due to some metadata fields being mixed up.
