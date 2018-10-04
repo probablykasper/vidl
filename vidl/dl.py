@@ -179,3 +179,4 @@ def main():
             
             from vidl import md as md_module
             md_module.add_metadata(filename, md)
+    log('Done')
