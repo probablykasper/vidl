@@ -144,7 +144,7 @@ def main():
                     md.artist = split_title[0]
                     md.title = split_title[1]
             elif 'uploader' in video:
-                md.artist = video['artist']
+                md.artist = video['uploader']
             if playlist:
                 #album
                 if 'title' in playlist_info:
@@ -152,7 +152,7 @@ def main():
                 elif 'playlist_title' in video:
                     md.album = video['playlist_title']
                 elif 'playlist' in video and type(video['playlist']) == str:
-                    md.album = video['playlist_title']
+                    md.album = video['playlist']
                 #album_artist
                 if 'uploader' in playlist_info:
                     md.album_artist = playlist_info['uploader']
