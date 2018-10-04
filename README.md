@@ -66,7 +66,9 @@ If you want the shortcut to only work in one app, select that app instead of `an
         vidl --quiet "$f"
     done
     ```
-    Replace <VIDL_DIR>, <FFMPEG_DIR> and <FFPROBE_DIR> with the paths you get from running `which vidl ffmpeg ffprobe` in the terminal.
+    Replace `<VIDL_DIR>` with the path you get from running `dirname $(which vidl)` in the terminal.
+    Replace `<FFMPEG_DIR>` with the path you get from running `dirname $(which ffmpeg)` in the terminal.
+    Replace `<FFPROBE_DIR>` with the path you get from running `dirname $(which ffprobe)` in the terminal.
 6. Choose File > Save. Type in vidl.
 
 Almost done, you just need to tie a shortcut to the macOS Service you just created:
