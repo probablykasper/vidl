@@ -25,24 +25,24 @@ Examples:
 
 `vidl`
 - Prints vidl's help menu, which looks like this:
-```
-Usage:
-    vidl [format] [options] <URL>
+    ```
+    Usage:
+        vidl [format] [options] <URL>
 
-Options:
-    format             mp3, mp4, wav or m4a. Default mp3.
-    --no-md            Don't add metadata to downloaded files.
-    --no-smart-md      Don't extract artist and song name from title.
-    -v, --verbose      Display all logs.
-    -h, --help         Display this help message.
+    Options:
+        format             mp3, mp4, wav or m4a. Default mp3.
+        --no-md            Don't add metadata to downloaded files.
+        --no-smart-md      Don't extract artist and song name from title.
+        -v, --verbose      Display all logs.
+        -h, --help         Display this help message.
 
-Configuration:
-  vidl config <key> [new_value]
+    Configuration:
+    vidl config <key> [new_value]
 
-Available Configs:
-    download_folder    The folder that vidl downloads to.
-    output_template    youtube-dl output template.
-```
+    Available Configs:
+        download_folder    The folder that vidl downloads to.
+        output_template    youtube-dl output template.
+    ```
 
 # <a name="#macos-shortcut-setup"></a>Set up shortcuts for vidl (macOS)
 You'll be able to select any piece of text, press your chosen shortcut and the link(s) in your selected text will be downloaded! A little tedious to set up, but well worth it.
