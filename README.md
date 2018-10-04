@@ -52,8 +52,10 @@ First, we need to create a macOS Service:
 2. Choose File > New, and select Service.
 3. (TLDR; Add `Run Shell Script`) In the window that just popped up, there are two columns on the left (if not, click the `Library` button in the status bar). Select `Utilities` in the first column, and in the second column, drag `Run Shell Script` into the main part of the window.
 4. Make your settings match these:
-![Service receives selected [URLs] in [any application]. Input is [only URLs]. In your Run Shell Script box; Shell: [/bin/bash]. Pass input: [as arguments]](https://raw.githubusercontent.com/SpectralKH/vidl/master/macos-service-screenshot.png)
-If you want the shortcut to only work in one app, select that app instead of `any application`.
+    
+    ![Service receives selected [URLs] in [any application]. Input is [only URLs]. In your Run Shell Script box; Shell: [/bin/bash]. Pass input: [as arguments]](https://raw.githubusercontent.com/SpectralKH/vidl/master/macos-service-screenshot.png)
+    
+    If you want the shortcut to only work in one app, select that app instead of `any application`.
 5. In the text box in the "Run Shell Script" box, paste in the following script:
     ```bash
     for f in "$@"
