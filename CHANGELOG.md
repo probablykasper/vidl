@@ -1,3 +1,6 @@
+## 3.0.2 - 2018 Oct 4
+- Fixed md module not loading
+
 ## 3.0.1 - 2018 Oct 4
 - Fixed crashes due to some metadata fields being mixed up.
 - Fixed README.md showing incorrect instructions for setting up macOS vidl shortcuts.
