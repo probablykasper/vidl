@@ -1,3 +1,6 @@
+## 3.0.3 - 2018 Oct 5
+- Fixed and updated README dev instructions
+
 ## 3.0.2 - 2018 Oct 4
 - Fixed extracting artist/title metadata from title
 - Fixed md module not loading

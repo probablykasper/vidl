@@ -86,10 +86,14 @@ Almost done, you just need to tie a shortcut to the macOS Service you just creat
 4. Run `poetry install` to install Python package dependencies.
 4. Make sure your `download_path` is set in `vidl/config.json`.
 
-For VSCode to detect the Python virtual environment that Poetry creates, I ran `poetry config settings.virtualenvs.in-project true`. This command makes Poetry create your Python virtual environment inside the project folder. Now, you can set the `python.pythonPath` setting to `${workspaceFolder}/.venv/bin/python` in your workspace settings (or global if you want this to be the default).
+I recommend running `poetry config settings.virtualenvs.in-project true`. This command makes Poetry create your Python virtual environment inside the project folder, so you'll be able to easily delete it. Additionally, it lets VSCode's Python extension detect the virtual environment if you set the `python.pythonPath` setting to `${workspaceFolder}/.venv/bin/python` in your workspace (or global) settings.
 
 ### Running
-Run `poetry run vidl`. Alternatively you can run `poetry shell` to enter into the virtual environment's own CLI, then run `vidl` as you normally would.
+Run `poetry run python vidl`.
+
+To test the package, you can run `poetry develop`. This adds the `vidl` package itself to the virtual environment, including the CLI executable. This means you can simply type `poetry run vidl`.
+
+As an alternative to `poetry run <command>`, you can run `poetry shell` to enter the virtual environment's bash CLI, and then run your command on it's own.
 
 # ToDo
 - For future config possibilities, replace options like `--no-md` with `--md` and `--!md`. Maybe call it `defaults` instead of `config`?
