@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "vidl"
-version = "3.0.2"
+version = "3.0.3"
 description = "Python script to download video/audio, built with youtube-dl"
 authors = ["KH <kasperkh.kh@gmail.com>"]
 
@@ -15,7 +15,7 @@ keywords = ['youtube', 'download', 'video', 'audio', 'music']
 python = "^3.2"
 youtube-dl = "^2018.9"
 colorama = "^0.3.9"
-colorboy = "^1.0"
+colorboy = "^1.0.1"
 mutagen = "^1.41"
 deep-filter = "^1.0"
 

@@ -1,6 +1,7 @@
-## 3.0.3 - 2018 Oct 5
+## 3.0.3 - 2018 Oct 6
 - Fixed vidl crashing when called as a package.
 - Fixed and updated README dev instructions
+- Fixed terminal colors, by updating colorboy dependency.
 
 ## 3.0.2 - 2018 Oct 4
 - Fixed extracting artist/title metadata from title
