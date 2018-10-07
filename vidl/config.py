@@ -12,16 +12,17 @@ def save():
     file.write(json.dumps(configs, indent=2))
     file.close()
 
-def set_default_downloads_path():
+def set_default_download_folder():
     if sys.platform == 'darwin':
-        set('downloads_path', '~/Downloads')
+        set('download_folder', '~/Downloads')
     elif sys.platform == 'win32':
         import os
-        os.path.join(os.getenv('USERPROFILE'), 'Downloads')
+        path = os.path.join(os.getenv('USERPROFILE'), 'Downloads')
+        set('download_folder', path)
 
 def load(value):
-    if value == 'downloads_path' and configs[value] == None:
-        set_default_downloads_path()
+    if value == 'download_folder' and configs[value] == None:
+        set_default_download_folder()
     return configs[value]
 def set(key, value):
     if not key in configs:

@@ -1,5 +1,5 @@
 {
-  "download_folder": null,
+  "download_folder": "~/Downloads",
   "output_template": "%(uploader)s - %(title)s.%(ext)s",
   "add_metadata": true
 }
