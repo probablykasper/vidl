@@ -1,3 +1,7 @@
+## 3.0.4 - 2018 Oct 7
+- Fixed an issue where the download_folder isn't automatically set when you first run vidl
+- Help menu now only shows "vidl" instead of full paths.
+
 ## 3.0.3 - 2018 Oct 6
 - Fixed vidl crashing when called as a package.
 - Fixed and updated README dev instructions

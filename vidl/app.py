@@ -9,7 +9,8 @@ def log(*args, error=False, quiet=False, **named_args):
     elif quiet == False:
         print(vidl_text, *args, **named_args)
 
-script_filename = sys.argv[0]
+script_filename = "vidl"
+# used to be sys.argv[0], but Poetry changes sys.argv[0] to the full path
 def vidl_help():
     print(          '')
     print(green(    'Usage:'))
