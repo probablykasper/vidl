@@ -24,7 +24,7 @@ def vidl_help():
     print(cyan(     '    -h, --help         ')+'Display this help message.')
     print(          '')
     print(green(    'Configuration:'))
-    print(          '  '+cyan(script_filename)+' config <key> [new_value]')
+    print(          '    '+cyan(script_filename)+' config <key> [new_value]')
     print(          '  ')
     print(green(    'Available Configs:'))
     print(cyan(     '    download_folder    ')+'The folder that vidl downloads to.')
