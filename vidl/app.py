@@ -5,7 +5,7 @@ import toml
 def log(*args, error=False, quiet=False, **named_args):
     vidl_text = cyan('[vidl]')
     if error:
-        print(vidl_text, red('error:'), *args, **named_args)
+        print(vidl_text, red('Error:'), *args, **named_args)
         quit()
     elif quiet == False:
         print(vidl_text, *args, **named_args)
@@ -42,7 +42,7 @@ def main():
         config.main()
     elif sys.argv[1] in ['--version', '-v']:
         import vidl.version
-        print(vidl.version.get_package_version())
+        log("Version", vidl.version.get_package_version())
     else:
         from vidl import dl
         dl.main()
