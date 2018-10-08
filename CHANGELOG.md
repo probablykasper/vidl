@@ -1,3 +1,6 @@
+## 3.0.5 - 2018 Oct 8
+- Fixed download_folder being already set when installing
+
 ## 3.0.4 - 2018 Oct 7
 - Fixed an issue where the download_folder isn't automatically set when you first run vidl
 - Help menu now only shows "vidl" instead of full paths.
