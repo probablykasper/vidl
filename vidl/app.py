@@ -1,5 +1,6 @@
-import sys
-from colorboy import green, cyan, red, magenta, yellow, bright
+from colorboy import green, cyan, red
+from pathlib import Path
+import toml
 
 def log(*args, error=False, quiet=False, **named_args):
     vidl_text = cyan('[vidl]')
@@ -33,11 +34,15 @@ def vidl_help():
     quit()
 
 def main():
+    import sys
     if len(sys.argv) <= 1:
         vidl_help()
     elif sys.argv[1] == 'config':
         from vidl import config
         config.main()
+    elif sys.argv[1] in ['--version', '-v']:
+        import vidl.version
+        print(vidl.version.get_package_version())
     else:
         from vidl import dl
         dl.main()

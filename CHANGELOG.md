@@ -1,4 +1,5 @@
 ## 3.1.0 - 2018 Oct 8
+- Added --version / -v option.
 - config.json is now generated instead of coming pre-filled with vidl. Ensures the default config isn't accidentally changed.
 
 ## 3.0.5 - 2018 Oct 8
