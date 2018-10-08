@@ -28,7 +28,6 @@ def main():
         'verbose': False,
         'download_folder': config.get_config('download_folder'),
         'output_template': config.get_config('output_template'),
-        'add_metadata': config.get_config('add_metadata'),
     }
     if options['download_folder'] == None:
         log('download_folder config has not been set. To set it, run '+green(app.script_filename+' config download_folder <path>'), error=True)

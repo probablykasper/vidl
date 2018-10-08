@@ -26,7 +26,6 @@ def get_default_download_folder():
 default_configs = {
     "download_folder": get_default_download_folder(),
     "output_template": "%(uploader)s - %(title)s.%(ext)s",
-    "add_metadata": True,
 }
 if not os.path.isfile(config_path):
     save_config(default_configs)
