@@ -1,3 +1,8 @@
+## 3.2.0 - 2018 Oct 25
+- Added --no-dl option. Useful if debugging with --verbose.
+- --verbose now logs the youtube-dl command it uses.
+- Improved detection of --help and --version.
+
 ## 3.1.0 - 2018 Oct 8
 - Added --version / -v option.
 - config.json is now generated instead of coming pre-filled with vidl. Ensures the default config isn't accidentally changed.
