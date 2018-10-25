@@ -1,15 +1,16 @@
-import sys, json, os
+import sys, json, os, pkg_resources, appdirs
 from colorboy import green
-from vidl.app import vidl_help, log
+from vidl.app import vidl_help, log, package_name, package_author
 from pprint import pformat
 
-def path(*args, **options):
-    DIR = os.path.dirname(os.path.abspath(__file__))
-    return os.path.join(DIR, *args, **options)
-
-config_path = path('config.json')
+user_data_dir = appdirs.user_data_dir(package_name, package_author)
+config_path = os.path.join(user_data_dir, 'config.json')
 def save_config(content):
-    file = open(config_path, 'w+')
+    try:
+        file = open(config_path, 'w+')
+    except FileNotFoundError:
+        os.makedirs(user_data_dir)
+        file = open(config_path, 'w+')
     file.write(json.dumps(content, indent=2))
     file.close()
 
@@ -23,12 +24,11 @@ def get_default_download_folder():
     else:
         return None
 
-default_configs = {
-    'download_folder': get_default_download_folder(),
-    'output_template': '%(uploader)s - %(title)s.%(ext)s',
-}
 if not os.path.isfile(config_path):
-    save_config(default_configs)
+    save_config({
+        'download_folder': get_default_download_folder(),
+        'output_template': '%(uploader)s - %(title)s.%(ext)s',
+    })
 
 configs = json.loads(open(config_path).read())
 

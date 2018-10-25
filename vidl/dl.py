@@ -185,6 +185,8 @@ def main():
                 md.year = video['publish_date'][:4]
             elif 'upload_date' in video and is_int(video['upload_date'][:4]):
                 md.year = video['upload_date'][:4]
+            # comment
+            
             
             from vidl import md as md_module
             md_module.add_metadata(filename, md)
