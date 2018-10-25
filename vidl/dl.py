@@ -25,6 +25,7 @@ def main():
         'audio_only': True,
         'no_md': False,
         'no_smart_md': False,
+        'no_dl': False,
         'verbose': False,
         'download_folder': config.get_config('download_folder'),
         'output_template': config.get_config('output_template'),
@@ -117,6 +118,9 @@ def main():
         filename_split = filename.split('.')
         filename_split[len(filename_split)-1] = options['file_format']
         filename = '.'.join(filename_split)
+        if options['verbose']: log(ytdl_args+[video['webpage_url']])
+        if options['no_dl']:
+            continue
         log('Downloading')
         try:
             youtube_dl.main(ytdl_args+[video['webpage_url']])
