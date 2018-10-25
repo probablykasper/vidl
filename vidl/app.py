@@ -1,6 +1,9 @@
 from colorboy import green, cyan, red
 from pathlib import Path
 
+package_name = 'vidl' # used for getting config location and package version
+package_author = 'Kasper Henningsen' # used for getting config location
+
 def log(*args, error=False, quiet=False, **named_args):
     vidl_text = cyan('[vidl]')
     if error:
