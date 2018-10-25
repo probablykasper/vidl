@@ -31,7 +31,9 @@ def main():
         'output_template': config.get_config('output_template'),
     }
     if options['download_folder'] == None:
-        log('download_folder config has not been set. To set it, run '+green(app.script_filename+' config download_folder <path>'), error=True)
+        log('download_folder config has not been set. Add a download folder to the vidl config file.', error=True)
+        log("Config path:", config.config_path)
+        quit()
 
     video_formats = ['mp4']
     audio_formats = ['mp3', 'wav', 'm4a']
@@ -58,8 +60,10 @@ def main():
             options['url'] = arg
         else:
             log('Unknown argument:', arg, error=True)
+            quit()
     if options['url'] == '':
         log('No URL provided', error=True)
+        quit()
 
     # get info
     log('Fetching URL info')

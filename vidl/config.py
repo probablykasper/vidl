@@ -5,6 +5,7 @@ from pprint import pformat
 
 user_data_dir = appdirs.user_data_dir(package_name, package_author)
 config_path = os.path.join(user_data_dir, 'config.json')
+
 def save_config(content):
     try:
         file = open(config_path, 'w+')
@@ -24,6 +25,7 @@ def get_default_download_folder():
     else:
         return None
 
+# default config
 if not os.path.isfile(config_path):
     save_config({
         'download_folder': get_default_download_folder(),
@@ -35,10 +37,12 @@ configs = json.loads(open(config_path).read())
 def get_config(key):
     if key not in configs:
         log('Config does not exist:', green(key), error=True)
+        quit()
     return configs[key]
 def set_config(key, value):
     if key not in configs:
         log('Config does not exist:', green(key), error=True)
+        quit()
     configs[key] = value
     save_config(configs)
 
