@@ -9,7 +9,7 @@ def path(*args, **options):
 
 config_path = path('config.json')
 def save_config(content):
-    file = open(config_path, "w+")
+    file = open(config_path, 'w+')
     file.write(json.dumps(content, indent=2))
     file.close()
 
@@ -24,8 +24,8 @@ def get_default_download_folder():
         return None
 
 default_configs = {
-    "download_folder": get_default_download_folder(),
-    "output_template": "%(uploader)s - %(title)s.%(ext)s",
+    'download_folder': get_default_download_folder(),
+    'output_template': '%(uploader)s - %(title)s.%(ext)s',
 }
 if not os.path.isfile(config_path):
     save_config(default_configs)
@@ -33,9 +33,11 @@ if not os.path.isfile(config_path):
 configs = json.loads(open(config_path).read())
 
 def get_config(key):
+    if key not in configs:
+        log('Config does not exist:', green(key), error=True)
     return configs[key]
 def set_config(key, value):
-    if not key in configs:
+    if key not in configs:
         log('Config does not exist:', green(key), error=True)
     configs[key] = value
     save_config(configs)
@@ -51,5 +53,4 @@ def main():
         key = sys.argv[2]
         value = sys.argv[3]
         set_config(key, value)
-        save_config(configs)
         log('Config', key, 'was set to:', green(pformat(value)))

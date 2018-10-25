@@ -33,11 +33,13 @@ Examples:
         format             mp3, mp4, wav or m4a. Default mp3.
         --no-md            Don't add metadata to downloaded files.
         --no-smart-md      Don't extract artist and song name from title.
+        --no-dl            Don't download anything.
         -v, --verbose      Display all logs.
+        --version          Display vidl version. "vidl -v" also works.
         -h, --help         Display this help message.
 
     Configuration:
-    vidl config <key> [new_value]
+        vidl config <key> [new_value]
 
     Available Configs:
         download_folder    The folder that vidl downloads to.

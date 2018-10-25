@@ -50,16 +50,14 @@ def main():
             options['no_md'] = True
         elif arg in ['--no-smart-md']:
             options['no_smart_md'] = True
+        elif arg in ['--no-dl']:
+            options['no_dl'] = True
         elif arg in ['-v', '--verbose']:
             options['verbose'] = True
-        elif arg in ['-h', '--help']:
-            app.vidl_help()
         elif '.' in arg:
             options['url'] = arg
         else:
             log('Unknown argument:', arg, error=True)
-    if len(sys.argv) <= 1: # no arguments provided
-        app.vidl_help()
     if options['url'] == '':
         log('No URL provided', error=True)
 
