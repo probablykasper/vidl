@@ -1,3 +1,6 @@
+## 3.2.1 - 2018 Oct 25
+- Fixed --version
+
 ## 3.2.0 - 2018 Oct 25
 - Added --no-dl option. Useful if debugging with --verbose.
 - --verbose now logs the youtube-dl command it uses.

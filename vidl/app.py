@@ -1,6 +1,5 @@
 from colorboy import green, cyan, red
 from pathlib import Path
-import toml
 
 def log(*args, error=False, quiet=False, **named_args):
     vidl_text = cyan('[vidl]')
