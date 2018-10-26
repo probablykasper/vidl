@@ -9,8 +9,8 @@ If the title contains " - ", vidl often uses what comes before and after it as a
 1. Install Python (3.7 is recommended)
 2. Install [ffmpeg and ffprobe](https://www.ffmpeg.org/)
 3. Run `pip install vidl`
-4. If you're not on macOS or Windows, you need to specify where vidl will download files to by running `vidl config download_folder '<path>'`.
-If you're on macOS, I strongly recommend [setting up shortcuts for vidl](#macos-shortcut-setup)
+4. If you're not on macOS or Windows, you need to specify where vidl will download files to in your vidl config file. Run `vidl --config-path` to see where the config file is.
+If you're on macOS, I recommend [setting up shortcuts for vidl](#macos-shortcut-setup)
 
 # Usage
 Examples:
@@ -20,31 +20,36 @@ Examples:
 `vidl mp3 https://www.youtube.com/watch?v=ta_ZVS7HkwI --no-md`
 - Downloads the video as mp3, without adding metadata.
 
-`vidl config download_folder "~/Downloads"`
-- Set the folder that vidl downloads to `~/Downloads`.
-
 `vidl`
 - Prints vidl's help menu, which looks like this:
     ```
-    Usage:
+    Download Usage:
         vidl [format] [options] <URL>
 
-    Options:
+    Download Options:
         format             mp3, mp4, wav or m4a. Default mp3.
         --no-md            Don't add metadata to downloaded files.
         --no-smart-md      Don't extract artist and song name from title.
-        --no-dl            Don't download anything.
+        --no-dl            Don't download anything. Usually used with -v
         -v, --verbose      Display all logs.
+
+    Global Options:
         --version          Display vidl version. "vidl -v" also works.
         -h, --help         Display this help message.
-
-    Configuration:
-        vidl config <key> [new_value]
-
-    Available Configs:
-        download_folder    The folder that vidl downloads to.
-        output_template    youtube-dl output template.
+        --config-path      Display the location of vidl's configuration file.
     ```
+
+# Configuration
+vidl has a configuration file, which you can find the location of by running `vidl --config-path`. In it, you can set the download folder and filename template.
+
+If you screw something up, you can delete the file, and the default will be recreated the next time you run vidl.
+
+# Custom metadata parsing
+This is advanced usage. Knowing some programming is useful for doing this.
+
+vidl has a `user_md_parser.py` file. By default, it does nothing, but you can configure it to manipulate metadata of songs you download however you like. In my case, I for use this file to detect if a title contains "[NCS Release]", and if it does I set the "Comment" metadata to "NCS".
+
+Documentation for this can be found in the file itself. The file is in the same folder as vidl's config file, which you can find by by running `vidl --config-path`. If you screw something up, you can delete the file, and the default will be recreated the next time you run vidl.
 
 # <a name="#macos-shortcut-setup"></a>Set up shortcuts for vidl (macOS)
 You'll be able to select any piece of text, press your chosen shortcut and the link(s) in your selected text will be downloaded! A little tedious to set up, but well worth it.
@@ -86,7 +91,7 @@ Almost done, you just need to tie a shortcut to the macOS Service you just creat
 2. Install [ffmpeg and ffprobe](https://www.ffmpeg.org/)
 3. Install [Poetry](https://poetry.eustace.io)
 4. Run `poetry install` to install Python package dependencies.
-4. Make sure your `download_path` is set in `vidl/config.json`.
+5. If you're not on macOS or Windows, you need to specify where vidl will download files to in your vidl config file. Run `vidl --config-path` to see where the config file is.
 
 I recommend running `poetry config settings.virtualenvs.in-project true`. This command makes Poetry create your Python virtual environment inside the project folder, so you'll be able to easily delete it. Additionally, it lets VSCode's Python extension detect the virtual environment if you set the `python.pythonPath` setting to `${workspaceFolder}/.venv/bin/python` in your workspace (or global) settings.
 

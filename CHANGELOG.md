@@ -1,3 +1,8 @@
+## 3.3.0 - 2018 Oct 26
+- Added --config-path. Shows where the vidl config file is.
+- Removed the "vidl config" command. Config file will need to be updated manually.
+- Added "user_md_parser.py". This lets users parse metadata in their personally preferred way. Unfortunately, the user has to code python to take advantage of this feature.
+
 ## 3.2.1 - 2018 Oct 25
 - Fixed --version
 

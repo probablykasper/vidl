@@ -1,18 +1,20 @@
-import sys, json, os, pkg_resources, appdirs
+import sys, json, os, appdirs
 from colorboy import green
-from vidl.app import vidl_help, log, package_name, package_author
-from pprint import pformat
+from vidl.app import log, package_name, package_author
 
 user_data_dir = appdirs.user_data_dir(package_name, package_author)
 config_path = os.path.join(user_data_dir, 'config.json')
+user_md_parser_path = os.path.join(user_data_dir, 'user_md_parser.py')
+default_user_md_parser_path = os.path.join(os.path.dirname(__file__), 'default_user_md_parser.py')
 
-def save_config(content):
+def save_file(path, content, json=False):
     try:
-        file = open(config_path, 'w+')
+        file = open(path, 'w+')
     except FileNotFoundError:
         os.makedirs(user_data_dir)
-        file = open(config_path, 'w+')
-    file.write(json.dumps(content, indent=2))
+        file = open(path, 'w+')
+    if json: file.write(json.dumps(content, indent=2))
+    else: file.write(content)
     file.close()
 
 def get_default_download_folder():
@@ -25,36 +27,23 @@ def get_default_download_folder():
     else:
         return None
 
-# default config
+default_config = {
+    'download_folder': get_default_download_folder(),
+    'output_template': '%(uploader)s - %(title)s.%(ext)s',
+}
+
 if not os.path.isfile(config_path):
-    save_config({
-        'download_folder': get_default_download_folder(),
-        'output_template': '%(uploader)s - %(title)s.%(ext)s',
-    })
+    save_file(config_path, default_config)
+if not os.path.isfile(user_md_parser_path) or True:
+    default_user_md_parser = open(default_user_md_parser_path).read()
+    save_file(user_md_parser_path, default_user_md_parser)
 
 configs = json.loads(open(config_path).read())
+from importlib.machinery import SourceFileLoader
+user_md_parser = SourceFileLoader('user_md_parser', user_md_parser_path).load_module().user_md_parser
 
 def get_config(key):
     if key not in configs:
         log('Config does not exist:', green(key), error=True)
         quit()
     return configs[key]
-def set_config(key, value):
-    if key not in configs:
-        log('Config does not exist:', green(key), error=True)
-        quit()
-    configs[key] = value
-    save_config(configs)
-
-def main():
-    if len(sys.argv) not in [3, 4]:
-        vidl_help()
-    if len(sys.argv) == 3:
-        key = sys.argv[2]
-        value = get_config(key)
-        log('Config', key+':', green(pformat(value)))
-    if len(sys.argv) == 4:
-        key = sys.argv[2]
-        value = sys.argv[3]
-        set_config(key, value)
-        log('Config', key, 'was set to:', green(pformat(value)))

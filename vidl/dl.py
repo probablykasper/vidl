@@ -135,8 +135,8 @@ def main():
 
             # get artist/title from title
             parsed_title = {}
-            if 'title' in video and video['title'].count(' - ') == 1:
-                if not options['no_smart_md']:
+            if not options['no_smart_md']:
+                if 'title' in video and video['title'].count(' - ') == 1:
                     split_title = video['title'].split(' - ')
                     parsed_title['artist'] = split_title[0]
                     parsed_title['title'] = split_title[1]
@@ -148,6 +148,7 @@ def main():
             if 'track' in video:
                 md.title = video['track']
             elif 'title' in parsed_title:
+                smart_title = True
                 md.title = parsed_title['title']
             elif 'title' in video:
                 md.title = video['title']
@@ -155,6 +156,7 @@ def main():
             if 'artist' in video:
                 md.artist = video['artist']
             if 'artist' in parsed_title:
+                smart_artist = True
                 md.artist = parsed_title['artist']
             elif 'uploader' in video:
                 md.artist = video['uploader']
@@ -189,8 +191,12 @@ def main():
                 md.year = video['publish_date'][:4]
             elif 'upload_date' in video and is_int(video['upload_date'][:4]):
                 md.year = video['upload_date'][:4]
-            # comment
             
+            dumb_md = md
+            if smart_title: md['title'] = parsed_title['title']
+            if smart_artist: md['artist'] = parsed_title['artist']
+
+            md = config.user_md_parser(md, dumb_md, video, playlist_info)
             
             from vidl import md as md_module
             md_module.add_metadata(filename, md)
