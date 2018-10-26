@@ -34,7 +34,7 @@ default_config = {
 
 if not os.path.isfile(config_path):
     save_file(config_path, default_config)
-if not os.path.isfile(user_md_parser_path) or True:
+if not os.path.isfile(user_md_parser_path):
     default_user_md_parser = open(default_user_md_parser_path).read()
     save_file(user_md_parser_path, default_user_md_parser)
 
