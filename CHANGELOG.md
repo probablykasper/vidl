@@ -1,3 +1,6 @@
+## 3.3.1 - 2018 Oct 26
+- Fixed error when generating the default vidl config file
+
 ## 3.3.0 - 2018 Oct 26
 - Fixed config file not deleting itself when you update vidl, by storing the config file somewhere else in the OS.
 - Added --config-path. Shows where the vidl config file is.
