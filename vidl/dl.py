@@ -145,21 +145,19 @@ def main():
             playlist = True if len(videos) > 1 else False
 
             # title
-            if 'track' in video:
-                md.title = video['track']
-            elif 'title' in parsed_title:
+            if 'title' in parsed_title:
                 smart_title = True
-                md.title = parsed_title['title']
-            elif 'title' in video:
+            if 'title' in video:
                 md.title = video['title']
+            elif 'track' in video:
+                md.title = video['track']
             # artist
-            if 'artist' in video:
-                md.artist = video['artist']
             if 'artist' in parsed_title:
                 smart_artist = True
-                md.artist = parsed_title['artist']
-            elif 'uploader' in video:
+            if 'uploader' in video:
                 md.artist = video['uploader']
+            elif 'artist' in video:
+                md.artist = video['artist']
 
             if playlist:
                 #album

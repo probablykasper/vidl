@@ -1,7 +1,9 @@
 ## 3.3.0 - 2018 Oct 26
+- Fixed config file not deleting itself when you update vidl, by storing the config file somewhere else in the OS.
 - Added --config-path. Shows where the vidl config file is.
 - Removed the "vidl config" command. Config file will need to be updated manually.
 - Added "user_md_parser.py". This lets users parse metadata in their personally preferred way. Unfortunately, the user has to code python to take advantage of this feature.
+- Deprioritized the artist and title info from youtube-dl, as I've noticed it being incorrect sometimes on YouTube, for instance for remixes.
 
 ## 3.2.1 - 2018 Oct 25
 - Fixed --version
