@@ -13,8 +13,7 @@ def save_file(path, content, json=False):
     except FileNotFoundError:
         os.makedirs(user_data_dir)
         file = open(path, 'w+')
-    if json: file.write(json.dumps(content, indent=2))
-    else: file.write(content)
+    file.write(content)
     file.close()
 
 def get_default_download_folder():
@@ -33,7 +32,7 @@ default_config = {
 }
 
 if not os.path.isfile(config_path):
-    save_file(config_path, default_config, json=True)
+    save_file(config_path, json.dumps(default_config, indent=2))
 if not os.path.isfile(user_md_parser_path):
     default_user_md_parser = open(default_user_md_parser_path).read()
     save_file(user_md_parser_path, default_user_md_parser)

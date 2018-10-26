@@ -1,3 +1,6 @@
+## 3.3.2 - 2018 Oct 26
+- Fixed error when generating the default vidl config file again
+
 ## 3.3.1 - 2018 Oct 26
 - Fixed error when generating the default vidl config file
 
