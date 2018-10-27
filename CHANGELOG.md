@@ -1,3 +1,6 @@
+## 3.4.0 - 2018 Oct 27
+- user_md_parser.py now takes a url_info argument instead of playlist_info. This means you'll still get info if the URL isn't a playlist. To check if a url is a playlist, you now need to check if url_info has the "entries" property.
+
 ## 3.3.2 - 2018 Oct 26
 - Fixed error when generating the default vidl config file again
 

@@ -85,6 +85,7 @@ def main():
     cleaned_info_result = deep_filter(info_result.copy(), callback)
 
     # restructure
+    url_info = cleaned_info_result.copy()
     if 'entries' in cleaned_info_result:
         videos = cleaned_info_result['entries']
         playlist_info = cleaned_info_result.copy()
@@ -194,7 +195,7 @@ def main():
             if smart_title: md['title'] = parsed_title['title']
             if smart_artist: md['artist'] = parsed_title['artist']
 
-            md = config.user_md_parser(md, dumb_md, video, playlist_info)
+            md = config.user_md_parser(md, dumb_md, video, url_info)
             
             from vidl import md as md_module
             md_module.add_metadata(filename, md)

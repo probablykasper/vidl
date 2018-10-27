@@ -1,4 +1,4 @@
-def user_md_parser(smart_md, md, video_info, playlist_info):
+def user_md_parser(smart_md, md, video_info, url_info):
   # smart_md:
   #   Metadata object created by vidl. Metadata objects can have these properties:
   #     - title
@@ -16,10 +16,10 @@ def user_md_parser(smart_md, md, video_info, playlist_info):
   #   parsed from title).
   # video_info:
   #   Object containing metadata from youtube-dl about the current video.
-  #   If there is no info, it equals {}.
   # playlist_info:
   #   An object containing playlist metadata from youtube-dl.
-  #   If the URL isn't a playlist, or there is no playlist info, it equals {}.
+  #   If the URL isn't a playlist, playlist_info is the same as video_info.
+  #   If the URL is a playlist, it has an "entries" property with video_info objects.
   # callback: Callback function. Takes a metadata object as argument.
 
   # example:
