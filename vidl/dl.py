@@ -1,4 +1,4 @@
-import sys, os
+import sys, os, copy
 import pprint; pprint = pprint.PrettyPrinter(indent=4).pprint
 import youtube_dl
 from colorboy import cyan, green
@@ -6,16 +6,6 @@ from deep_filter import deep_filter
 
 from vidl import app, config
 from vidl.app import log
-
-class Dicty(dict):
-    __getattr__ = dict.__getitem__
-    __setattr__ = dict.__setitem__
-def is_int(number):
-    try:
-        int(number)
-        return True
-    except ValueError:
-        return False
 
 def main():
 
@@ -82,13 +72,13 @@ def main():
     # delete None properties/indexes
     def callback(value):
         return value != None
-    cleaned_info_result = deep_filter(info_result.copy(), callback)
+    cleaned_info_result = deep_filter(copy.deepcopy(info_result), callback)
 
     # restructure
-    url_info = cleaned_info_result.copy()
+    url_info = copy.deepcopy(cleaned_info_result)
     if 'entries' in cleaned_info_result:
         videos = cleaned_info_result['entries']
-        playlist_info = cleaned_info_result.copy()
+        playlist_info = copy.deepcopy(cleaned_info_result)
         del playlist_info['entries']
     else:
         videos = [cleaned_info_result]
@@ -142,56 +132,62 @@ def main():
                     parsed_title['artist'] = split_title[0]
                     parsed_title['title'] = split_title[1]
 
-            md = Dicty()
+            md = {}
             playlist = True if len(videos) > 1 else False
 
             # title
             if 'title' in parsed_title:
                 smart_title = True
             if 'title' in video:
-                md.title = video['title']
+                md['title'] = video['title']
             elif 'track' in video:
-                md.title = video['track']
+                md['title'] = video['track']
             # artist
             if 'artist' in parsed_title:
                 smart_artist = True
             if 'uploader' in video:
-                md.artist = video['uploader']
+                md['artist'] = video['uploader']
             elif 'artist' in video:
-                md.artist = video['artist']
+                md['artist'] = video['artist']
 
             if playlist:
                 #album
                 if 'title' in playlist_info:
-                    md.album = playlist_info['title']
+                    md['album'] = playlist_info['title']
                 elif 'playlist_title' in video:
-                    md.album = video['playlist_title']
+                    md['album'] = video['playlist_title']
                 elif 'playlist' in video and type(video['playlist']) == str:
-                    md.album = video['playlist']
+                    md['album'] = video['playlist']
                 #album_artist
                 if 'uploader' in playlist_info:
-                    md.album_artist = playlist_info['uploader']
+                    md['album_artist'] = playlist_info['uploader']
                 elif 'playlist_uploader' in video:
-                    md.album_artist = video['playlist_uploader']
+                    md['album_artist'] = video['playlist_uploader']
                 # track_number
                 if 'playlist_index' in video:
-                    md.track_number = video['playlist_index']
+                    md['track_number'] = video['playlist_index']
                 else:
-                    md.track_number = video_index+1                   
+                    md['track_number'] = video_index+1
                 # track_count
                 if 'n_entries' in video:
-                    md.track_count = video['n_entries']
+                    md['track_count'] = video['n_entries']
                 else:
-                    md.track_count = len(videos)
+                    md['track_count'] = len(videos)
             # year
+            def is_int(number):
+                try:
+                    int(number)
+                    return True
+                except ValueError:
+                    return False
             if 'release_date' in video and is_int(video['release_date'][:4]):
-                md.year = video['release_date'][:4]
+                md['year'] = video['release_date'][:4]
             elif 'publish_date' in video and is_int(video['publish_date'][:4]):
-                md.year = video['publish_date'][:4]
+                md['year'] = video['publish_date'][:4]
             elif 'upload_date' in video and is_int(video['upload_date'][:4]):
-                md.year = video['upload_date'][:4]
+                md['year'] = video['upload_date'][:4]
             
-            dumb_md = md
+            dumb_md = copy.deepcopy(md)
             if smart_title: md['title'] = parsed_title['title']
             if smart_artist: md['artist'] = parsed_title['artist']
 
