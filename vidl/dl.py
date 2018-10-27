@@ -138,6 +138,8 @@ def main():
             # title
             if 'title' in parsed_title:
                 smart_title = True
+            else:
+                smart_title = False
             if 'title' in video:
                 md['title'] = video['title']
             elif 'track' in video:
@@ -145,6 +147,8 @@ def main():
             # artist
             if 'artist' in parsed_title:
                 smart_artist = True
+            else:
+                smart_artist = False
             if 'uploader' in video:
                 md['artist'] = video['uploader']
             elif 'artist' in video:

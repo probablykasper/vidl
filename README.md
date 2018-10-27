@@ -108,6 +108,7 @@ To test the package, you can run `poetry develop`. This adds the `vidl` package 
 As an alternative to `poetry run <command>`, you can run `poetry shell` to enter the virtual environment's bash CLI, and then run your command on it's own.
 
 # ToDo
+- Notifications (optional). Tells you when the download starts, when finished and the metadata that was applied
 - For future config possibilities, replace options like `--no-md` with `--md` and `--!md`. Maybe call it `defaults` instead of `config`?
     - Add all configs as options, for instance add download_folder option.
     - Add all options as configs, for instance add md option. 

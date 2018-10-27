@@ -1,3 +1,9 @@
+## 3.4.3 - 2018 Oct 27
+- Fixed that party-pooper error that said no to all downloads.
+
+## 3.4.2 - 2018 Oct 27
+- Fixed md objects not being correct.
+
 ## 3.4.1 - 2018 Oct 27
 - Fixed md objects not being correct.
 
