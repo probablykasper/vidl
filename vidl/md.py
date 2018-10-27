@@ -10,9 +10,9 @@ def add_metadata(filename, md):
     if 'album' in md:           tags["TALB"] = TALB(encoding=3, text=md['album'])
     if 'album_artist' in md:    tags["TPE2"] = TPE2(encoding=3, text=md['album_artist'])
     if 'track_number' in md:
-        track_number = str(md.track_number)
+        track_number = str(md['track_number'])
         if 'track_count' in md:
-            track_number += '/'+str(md.track_count)
+            track_number += '/'+str(md['track_count'])
         tags["TRCK"] = TRCK(encoding=3, text=track_number)
     if 'genre' in md:           tags["TCON"] = TCON(encoding=3, text=md['genre'])
     if 'year'   in md:          tags["TDRC"] = TDRC(encoding=3, text=md['year'])

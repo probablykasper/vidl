@@ -1,4 +1,7 @@
 ## 3.4.3 - 2018 Oct 27
+- Fixed error occuring when downloading playlists (specifically, URLs with track_number and track_count).
+
+## 3.4.3 - 2018 Oct 27
 - Fixed that party-pooper error that said no to all downloads.
 
 ## 3.4.2 - 2018 Oct 27
