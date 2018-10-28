@@ -1,4 +1,4 @@
-from mutagen.id3 import ID3, TIT2, TPE1, TALB, TPE2, TRCK, TCON, TDRC, COMM, USLT, TCOM
+from mutagen.id3 import ID3, Encoding, TIT2, TPE1, TALB, TPE2, TRCK, TCON, TDRC, COMM, USLT, TCOM
 from pprint import pformat
 from vidl.app import log
 
@@ -17,7 +17,7 @@ def add_metadata(filename, md):
     if 'genre' in md:           tags["TCON"] = TCON(encoding=3, text=md['genre'])
     if 'year'   in md:          tags["TDRC"] = TDRC(encoding=3, text=md['year'])
 
-    if 'comment'   in md:       tags["COMM"] = COMM(encoding=3, text=md['comment'])
+    if 'comment'   in md:       tags["COMM"] = COMM(encoding=3, text=md['comment'], lang='eng')
     if 'lyrics'   in md:        tags["USLT"] = USLT(encoding=3, text=md['lyrics'])
     if 'composer'   in md:      tags["TCOM"] = TCOM(encoding=3, text=md['composer'])
     

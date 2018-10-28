@@ -1,3 +1,6 @@
+## 3.4.4 - 2018 Oct 28
+- Made comments metadata compatible with iTunes (by setting the comment language to "eng" instead of the default "XXX")
+
 ## 3.4.3 - 2018 Oct 27
 - Fixed error occuring when downloading playlists (specifically, URLs with track_number and track_count).
 
