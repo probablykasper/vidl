@@ -12,6 +12,10 @@ If the title contains " - ", vidl often uses what comes before and after it as a
 4. If you're not on macOS or Windows, you need to specify where vidl will download files to in your vidl config file. Run `vidl --config-path` to see where the config file is.
 If you're on macOS, I recommend [setting up shortcuts for vidl](#macos-shortcut-setup)
 
+# Updating
+vidl is updated by running `pip install vidl --upgrade --upgrade-strategy eager`.
+If vidl is unable to download a URL, it might be because youtube-dl is outdated. The `--upgrade-strategy eager` part updates youtube-dl.
+
 # Uninstall
 Run `pip uninstall vidl`.
 
