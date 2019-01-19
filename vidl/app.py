@@ -29,9 +29,9 @@ def vidl_help():
     print(cyan(     '    --version          ')+'Display vidl version. "vidl -v" also works.')
     print(cyan(     '    -h, --help         ')+'Display this help message.')
     print(cyan(     '    --config-path      ')+'Display the location of vidl\'s configuration file.')
-    print(cyan(     '')
-    print(cyan(     'Update vidl:')
-    print(cyan(     '    pip install vidl --upgrade --upgrade-strategy eager')
+    print(cyan(     ''))
+    print(cyan(     'Update vidl:'))
+    print(cyan(     '    pip install vidl --upgrade --upgrade-strategy eager'))
     print(          '')
     quit()
 
