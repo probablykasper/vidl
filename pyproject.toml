@@ -13,13 +13,12 @@ keywords = ['youtube', 'download', 'video', 'audio', 'music']
 
 [tool.poetry.dependencies]
 python = "^3.2"
-youtube-dl = "^2018.9"
+youtube-dl = ",*"
 colorama = "^0.3.9"
 colorboy = "^1.0.1"
 mutagen = "^1.41"
 deep-filter = "^1.0"
 appdirs = "^1.4"
-webob = "^1.8"
 
 [tool.poetry.dev-dependencies]
 pylint = "*"
