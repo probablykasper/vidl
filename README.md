@@ -95,6 +95,7 @@ Almost done, you just need to tie a shortcut to the macOS Service you just creat
 3. Select Services from the left column, and locate vidl (should be under Internet). Add your preferred shortcut.
 
 # Dev Instructions
+Note: If you get an error that says it's running the wrong Python version, try running `python3 -m poetry` or `python3.x -m poetry` instead of `poetry` if Poetry tries to use a different version.
 ### Installation
 1. Install Python (3.7 is recommended)
 2. Install [ffmpeg and ffprobe](https://www.ffmpeg.org/)
@@ -112,6 +113,7 @@ To test the package, you can run `poetry develop`. This adds the `vidl` package 
 As an alternative to `poetry run <command>`, you can run `poetry shell` to enter the virtual environment's bash CLI, and then run your command on it's own.
 
 # ToDo
+- bug: vidl doesn't add album artist
 - Notifications (optional). Tells you when the download starts, when finished and the metadata that was applied
 - For future config possibilities, replace options like `--no-md` with `--md` and `--!md`. Maybe call it `defaults` instead of `config`?
     - Add all configs as options, for instance add download_folder option.

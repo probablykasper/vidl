@@ -1,3 +1,7 @@
+## 3.4.5 - 2019 Jan 19
+- Fixed vidl not accepting youtube-dl 2019 versions
+- Added update command to vidl help menu
+
 ## 3.4.4 - 2018 Oct 28
 - Made comments metadata compatible with iTunes (by setting the comment language to "eng" instead of the default "XXX")
 
