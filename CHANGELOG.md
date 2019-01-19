@@ -1,3 +1,6 @@
+## 3.4.6 - 2019 Jan 19
+- Fixes vidl crash due to syntax error
+
 ## 3.4.5 - 2019 Jan 19
 - Fixed vidl not accepting youtube-dl 2019 versions
 - Added update command to vidl help menu
