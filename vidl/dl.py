@@ -140,23 +140,32 @@ def main():
             md = {}
             playlist = True if len(videos) > 1 else False
 
-            # title
+            # smart title
             if 'title' in parsed_title:
                 smart_title = True
             else:
                 smart_title = False
+            # title
             if 'title' in video:
                 md['title'] = video['title']
             elif 'track' in video:
                 md['title'] = video['track']
-            # artist
+
+            # smart artist
             if 'artist' in parsed_title:
                 smart_artist = True
             else:
                 smart_artist = False
+            # artist
             if 'uploader' in video:
                 md['artist'] = video['uploader']
             elif 'artist' in video:
+                md['artist'] = video['artist']
+            # youtube music artist
+            if  video['extractor'] == 'youtube' \
+            and video['uploader'].endswith(' - Topic') \
+            and 'artist' in video \
+            and video['categories'] == ['Music']:
                 md['artist'] = video['artist']
 
             if playlist:
