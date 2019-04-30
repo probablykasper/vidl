@@ -94,13 +94,14 @@ Almost done, you just need to tie a shortcut to the macOS Service you just creat
 3. Select Services from the left column, and locate vidl (should be under Internet). Add your preferred shortcut.
 
 # Dev Instructions
-Note: If you get an error that says it's running the wrong Python version, try running `python3 -m poetry` or `python3.x -m poetry` instead of `poetry` if Poetry tries to use a different version.
+
 ### Installation
 1. Install Python (3.7 is recommended)
 2. Install [ffmpeg and ffprobe](https://www.ffmpeg.org/)
 3. Install [Poetry](https://poetry.eustace.io)
 4. Run `poetry install` to install Python package dependencies.
 5. If you're not on macOS or Windows, you need to specify where vidl will download files to in your vidl config file. Run `vidl --config-path` to see where the config file is.
+6. You may want to install [pyenv](https://github.com/pyenv/pyenv) to manage Python versions (Otherwise Poetry might not use the right one).
 
 I recommend running `poetry config settings.virtualenvs.in-project true`. This command makes Poetry create your Python virtual environment inside the project folder, so you'll be able to easily delete it. Additionally, it lets VSCode's Python extension detect the virtual environment if you set the `python.pythonPath` setting to `${workspaceFolder}/.venv/bin/python` in your workspace (or global) settings.
 
@@ -113,7 +114,8 @@ As an alternative to `poetry run <command>`, you can run `poetry shell` to enter
 
 # ToDo
 - bug: vidl doesn't add album artist
-- Notifications (optional). Tells you when the download starts, when finished and the metadata that was applied
+- Automator shortcut doesn't tell you if there's a (ytdl) error. Exit on errors? Notify on errors?
+- Optional notifications. Tells you when the download starts, when finished and the metadata that was applied
 - For future config possibilities, replace options like `--no-md` with `--md` and `--!md`. Maybe call it `defaults` instead of `config`?
     - Add all configs as options, for instance add download_folder option.
     - Add all options as configs, for instance add md option. 
