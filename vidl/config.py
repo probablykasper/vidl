@@ -43,6 +43,6 @@ user_md_parser = SourceFileLoader('user_md_parser', user_md_parser_path).load_mo
 
 def get_config(key):
     if key not in configs:
-        log('Config does not exist:', green(key), error=True)
+        log.error('Config does not exist:', green(key))
         quit()
     return configs[key]

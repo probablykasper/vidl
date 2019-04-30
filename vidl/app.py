@@ -1,15 +1,21 @@
+import sys, pprint
 from colorboy import green, cyan, red
 from pathlib import Path
 
 package_name = 'vidl' # used for getting config location and package version
 package_author = 'Kasper Henningsen' # used for getting config location
 
-def log(*args, error=False, quiet=False, callback=None, quit=True, **named_args):
-    vidl_text = cyan('[vidl]')
-    if error:
-        print(vidl_text, red('Error:'), *args, **named_args)
-    elif quiet == False:
-        print(vidl_text, *args, **named_args)
+class Log:
+    def __call__(self, *args, **named_args):
+        print(cyan('[vidl] ')+' '.join(args), **named_args)
+    def pretty(self, *args, **named_args):
+        pprint = pprint.PrettyPrinter(indent=4).pprint
+        pprint(cyan('[vidl] ')+' '.join(args), **named_args)
+    def error(self, *args, **named_args):
+        print(cyan('[vidl] ')+red('Error: ')+' '.join(args), **named_args)
+    def fatal(self, *args, **named_args):
+        sys.exit(cyan('[vidl] ')+red('Error: ')+' '.join(args), **named_args)
+log = Log()
 
 script_filename = "vidl"
 # used to be sys.argv[0], but Poetry changes sys.argv[0] to the full path

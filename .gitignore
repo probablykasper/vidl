@@ -2,5 +2,5 @@
 **/.venv
 **/__pycache__
 **/*.egg-info
-vidl/config.json
 .python-version
+**/.vscode

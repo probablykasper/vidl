@@ -1,7 +1,6 @@
-import sys, os, copy
-import pprint; pprint = pprint.PrettyPrinter(indent=4).pprint
+import sys, os, copy, logging
 import youtube_dl
-from colorboy import cyan, green
+from colorboy import cyan, green, red
 from deep_filter import deep_filter
 
 from vidl import app, config
@@ -21,7 +20,7 @@ def main():
         'output_template': config.get_config('output_template'),
     }
     if options['download_folder'] == None:
-        log('download_folder config has not been set. Add a download folder to the vidl config file.', error=True)
+        log.error('download_folder config has not been set. Add a download folder to the vidl config file.')
         log("Config path:", config.config_path)
         quit()
 
@@ -49,10 +48,10 @@ def main():
         elif '.' in arg:
             options['url'] = arg
         else:
-            log('Unknown argument:', arg, error=True)
+            log.error('Unknown argument:', arg)
             quit()
     if options['url'] == '':
-        log('No URL provided', error=True)
+        log.error('No URL provided')
         quit()
 
     # get info
@@ -62,12 +61,13 @@ def main():
         'quiet': False if options['verbose'] else True,
     }
     with youtube_dl.YoutubeDL(ytdl_get_info_options) as ytdl:
-        try:
-            info_result = ytdl.extract_info(options['url'], download=False)
-        except:
-            quit()
         if options['verbose']:
-            pprint(info_result)
+            try:
+                info_result = ytdl.extract_info(options['url'], download=False)
+            except Exception as err:
+                logging.exception(err)
+                log.fatal('youtube-dl failed to get URL info')
+            log.ppring(info_result)
 
     # delete None properties/indexes
     def callback(value):
