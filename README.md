@@ -96,12 +96,11 @@ Almost done, you just need to tie a shortcut to the macOS Service you just creat
 # Dev Instructions
 
 ### Installation
-1. Install Python (3.7 is recommended)
+1. Install Python. You may want to install it using [pyenv](https://github.com/pyenv/pyenv) in order to manage Python versions (If Poetry doesn't detect the right version, you can fix it with pyenv).
 2. Install [ffmpeg and ffprobe](https://www.ffmpeg.org/)
 3. Install [Poetry](https://poetry.eustace.io)
 4. Run `poetry install` to install Python package dependencies.
 5. If you're not on macOS or Windows, you need to specify where vidl will download files to in your vidl config file. Run `vidl --config-path` to see where the config file is.
-6. You may want to install [pyenv](https://github.com/pyenv/pyenv) to manage Python versions (Otherwise Poetry might not use the right one).
 
 I recommend running `poetry config settings.virtualenvs.in-project true`. This command makes Poetry create your Python virtual environment inside the project folder, so you'll be able to easily delete it. Additionally, it lets VSCode's Python extension detect the virtual environment if you set the `python.pythonPath` setting to `${workspaceFolder}/.venv/bin/python` in your workspace (or global) settings.
 
@@ -113,6 +112,7 @@ To test the package, you can run `poetry develop`. This adds the `vidl` package 
 As an alternative to `poetry run <command>`, you can run `poetry shell` to enter the virtual environment's bash CLI, and then run your command on it's own.
 
 # ToDo
+- tell user if download_folder is not set
 - bug: vidl doesn't add album artist
 - Automator shortcut doesn't tell you if there's a (ytdl) error. Exit on errors? Notify on errors?
 - Optional notifications. Tells you when the download starts, when finished and the metadata that was applied

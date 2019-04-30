@@ -112,7 +112,13 @@ def main():
         filename_split[len(filename_split)-1] = options['file_format']
         filename = '.'.join(filename_split)
         if options['verbose']:
-            log(green('youtube-dl command:'), 'youtube-dl', ' '.join(ytdl_args+[video['webpage_url']]))
+            # print youtube-dl command:
+            command = green('youtube-dl command: ')+'youtube-dl '
+            for arg in ytdl_args:
+                if ' ' in arg: command += "'"+arg+"' "
+                else: command += arg+' '
+            command += video['webpage_url']
+            log(command)
         if options['no_dl']:
             continue
         log('Downloading')
