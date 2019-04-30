@@ -105,11 +105,11 @@ Almost done, you just need to tie a shortcut to the macOS Service you just creat
 I recommend running `poetry config settings.virtualenvs.in-project true`. This command makes Poetry create your Python virtual environment inside the project folder, so you'll be able to easily delete it. Additionally, it lets VSCode's Python extension detect the virtual environment if you set the `python.pythonPath` setting to `${workspaceFolder}/.venv/bin/python` in your workspace (or global) settings.
 
 ### Running
-Run `poetry run python vidl`.
+```
+poetry run vidl
+```
 
-To test the package, you can run `poetry develop`. This adds the `vidl` package itself to the virtual environment, including the CLI executable. This means you can simply type `poetry run vidl`.
-
-As an alternative to `poetry run <command>`, you can run `poetry shell` to enter the virtual environment's bash CLI, and then run your command on it's own.
+An alternative to `poetry run <command>` is to run `poetry shell` to enter the virtual environment's Bash CLI, and then run the command on it's own (e.g `vidl`).
 
 # ToDo
 - tell user if download_folder is not set

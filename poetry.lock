@@ -19,26 +19,16 @@ lazy-object-proxy = "*"
 six = "*"
 wrapt = "*"
 
-[package.dependencies."backports.functools-lru-cache"]
-python = "<3.3"
-version = "*"
-
-[package.dependencies.enum34]
-python = "<3.4"
-version = ">=1.1.3"
-
-[package.dependencies.singledispatch]
-python = "<3.4"
-version = "*"
-
 [[package]]
-category = "dev"
-description = "backports.functools_lru_cache"
-marker = "python_version < \"3.3\""
-name = "backports.functools-lru-cache"
+category = "main"
+description = "A tool that automatically formats Python code to conform to the PEP 8 style guide"
+name = "autopep8"
 optional = false
-python-versions = ">=2.6"
-version = "1.5"
+python-versions = "*"
+version = "1.4.4"
+
+[package.dependencies]
+pycodestyle = ">=2.4.0"
 
 [[package]]
 category = "main"
@@ -66,15 +56,6 @@ name = "deep-filter"
 optional = false
 python-versions = "*"
 version = "1.0.0"
-
-[[package]]
-category = "dev"
-description = "Python 3.4 Enum backported to 3.3, 3.2, 3.1, 2.7, 2.6, 2.5, and 2.4"
-marker = "python_version < \"3.4\""
-name = "enum34"
-optional = false
-python-versions = "*"
-version = "1.1.6"
 
 [[package]]
 category = "dev"
@@ -109,6 +90,14 @@ python-versions = "*"
 version = "1.42.0"
 
 [[package]]
+category = "main"
+description = "Python style guide checker"
+name = "pycodestyle"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+version = "2.5.0"
+
+[[package]]
 category = "dev"
 description = "python code static checker"
 name = "pylint"
@@ -121,22 +110,6 @@ astroid = ">=1.5.1,<1.6"
 colorama = "*"
 isort = ">=4.2.5"
 mccabe = "*"
-six = "*"
-
-[package.dependencies.singledispatch]
-python = "<3.4"
-version = "*"
-
-[[package]]
-category = "dev"
-description = "This library brings functools.singledispatch from Python 3.4 to Python 2.6-3.3."
-marker = "python_version < \"3.4\""
-name = "singledispatch"
-optional = false
-python-versions = "*"
-version = "3.4.0.3"
-
-[package.dependencies]
 six = "*"
 
 [[package]]
@@ -164,23 +137,22 @@ python-versions = "*"
 version = "2019.4.30"
 
 [metadata]
-content-hash = "0a16aa3cd81dbfd4055ba777a3732cd805b4e6883b79e07ddfda81ec9272ea72"
-python-versions = "^3.2"
+content-hash = "12a452334cbc955aa5f805d59715bd77b4b2b5140ce547a43c5692299de03321"
+python-versions = "^3.5"
 
 [metadata.hashes]
 appdirs = ["9e5896d1372858f8dd3344faf4e5014d21849c756c8d5701f78f8a103b372d92", "d8b24664561d0d34ddfaec54636d502d7cea6e29c3eaf68f3df6180863e2166e"]
 astroid = ["39a21dd2b5d81a6731dc0ac2884fa419532dffd465cdd43ea6c168d36b76efb3", "492c2a2044adbf6a84a671b7522e9295ad2f6a7c781b899014308db25312dd35"]
-"backports.functools-lru-cache" = ["9d98697f088eb1b0fa451391f91afb5e3ebde16bbdb272819fd091151fda4f1a", "f0b0e4eba956de51238e17573b7087e852dfe9854afd2e9c873f73fc0ca0a6dd"]
+autopep8 = ["4d8eec30cc81bc5617dbf1218201d770dc35629363547f17577c61683ccfb3ee"]
 colorama = ["463f8483208e921368c9f306094eb6f725c6ca42b0f97e313cb5d5512459feda", "48eb22f4f8461b1df5734a074b57042430fb06e1d61bd1e11b078c0fe6d7a1f1"]
 colorboy = ["47167bf6f6a7e5c8b3c91661a21c596373607c7f9d10f9c63759d433efa6a868", "c3ef070a04ff9e6f1778bdd17beb7f4c8961223ae503874e591bfb7ce0d21dcf"]
 deep-filter = ["41fc32db3c2e7023c8f200fccc19594b9df6e992b77feaf520228f49cf8ef4e2", "a5ac20de9b16586b5bbb615895907e720b968b8f35ad432ed1d3b89ba5dca934"]
-enum34 = ["2d81cbbe0e73112bdfe6ef8576f2238f2ba27dd0d55752a776c41d38b7da2850", "644837f692e5f550741432dd3f223bbb9852018674981b1664e5dc339387588a", "6bd0f6ad48ec2aa117d3d141940d484deccda84d4fcd884f5c3d93c23ecd8c79", "8ad8c4783bf61ded74527bffb48ed9b54166685e4230386a9ed9b1279e2df5b1"]
 isort = ["79f46172d3a4e2e53e7016e663cc7a8b538bec525c36675fcfd2767df30b3983", "cd5d3fc2c16006b567a17193edf4ed9830d9454cbeb5a42ac80b36ea00c23db4"]
 lazy-object-proxy = ["0ce34342b419bd8f018e6666bfef729aec3edf62345a53b537a4dcc115746a33", "1b668120716eb7ee21d8a38815e5eb3bb8211117d9a90b0f8e21722c0758cc39", "209615b0fe4624d79e50220ce3310ca1a9445fd8e6d3572a896e7f9146bbf019", "27bf62cb2b1a2068d443ff7097ee33393f8483b570b475db8ebf7e1cba64f088", "27ea6fd1c02dcc78172a82fc37fcc0992a94e4cecf53cb6d73f11749825bd98b", "2c1b21b44ac9beb0fc848d3993924147ba45c4ebc24be19825e57aabbe74a99e", "2df72ab12046a3496a92476020a1a0abf78b2a7db9ff4dc2036b8dd980203ae6", "320ffd3de9699d3892048baee45ebfbbf9388a7d65d832d7e580243ade426d2b", "50e3b9a464d5d08cc5227413db0d1c4707b6172e4d4d915c1c70e4de0bbff1f5", "5276db7ff62bb7b52f77f1f51ed58850e315154249aceb42e7f4c611f0f847ff", "61a6cf00dcb1a7f0c773ed4acc509cb636af2d6337a08f362413c76b2b47a8dd", "6ae6c4cb59f199d8827c5a07546b2ab7e85d262acaccaacd49b62f53f7c456f7", "7661d401d60d8bf15bb5da39e4dd72f5d764c5aff5a86ef52a042506e3e970ff", "7bd527f36a605c914efca5d3d014170b2cb184723e423d26b1fb2fd9108e264d", "7cb54db3535c8686ea12e9535eb087d32421184eacc6939ef15ef50f83a5e7e2", "7f3a2d740291f7f2c111d86a1c4851b70fb000a6c8883a59660d95ad57b9df35", "81304b7d8e9c824d058087dcb89144842c8e0dea6d281c031f59f0acf66963d4", "933947e8b4fbe617a51528b09851685138b49d511af0b6c0da2539115d6d4514", "94223d7f060301b3a8c09c9b3bc3294b56b2188e7d8179c762a1cda72c979252", "ab3ca49afcb47058393b0122428358d2fbe0408cf99f1b58b295cfeb4ed39109", "bd6292f565ca46dee4e737ebcc20742e3b5be2b01556dafe169f6c65d088875f", "cb924aa3e4a3fb644d0c463cad5bc2572649a6a3f68a7f8e4fbe44aaa6d77e4c", "d0fc7a286feac9077ec52a927fc9fe8fe2fabab95426722be4c953c9a8bede92", "ddc34786490a6e4ec0a855d401034cbd1242ef186c20d79d2166d6a4bd449577", "e34b155e36fa9da7e1b7c738ed7767fc9491a62ec6af70fe9da4a057759edc2d", "e5b9e8f6bda48460b7b143c3821b21b452cb3a835e6bbd5dd33aa0c8d3f5137d", "e81ebf6c5ee9684be8f2c87563880f93eedd56dd2b6146d8a725b50b7e5adb0f", "eb91be369f945f10d3a49f5f9be8b3d0b93a4c2be8f8a5b83b0571b8123e0a7a", "f460d1ceb0e4a5dcb2a652db0904224f367c9b3c1470d5a7683c0480e582468b"]
 mccabe = ["ab8a6258860da4b6677da4bd2fe5dc2c659cff31b3ee4f7f5d64e79735b80d42", "dd8d182285a0fe56bace7f45b5e7d1a6ebcbf524e8f3bd87eb0f125271b8831f"]
 mutagen = ["bb61e2456f59a9a4a259fbc08def6d01ba45a42da8eeaa97d00633b0ec5de71c"]
+pycodestyle = ["95a2219d12372f05704562a14ec30bc76b05a5b297b21a5dfe3f6fac3491ae56", "e40a936c9a450ad81df37f549d676d127b1b66000a6c500caa2b085bc0ca976c"]
 pylint = ["b4d4d368f1d3834807d9d98f6ebe2af52c8e71c7c641a5a4cf87f479701c884a", "f3287a9ee5427b013df37cfddd5e9e89df5b03dacb2e2ea448e7b78dd27b674b"]
-singledispatch = ["5b06af87df13818d14f08a028e42f566640aef80805c3b50c5056b086e3c2b9c", "833b46966687b3de7f438c761ac475213e53b306740f1abfaa86e1d1aae56aa8"]
 six = ["3350809f0555b11f552448330d0b52d5f24c91a322ea4a15ef22629740f3761c", "d16a0141ec1a18405cd4ce8b4613101da75da0e9a7aec5bdd4fa804d0e0eba73"]
 wrapt = ["4aea003270831cceb8a90ff27c4031da6ead7ec1886023b80ce0dfe0adf61533"]
 youtube-dl = ["31844229a4f4d7003e03ab309ff2caff1b16ce0acbd3cfb7a13276058af13056", "a751bd293e2d7ee963910de14b3eb95b88837021899be488fade0b8abe815650"]
