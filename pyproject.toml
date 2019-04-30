@@ -12,11 +12,11 @@ homepage = "https://vidl.kasp.io"
 keywords = ['youtube', 'download', 'video', 'audio', 'music']
 
 [tool.poetry.dependencies]
-python = "^3.2"
+python = "^3.5"
 youtube-dl = ",*"
 colorama = "^0.3.9"
 colorboy = "^1.0.1"
-mutagen = "^1.41"
+mutagen = "^1.42"
 deep-filter = "^1.0"
 appdirs = "^1.4"
 
