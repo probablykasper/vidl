@@ -54,9 +54,8 @@ vidl has a configuration file, which you can find the location of by running `vi
 If you screw something up, you can delete the file, and the default will be recreated the next time you run vidl.
 
 # Custom metadata parsing
-This is advanced usage. Knowing some programming is useful for doing this.
 
-vidl has a `user_md_parser.py` file. By default, it does nothing, but you can configure it to manipulate metadata of songs you download however you like. In my case, I for use this file to detect if a title contains "[NCS Release]", and if it does I set the "Comment" metadata to "NCS".
+vidl has a `user_md_parser.py` file. By default, it does nothing, but you can configure it to manipulate metadata of songs you download however you like. In my case, I set the "Comment" metadata to "NCS" if the title ends with "[NCS Release]".
 
 Documentation for this can be found in the file itself. The file is in the same folder as vidl's config file, which you can find by by running `vidl --config-path`. If you screw something up, you can delete the file, and the default will be recreated the next time you run vidl.
 
@@ -81,7 +80,7 @@ First, we need to create a macOS Service:
         export PATH=<VIDL_DIR>:$PATH
         export PATH=<FFMPEG_DIR>:$PATH
         export PATH=<FFPROBE_DIR>:$PATH
-        vidl --quiet "$f"
+        vidl "$f"
     done
     ```
     Replace `<VIDL_DIR>` with the path you get from running `dirname $(which vidl)` in the terminal.
