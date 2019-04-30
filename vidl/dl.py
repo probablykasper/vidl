@@ -114,10 +114,9 @@ def main():
         if options['verbose']:
             # print youtube-dl command:
             command = green('youtube-dl command: ')+'youtube-dl '
-            for arg in ytdl_args:
-                if ' ' in arg: command += "'"+arg+"' "
+            for arg in ytdl_args+[video['webpage_url']]:
+                if ' ' in arg or '&' in arg: command += "'"+arg+"' "
                 else: command += arg+' '
-            command += video['webpage_url']
             log(command)
         if options['no_dl']:
             continue
