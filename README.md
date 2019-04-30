@@ -113,7 +113,6 @@ An alternative to `poetry run <command>` is to run `poetry shell` to enter the v
 
 # ToDo
 - tell user if download_folder is not set
-- bug: vidl doesn't add album artist
 - Automator shortcut doesn't tell you if there's a (ytdl) error. Exit on errors? Notify on errors?
 - Optional notifications. Tells you when the download starts, when finished and the metadata that was applied
 - For future config possibilities, replace options like `--no-md` with `--md` and `--!md`. Maybe call it `defaults` instead of `config`?

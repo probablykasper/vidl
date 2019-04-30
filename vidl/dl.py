@@ -102,6 +102,7 @@ def main():
     # ytdl_args += [options['url']]
 
     video_index = -1
+    first_video_artist = ''
     for video in videos:
         video_index += 1
         try:
@@ -168,6 +169,7 @@ def main():
             and video['categories'] == ['Music']:
                 md['artist'] = video['artist']
 
+            use_first_video_artist = False
             if playlist:
                 #album
                 if 'title' in playlist_info:
@@ -181,6 +183,8 @@ def main():
                     md['album_artist'] = playlist_info['uploader']
                 elif 'playlist_uploader' in video:
                     md['album_artist'] = video['playlist_uploader']
+                else:
+                    use_first_video_artist = True
                 # track_number
                 if 'playlist_index' in video:
                     md['track_number'] = video['playlist_index']
@@ -208,6 +212,17 @@ def main():
             dumb_md = copy.deepcopy(md)
             if smart_title: md['title'] = parsed_title['title']
             if smart_artist: md['artist'] = parsed_title['artist']
+
+            if playlist:
+                # save artist of first video
+
+                if video_index == 0 and 'artist' in md:
+                    first_video_artist = md['artist']
+                print(md)
+
+                # use first video's artist as album artist if no other is found
+                if use_first_video_artist:
+                    md['album_artist'] = first_video_artist
 
             md = config.user_md_parser(md, dumb_md, video, url_info)
             
