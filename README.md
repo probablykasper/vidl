@@ -112,7 +112,6 @@ poetry run vidl
 An alternative to `poetry run <command>` is to run `poetry shell` to enter the virtual environment's Bash CLI, and then run the command on it's own (e.g `vidl`).
 
 # ToDo
-- tell user if download_folder is not set
 - Automator shortcut doesn't tell you if there's a (ytdl) error. Exit on errors? Notify on errors?
 - Optional notifications. Tells you when the download starts, when finished and the metadata that was applied
 - For future config possibilities, replace options like `--no-md` with `--md` and `--!md`. Maybe call it `defaults` instead of `config`?

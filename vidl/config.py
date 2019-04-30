@@ -46,3 +46,8 @@ def get_config(key):
         log.error('Config does not exist:', green(key))
         quit()
     return configs[key]
+
+def verify_config():
+    for config in default_config:
+        if config not in configs or configs[config] == '':
+            log.fatal('Config '+green(config)+' is not set. You can set it in your config file, which is here: '+green(config_path)+'. You could alternatively delete the config file, so vidl recreates the default.')
