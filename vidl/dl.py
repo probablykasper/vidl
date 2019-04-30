@@ -103,7 +103,7 @@ def main():
 
     video_index = -1
     for video in videos:
-        video_index += 0
+        video_index += 1
         try:
             filename = ytdl.prepare_filename(video)
         except:
