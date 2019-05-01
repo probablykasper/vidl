@@ -19,10 +19,6 @@ def main():
         'download_folder': config.get_config('download_folder'),
         'output_template': config.get_config('output_template'),
     }
-    if options['download_folder'] == None:
-        log.error('download_folder config has not been set. Add a download folder to the vidl config file.')
-        log("Config path:", config.config_path)
-        quit()
 
     video_formats = ['mp4']
     audio_formats = ['mp3', 'wav', 'm4a']
@@ -48,11 +44,9 @@ def main():
         elif '.' in arg:
             options['url'] = arg
         else:
-            log.error('Unknown argument:', arg)
-            quit()
+            log.fatal('Unknown argument:', arg)
     if options['url'] == '':
-        log.error('No URL provided')
-        quit()
+        log.fatal('No URL provided')
 
     # get info
     log('Fetching URL info')
@@ -61,13 +55,12 @@ def main():
         'quiet': False if options['verbose'] else True,
     }
     with youtube_dl.YoutubeDL(ytdl_get_info_options) as ytdl:
-        if options['verbose']:
-            try:
-                info_result = ytdl.extract_info(options['url'], download=False)
-            except Exception as err:
-                logging.exception(err)
-                log.fatal('youtube-dl failed to get URL info')
-            log.ppring(info_result)
+        try:
+            info_result = ytdl.extract_info(options['url'], download=False)
+        except Exception as err:
+            if options['verbose']: logging.exception(err)
+            log.fatal('youtube-dl failed to get URL info')
+        if options['verbose']: log.pretty(info_result)
 
     # delete None properties/indexes
     def callback(value):
@@ -103,12 +96,18 @@ def main():
 
     video_index = -1
     first_video_artist = ''
+    errors = []
     for video in videos:
         video_index += 1
         try:
             filename = ytdl.prepare_filename(video)
-        except:
-            quit()
+        except (Exception, SystemExit) as err:
+            if options['verbose']: logging.exception(err)
+            error_msg = 'Failed to generate a filename for URL: '+green(video['webpage_url'])
+            if len(videos) == 1: log.fatal(error_msg)
+            log.error(error_msg)
+            errors.append(video)
+            continue
         filename_split = filename.split('.')
         filename_split[len(filename_split)-1] = options['file_format']
         filename = '.'.join(filename_split)
@@ -122,11 +121,25 @@ def main():
         if options['no_dl']:
             continue
         log('Downloading')
+
+        # download
         try:
+            sys.exit(0)
             youtube_dl.main(ytdl_args+[video['webpage_url']])
-        except:
-            pass
+        except (Exception, SystemExit) as err:
+            if type(err) == SystemExit and err.code == 0:
+                # don't treat sys.exit(0) as error
+                pass
+            else:
+                if options['verbose']: logging.exception(err)
+                error_msg = 'Failed to download URL: '+green(video['webpage_url'])
+                if len(videos) == 1: log.fatal(error_msg)
+                log.error(error_msg)
+                errors.append(video)
+                continue
         log('Saved as', filename)
+
+        # id3 tags
         if options['file_format'] in id3_metadata_formats and not options['no_md']:
             log('Adding metadata to file')
 
@@ -218,7 +231,6 @@ def main():
 
                 if video_index == 0 and 'artist' in md:
                     first_video_artist = md['artist']
-                print(md)
 
                 # use first video's artist as album artist if no other is found
                 if use_first_video_artist:
@@ -228,4 +240,10 @@ def main():
             
             from vidl import md as md_module
             md_module.add_metadata(filename, md)
+    
+    if len(errors) >= 1:
+        msg = 'There were errors when downloading the following URLs:'
+        for video in errors:
+            msg += f'\n- {green(video["webpage_url"])}: {video["uploader"]} - {video["title"]}'
+        log.fatal(msg)
     log('Done')
