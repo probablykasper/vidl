@@ -3,7 +3,7 @@ import youtube_dl
 from colorboy import cyan, green, red
 from deep_filter import deep_filter
 
-from vidl import log, app, config
+from vidl import log, app, config, md as md_module
 
 def main():
 
@@ -123,7 +123,6 @@ def main():
 
         # download
         try:
-            sys.exit(0)
             youtube_dl.main(ytdl_args+[video['webpage_url']])
         except (Exception, SystemExit) as err:
             if type(err) == SystemExit and err.code == 0:
@@ -237,7 +236,6 @@ def main():
 
             md = config.user_md_parser(md, dumb_md, video, url_info)
             
-            from vidl import md as md_module
             md_module.add_metadata(filename, md)
     
     if len(errors) >= 1:
