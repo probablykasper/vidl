@@ -1,3 +1,8 @@
+## 3.4.7 - 2019 May 2
+- Better logging and error messages
+- Improved metadata detection for YouTube Music
+- For albums, the first track's artist will be the album artist if there's no other option
+
 ## 3.4.6 - 2019 Jan 19
 - Fixes vidl crash due to syntax error
 
