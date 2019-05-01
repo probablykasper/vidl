@@ -1,6 +1,6 @@
 import sys, json, os, appdirs
 from colorboy import green
-from vidl.app import log, package_name, package_author
+from vidl import log, package_name, package_author
 
 user_data_dir = appdirs.user_data_dir(package_name, package_author)
 config_path = os.path.join(user_data_dir, 'config.json')

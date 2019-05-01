@@ -1,6 +1,6 @@
 from mutagen.id3 import ID3, Encoding, TIT2, TPE1, TALB, TPE2, TRCK, TCON, TDRC, COMM, USLT, TCOM
 from pprint import pformat
-from vidl.app import log
+from vidl import log
 
 def add_metadata(filename, md):
     tags = ID3(filename)

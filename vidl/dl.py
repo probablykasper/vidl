@@ -3,8 +3,7 @@ import youtube_dl
 from colorboy import cyan, green, red
 from deep_filter import deep_filter
 
-from vidl import app, config
-from vidl.app import log
+from vidl import log, app, config
 
 def main():
 
