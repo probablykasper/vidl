@@ -8,16 +8,16 @@ If the title contains " - ", vidl often uses what comes before and after it as a
 # Installation
 1. Install Python (3.7 is recommended)
 2. Install [ffmpeg and ffprobe](https://www.ffmpeg.org/)
-3. Run `pip3 install vidl`. Try `pip` instead of `pip3` if it does not work.
+3. Run `pip3 install vidl`.
 4. If you're not on macOS or Windows, you need to specify where vidl will download files to in your vidl config file. Run `vidl --config-path` to see where the config file is.
 If you're on macOS, I recommend [setting up shortcuts for vidl](#macos-shortcut-setup)
 
 # Updating
-vidl is updated by running `pip3 install vidl --upgrade --upgrade-strategy eager`. Try `pip` instead of `pip3` if it does not work.
+vidl is updated by running `pip3 install vidl --upgrade --upgrade-strategy eager`.
 If vidl is unable to download a URL, it might be because youtube-dl is outdated. The `--upgrade-strategy eager` part updates youtube-dl.
 
 # Uninstall
-Run `pip3 uninstall vidl`. Try `pip` instead of `pip3` if it does not work.
+Run `pip3 uninstall vidl`.
 
 To fully uninstall vidl, go to vidl's config file (Run `vidl --config-path` to see where it is) and delete the folder it's in.
 
@@ -42,10 +42,13 @@ Examples:
         --no-dl            Don't download anything. Usually used with -v
         -v, --verbose      Display all logs.
 
-    Global Options:
-        --version          Display vidl version. "vidl -v" also works.
-        -h, --help         Display this help message.
-        --config-path      Display the location of vidl's configuration file.
+    General Options:
+        --version          Show version. vidl -v and vidl version works too.
+        -h, --help         Show this help message. vidl help works too.
+        --config-path      Show the location of the configuration file.
+
+    Update:
+        pip install vidl --upgrade --upgrade-strategy eager
     ```
 
 # Configuration
