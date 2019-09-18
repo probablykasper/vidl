@@ -114,6 +114,25 @@ poetry run vidl
 
 An alternative to `poetry run <command>` is to run `poetry shell` to enter the virtual environment's Bash CLI, and then run the command on it's own (e.g `vidl`).
 
+
+### Releasing a new version
+
+1. Bump the version number. `<version>` can be `patch`, `minor`, `major` or a version number:
+```
+poetry version <version>
+```
+
+2. Build:
+```
+poetry build
+```
+
+3. Publish to PyPI:
+```
+poetry publish
+```
+
+
 # ToDo
 - Optional notifications. Tells you when the download starts, when finished and the metadata that was applied
 - For future config possibilities, replace options like `--no-md` with `--md` and `--!md`. Maybe call it `defaults` instead of `config`?
