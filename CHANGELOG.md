@@ -1,3 +1,6 @@
+## 3.4.8 - 2019 Sep 18
+- Fixed URLs without https:// or http:// not working.
+
 ## 3.4.7 - 2019 May 2
 - Better logging and error messages
 - Improved metadata detection for YouTube Music
