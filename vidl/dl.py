@@ -1,4 +1,5 @@
 import sys, os, copy, logging
+from urllib.parse import urlparse
 import youtube_dl
 from colorboy import cyan, green, red
 from deep_filter import deep_filter
@@ -41,7 +42,11 @@ def main():
         elif arg in ['-v', '--verbose']:
             options['verbose'] = True
         elif '.' in arg:
-            options['url'] = arg
+            parsed_url = urlparse(arg)
+            url = arg
+            if (parsed_url.scheme == ''): url = 'https://'+url
+            print(url)
+            options['url'] = url
         else:
             log.fatal('Unknown argument:', arg)
     if options['url'] == '':
