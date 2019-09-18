@@ -39,5 +39,5 @@ def show_help():
     print(cyan(   '    --config-path      ')+'Show the location of the configuration file.')
     print(cyan(   ''))
     print(green(  'Update:'))
-    print(cyan(   '    pip install vidl --upgrade --upgrade-strategy eager'))
+    print(cyan(   '    pip3 install vidl --upgrade --upgrade-strategy eager'))
     print(        '')

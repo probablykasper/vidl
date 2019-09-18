@@ -8,16 +8,16 @@ If the title contains " - ", vidl often uses what comes before and after it as a
 # Installation
 1. Install Python (3.7 is recommended)
 2. Install [ffmpeg and ffprobe](https://www.ffmpeg.org/)
-3. Run `pip install vidl`. Try `pip3` instead of `pip` if it does not work.
+3. Run `pip3 install vidl`. Try `pip` instead of `pip3` if it does not work.
 4. If you're not on macOS or Windows, you need to specify where vidl will download files to in your vidl config file. Run `vidl --config-path` to see where the config file is.
 If you're on macOS, I recommend [setting up shortcuts for vidl](#macos-shortcut-setup)
 
 # Updating
-vidl is updated by running `pip install vidl --upgrade --upgrade-strategy eager`. Try `pip3` instead of `pip` if it does not work.
+vidl is updated by running `pip3 install vidl --upgrade --upgrade-strategy eager`. Try `pip` instead of `pip3` if it does not work.
 If vidl is unable to download a URL, it might be because youtube-dl is outdated. The `--upgrade-strategy eager` part updates youtube-dl.
 
 # Uninstall
-Run `pip uninstall vidl`. Try `pip3` instead of `pip` if it does not work.
+Run `pip3 uninstall vidl`. Try `pip` instead of `pip3` if it does not work.
 
 To fully uninstall vidl, go to vidl's config file (Run `vidl --config-path` to see where it is) and delete the folder it's in.
 
