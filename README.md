@@ -62,7 +62,7 @@ vidl has a `user_md_parser.py` file. By default, it does nothing, but you can co
 
 Documentation for this can be found in the file itself. The file is in the same folder as vidl's config file, which you can find by by running `vidl --config-path`. If you screw something up, you can delete the file, and the default will be recreated the next time you run vidl.
 
-# <a name="#macos-shortcut-setup"></a>Set up shortcuts for vidl (macOS)
+# <a name="macos-shortcut-setup"></a>Set up shortcuts for vidl (macOS)
 You'll be able to select any piece of text, press your chosen shortcut and the link(s) in your selected text will be downloaded! A little tedious to set up, but well worth it.
 
 First, we need to create a macOS Service:
