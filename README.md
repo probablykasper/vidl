@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://taskler.kasp.io/" title="Taskler"><img alt="Quill Logo" src="https://raw.githubusercontent.com/probablykasper/vidl/master/logo/logo%201000.png" width="100"></a>
+  <a href="https://taskler.kasp.io/" title="Taskler"><img src="https://raw.githubusercontent.com/probablykasper/vidl/master/logo/logo%201000.png" width="100"></a>
 </p>
 
 # vidl
