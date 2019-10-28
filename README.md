@@ -1,3 +1,7 @@
+<p align="center">
+  <a href="https://taskler.kasp.io/" title="Taskler"><img alt="Quill Logo" src="https://raw.githubusercontent.com/probablykasper/vidl/master/logo/logo%201000.png" width="100"></a>
+</p>
+
 # vidl
 vidl is a script designed to easily download video/audio from anywere, using youtube-dl. It automatically embeds thumbnails to mp3/mp4/m4a files.
 
