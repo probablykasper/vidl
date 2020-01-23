@@ -2,12 +2,12 @@
 name = "vidl"
 version = "3.4.8"
 description = "Python script to download video/audio, built with youtube-dl"
-authors = ["KH <kasperkh.kh@gmail.com>"]
+authors = ["Kasper <kasperkh.kh@gmail.com>"]
 
-readme = 'README.md'
+readme = "README.md"
 
 repository = "https://github.com/spectralkh/vidl"
-homepage = "https://vidl.kasp.io"
+homepage = "https://vidl.kasper.space"
 
 keywords = ['youtube', 'download', 'video', 'audio', 'music']
 
