@@ -82,17 +82,13 @@ First, we need to create a macOS Service:
     ```bash
     for f in "$@"
     do
-        # AppleScript doesn't look for scripts in the same places as the terminal,
-        # so we need to make it look in the proper folders.
-        export PATH=<VIDL_DIR>:$PATH
-        export PATH=<FFMPEG_DIR>:$PATH
-        export PATH=<FFPROBE_DIR>:$PATH
-        vidl "$f"
+      # behave like a normal terminal window:
+      export PATH=/usr/local/bin:$PATH
+      source ~/.bash_profile
+
+      vidl "$f"
     done
     ```
-    Replace `<VIDL_DIR>` with the path you get from running `dirname $(which vidl)` in the terminal.
-    Replace `<FFMPEG_DIR>` with the path you get from running `dirname $(which ffmpeg)` in the terminal.
-    Replace `<FFPROBE_DIR>` with the path you get from running `dirname $(which ffprobe)` in the terminal.
 6. Choose File > Save. Type in vidl.
 
 Almost done, you just need to tie a shortcut to the macOS Service you just created:
