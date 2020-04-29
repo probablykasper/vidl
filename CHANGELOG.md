@@ -1,3 +1,6 @@
+## 3.4.9 - 2020 Apr 29
+- Disabled youtube-dl cache as a band-aid solution for 403 errors
+
 ## 3.4.8 - 2019 Sep 18
 - Fixed URLs without https:// or http:// not working.
 
