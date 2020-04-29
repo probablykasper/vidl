@@ -96,7 +96,8 @@ def main():
         ytdl_args += ['--embed-thumbnail']
     if not options['verbose']:
         ytdl_args += ['--quiet']
-    # ytdl_args += [options['url']]
+    # band-aid solution for 403 error caused by cache
+    ytdl_args += ['--rm-cache-dir']
 
     video_index = -1
     first_video_artist = ''
