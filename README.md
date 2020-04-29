@@ -117,6 +117,8 @@ An alternative to `poetry run <command>` is to run `poetry shell` to enter the v
 
 ### Releasing a new version
 
+First of all, consider updating the lockfile dependencies by running `poetry update`, then check if things still work.
+
 1. Bump the version number. `<version>` can be `patch`, `minor`, `major` or a version number:
 ```
 poetry version <version>
