@@ -1,3 +1,6 @@
+## 3.4.10 - 2020 May 10
+- Fixed error when adding ID3 metadata tags to mp3 files that don't already have ID3 metadata
+
 ## 3.4.9 - 2020 Apr 29
 - Disabled youtube-dl cache as a band-aid solution for 403 errors
 
