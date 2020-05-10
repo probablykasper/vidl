@@ -133,12 +133,3 @@ poetry build
 ```
 poetry publish
 ```
-
-
-# ToDo
-- Optional notifications. Tells you when the download starts, when finished and the metadata that was applied
-- For future config possibilities, replace options like `--no-md` with `--md` and `--!md`. Maybe call it `defaults` instead of `config`?
-    - Add all configs as options, for instance add download_folder option.
-    - Add all options as configs, for instance add md option. 
-    - Add config/option for individual metadata
-- Allow passing youtube-dl arguments directly

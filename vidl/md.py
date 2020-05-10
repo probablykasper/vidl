@@ -1,9 +1,15 @@
+import mutagen
 from mutagen.id3 import ID3, Encoding, TIT2, TPE1, TALB, TPE2, TRCK, TCON, TDRC, COMM, USLT, TCOM
 from pprint import pformat
 from vidl import log
 
 def add_metadata(filename, md):
-    tags = ID3(filename)
+    try:
+      tags = ID3(filename)
+    except mutagen.id3.ID3NoHeaderError:
+      file = mutagen.File(filename)
+      file.add_tags()
+      tags = file
 
     if 'title' in md:           tags["TIT2"] = TIT2(text=md['title'])
     if 'artist' in md:          tags["TPE1"] = TPE1(text=md['artist'])
