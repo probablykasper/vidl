@@ -182,9 +182,11 @@ def main():
             # youtube music artist
             if  video['extractor'] == 'youtube' \
             and video['uploader'].endswith(' - Topic') \
-            and 'artist' in video \
-            and video['categories'] == ['Music']:
-                md['artist'] = video['artist']
+            and 'artist' in video:
+                if 'categories' not in video:
+                    md['artist'] = video['artist']
+                elif video['categories'] == ['Music']:
+                    md['artist'] = video['artist']
 
             use_first_video_artist = False
             if playlist:
