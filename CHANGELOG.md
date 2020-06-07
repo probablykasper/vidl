@@ -1,3 +1,6 @@
+## 3.4.11 - 2020 Jun 7
+- Fixed error occuring when downloading tracks from YouTube Music
+
 ## 3.4.10 - 2020 May 10
 - Fixed error when adding ID3 metadata tags to mp3 files that don't already have ID3 metadata
 

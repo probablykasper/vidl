@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "vidl"
-version = "3.4.10"
+version = "3.4.11"
 description = "Python script to download video/audio, built with youtube-dl"
 authors = ["Kasper <kasperkh.kh@gmail.com>"]
 
