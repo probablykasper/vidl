@@ -1,3 +1,8 @@
+## 3.5.0 - 2020 Aug 2
+- Added `--no-embed` argument to avoid embedding thumbnails
+- Added ability to programmatically call `dl.download()` with custom options (@araa47)
+- Improved quoting of logged youtube-dl command in verbose mode
+
 ## 3.4.11 - 2020 Jun 7
 - Fixed error occuring when downloading tracks from YouTube Music
 

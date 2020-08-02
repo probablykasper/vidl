@@ -97,6 +97,28 @@ Almost done, you just need to tie a shortcut to the macOS Service you just creat
 2. Go to Keyboard and select the Shortcuts tab.
 3. Select Services from the left column, and locate vidl (should be under Internet). Add your preferred shortcut.
 
+# API Usage
+You can use Python to download a URL. Example:
+```python
+from vidl import config, dl
+
+def main():
+    dl.download({
+        # all options are required
+        'url': 'https://www.youtube.com/watch?v=82IZ63TU8Fs'
+        'file_format': 'mp3',
+        'audio_only': True,
+        'no_md': False,
+        'no_thumbnail_embed': False,
+        'no_smart_md': False,
+        'no_dl': False,
+        'verbose': False,
+        'download_folder': config.get_config('download_folder'),
+        'output_template': config.get_config('output_template'),
+    })
+main()
+```
+
 # Dev Instructions
 
 ### Installation
