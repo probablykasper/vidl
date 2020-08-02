@@ -12,7 +12,7 @@ def main():
     elif '--config-path' in sys.argv:
         log("Config path:", green(config.config_path))
     else:
-        dl.main()
+        dl.download()
 
 if __name__ == '__main__':
     main()

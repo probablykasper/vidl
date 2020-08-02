@@ -7,7 +7,7 @@ from shlex import quote
 
 from vidl import log, config, md as md_module
 
-def main():
+def download():
 
     options = {
         'url': '',
