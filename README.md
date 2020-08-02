@@ -153,7 +153,13 @@ poetry version <version>
 poetry build
 ```
 
-3. Publish to PyPI:
+3. Update CHANGELOG.md
+
+4. Commit and create a git tag
+
+5. Create GitHub release with release notes and attach the build files
+
+4. Publish to PyPI:
 ```
 poetry publish
 ```
