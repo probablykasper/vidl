@@ -3,6 +3,7 @@ from urllib.parse import urlparse
 import youtube_dl
 from colorboy import cyan, green, red
 from deep_filter import deep_filter
+from shlex import quote
 
 from vidl import log, config, md as md_module
 
@@ -120,8 +121,7 @@ def main():
             # print youtube-dl command:
             command = green('youtube-dl command: ')+'youtube-dl '
             for arg in ytdl_args+[video['webpage_url']]:
-                if ' ' in arg or '&' in arg: command += "'"+arg+"' "
-                else: command += arg+' '
+                command += quote(arg)+' '
             log(command)
         if options['no_dl']:
             continue
