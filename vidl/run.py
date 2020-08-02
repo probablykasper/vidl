@@ -12,7 +12,8 @@ def main():
     elif '--config-path' in sys.argv:
         log("Config path:", green(config.config_path))
     else:
-        dl.download()
+        options = dl.parse_cli_options()
+        dl.download(options)
 
 if __name__ == '__main__':
     main()

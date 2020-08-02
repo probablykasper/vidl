@@ -7,7 +7,7 @@ from shlex import quote
 
 from vidl import log, config, md as md_module
 
-def download():
+def parse_cli_options():
 
     options = {
         'url': '',
@@ -21,11 +21,8 @@ def download():
         'download_folder': config.get_config('download_folder'),
         'output_template': config.get_config('output_template'),
     }
-
     video_formats = ['mp4']
     audio_formats = ['mp3', 'wav', 'm4a']
-    id3_metadata_formats = ['mp3']
-    ytdl_output_template = os.path.join(options['download_folder'], options['output_template'])
 
     # parse arguments
     for arg in sys.argv[1:]:
@@ -53,6 +50,15 @@ def download():
             options['url'] = url
         else:
             log.fatal('Unknown argument:', arg)
+
+    return options
+
+def download(options):
+    """Accepts an `options` dict, but there's no validation and all options must be present. Look inside `parse_cli_options()` for an example options object."""
+
+    id3_metadata_formats = ['mp3']
+    ytdl_output_template = os.path.join(options['download_folder'], options['output_template'])
+
     if options['url'] == '':
         log.fatal('No URL provided')
 
