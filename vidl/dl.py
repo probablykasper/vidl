@@ -14,6 +14,7 @@ def main():
         'file_format': 'mp3',
         'audio_only': True,
         'no_md': False,
+        'no_thumbnail_embed': False,
         'no_smart_md': False,
         'no_dl': False,
         'verbose': False,
@@ -40,6 +41,8 @@ def main():
             options['no_smart_md'] = True
         elif arg in ['--no-dl']:
             options['no_dl'] = True
+        elif arg in ['--no-embed']:
+            options['no_thumbnail_embed'] = True
         elif arg in ['-v', '--verbose']:
             options['verbose'] = True
         elif '.' in arg:
@@ -93,7 +96,7 @@ def main():
         ytdl_args += ['--recode-video', options['file_format']]
     ytdl_args += ['--audio-quality', '0']
     ytdl_args += ['-o', ytdl_output_template]
-    if options['file_format'] in ['mp3', 'm4a', 'mp4']:
+    if options['file_format'] in ['mp3', 'm4a', 'mp4'] and options['no_thumbnail_embed'] == False:
         ytdl_args += ['--embed-thumbnail']
     if not options['verbose']:
         ytdl_args += ['--quiet']

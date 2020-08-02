@@ -40,19 +40,20 @@ Examples:
         vidl [format] [options] <URL>
 
     Download Options:
-        format             mp3, mp4, wav or m4a. Default mp3.
-        --no-md            Don't add metadata to downloaded files.
-        --no-smart-md      Don't extract artist and song name from title.
+        format             mp3, mp4, wav or m4a. Default mp3
+        --no-md            Don't add metadata to downloaded files
+        --no-smart-md      Don't extract artist and song name from title
+        --no-embed         Don't embed thumbnail
         --no-dl            Don't download anything. Usually used with -v
-        -v, --verbose      Display all logs.
+        -v, --verbose      Display all logs
 
     General Options:
-        --version          Show version. vidl -v and vidl version works too.
-        -h, --help         Show this help message. vidl help works too.
-        --config-path      Show the location of the configuration file.
+        --version          Show version. vidl -v and vidl version works too
+        -h, --help         Show this help message. vidl help works too
+        --config-path      Show the location of the configuration file
 
     Update:
-        pip install vidl --upgrade --upgrade-strategy eager
+        pip3 install vidl --upgrade --upgrade-strategy eager
     ```
 
 # Configuration
