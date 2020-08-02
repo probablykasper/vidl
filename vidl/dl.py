@@ -10,6 +10,7 @@ from vidl import log, config, md as md_module
 def parse_cli_options():
 
     options = {
+        'url': '',
         'file_format': 'mp3',
         'audio_only': True,
         'no_md': False,
@@ -49,7 +50,7 @@ def parse_cli_options():
             options['url'] = url
         else:
             log.fatal('Unknown argument:', arg)
-    if 'url' not in options:
+    if 'url' == '':
         log.fatal('No URL provided')
 
     return options
