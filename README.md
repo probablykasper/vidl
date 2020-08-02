@@ -103,6 +103,7 @@ You can use Python to download a URL. Example:
 from vidl import config, dl
 
 def main():
+    config.verify_config()
     dl.download({
         # all options are required
         'url': 'https://www.youtube.com/watch?v=82IZ63TU8Fs'
