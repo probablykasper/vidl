@@ -129,7 +129,7 @@ main()
 4. Run `poetry install` to install Python package dependencies.
 5. If you're not on macOS or Windows, you need to specify where vidl will download files to in your vidl config file. Run `vidl --config-path` to see where the config file is.
 
-I recommend running `poetry config virtualenvs.in-project true`. This command makes Poetry create your Python virtual environment inside the project folder, so you'll be able to easily delete it. Additionally, it lets VSCode's Python extension detect the virtual environment if you set the `python.pythonPath` setting to `${workspaceFolder}/.venv/bin/python` in your workspace (or global) settings.
+I recommend running `poetry config virtualenvs.in-project true`, which makes Poetry store your Python virtual environment inside the project folder. Additionally, it lets VSCode's Python extension detect the virtual environment if you set the `python.pythonPath` setting to `${workspaceFolder}/.venv/bin/python` in your settings.
 
 ### Running
 ```
@@ -144,22 +144,17 @@ An alternative to `poetry run <command>` is to run `poetry shell` to enter the v
 First of all, consider updating the lockfile dependencies by running `poetry update`, then check if things still work.
 
 1. Bump the version number. `<version>` can be `patch`, `minor`, `major` or a version number:
-```
-poetry version <version>
-```
-
-2. Build:
-```
-poetry build
-```
-
-3. Update CHANGELOG.md
-
+    ```
+    poetry version <version>
+    ```
+2. Update CHANGELOG.md
+3. Build:
+    ```
+    poetry build
+    ```
 4. Commit and create a git tag
-
 5. Create GitHub release with release notes and attach the build files
-
 4. Publish to PyPI:
-```
-poetry publish
-```
+    ```
+    poetry publish
+    ```
