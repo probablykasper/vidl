@@ -1,13 +1,10 @@
 [tool.poetry]
 name = "vidl"
 version = "3.5.0"
-description = "Python script to download video/audio, built with youtube-dl"
-authors = ["Kasper <kasperkh.kh@gmail.com>"]
-
+description = "Downloads video/audio from anywhere, adding thumbnails and mp3 metadata if applicable"
+authors = ["kasper.space"]
 readme = "README.md"
-
-repository = "https://github.com/spectralkh/vidl"
-
+repository = "https://github.com/probablykasper/vidl"
 keywords = ['youtube', 'download', 'video', 'audio', 'music']
 
 [tool.poetry.dependencies]
