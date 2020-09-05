@@ -1,3 +1,6 @@
+## 3.5.1 2020 Sep 5
+- Updated project metadata
+
 ## 3.5.0 - 2020 Aug 2
 - Added `--no-embed` argument to avoid embedding thumbnails
 - Added ability to programmatically call `dl.download()` with custom options (@araa47)
