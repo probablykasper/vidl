@@ -122,7 +122,7 @@ main()
 
 # Dev Instructions
 
-### Installation
+### Dev Installation
 1. Install Python. You may want to install it using [pyenv](https://github.com/pyenv/pyenv) in order to manage Python versions (If Poetry doesn't detect the right version, you can fix it with pyenv).
 2. Install [ffmpeg and ffprobe](https://www.ffmpeg.org/)
 3. Install [Poetry](https://poetry.eustace.io)
