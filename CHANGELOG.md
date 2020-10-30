@@ -1,3 +1,6 @@
+## 3.6.0 2020 Oct 30
+- Moved from youtube-dl to youtube-dlc
+
 ## 3.5.1 2020 Sep 5
 - Updated project metadata
 
