@@ -47,8 +47,8 @@ category = "main"
 description = "Removes values from nested dicts and lists"
 name = "deep-filter"
 optional = false
-python-versions = "*"
-version = "1.0.0"
+python-versions = ">=3.5,<4.0"
+version = "1.0.1"
 
 [[package]]
 category = "dev"
@@ -94,12 +94,12 @@ description = "python code static checker"
 name = "pylint"
 optional = false
 python-versions = ">=3.5.*"
-version = "2.5.3"
+version = "2.6.0"
 
 [package.dependencies]
 astroid = ">=2.4.0,<=2.5"
 colorama = "*"
-isort = ">=4.2.5,<5"
+isort = ">=4.2.5,<6"
 mccabe = ">=0.6,<0.7"
 toml = ">=0.7.1"
 
@@ -138,14 +138,15 @@ version = "1.12.1"
 
 [[package]]
 category = "main"
-description = "YouTube video downloader"
-name = "youtube-dl"
+description = "Media downloader supporting various sites such as youtube"
+name = "youtube-dlc"
 optional = false
-python-versions = "*"
-version = "2020.7.28"
+python-versions = ">=2.6"
+version = "2020.10.26"
 
 [metadata]
-content-hash = "732dcd3c85716d511627a48ef27c4f11905964e5939b07bd52da5cd12ed19997"
+content-hash = "2171f7ca11c1459ccf6e4496e99273ac3b068b14c954a8d349e68ae3d08e184a"
+lock-version = "1.0"
 python-versions = "^3.5"
 
 [metadata.files]
@@ -166,8 +167,8 @@ colorboy = [
     {file = "colorboy-1.0.1.tar.gz", hash = "sha256:47167bf6f6a7e5c8b3c91661a21c596373607c7f9d10f9c63759d433efa6a868"},
 ]
 deep-filter = [
-    {file = "deep-filter-1.0.0.tar.gz", hash = "sha256:41fc32db3c2e7023c8f200fccc19594b9df6e992b77feaf520228f49cf8ef4e2"},
-    {file = "deep_filter-1.0.0-py2.py3-none-any.whl", hash = "sha256:a5ac20de9b16586b5bbb615895907e720b968b8f35ad432ed1d3b89ba5dca934"},
+    {file = "deep-filter-1.0.1.tar.gz", hash = "sha256:ecafc5fdd6f2f049aef5a76758e0d51ea500afd4f890420c7083a0cf5e40b6c4"},
+    {file = "deep_filter-1.0.1-py3-none-any.whl", hash = "sha256:c063c22f6d03353e3f26d2f281dae7eaa3333d7242df3c05e29f94c689311896"},
 ]
 isort = [
     {file = "isort-4.3.21-py2.py3-none-any.whl", hash = "sha256:6e811fcb295968434526407adb8796944f1988c5b65e8139058f2014cbe100fd"},
@@ -205,8 +206,8 @@ mutagen = [
     {file = "mutagen-1.45.1.tar.gz", hash = "sha256:6397602efb3c2d7baebd2166ed85731ae1c1d475abca22090b7141ff5034b3e1"},
 ]
 pylint = [
-    {file = "pylint-2.5.3-py3-none-any.whl", hash = "sha256:d0ece7d223fe422088b0e8f13fa0a1e8eb745ebffcb8ed53d3e95394b6101a1c"},
-    {file = "pylint-2.5.3.tar.gz", hash = "sha256:7dd78437f2d8d019717dbf287772d0b2dbdfd13fc016aa7faa08d67bccc46adc"},
+    {file = "pylint-2.6.0-py3-none-any.whl", hash = "sha256:bfe68f020f8a0fece830a22dd4d5dddb4ecc6137db04face4c3420a46a52239f"},
+    {file = "pylint-2.6.0.tar.gz", hash = "sha256:bb4a908c9dadbc3aac18860550e870f58e1a02c9f2c204fdf5693d73be061210"},
 ]
 six = [
     {file = "six-1.15.0-py2.py3-none-any.whl", hash = "sha256:8b74bedcbbbaca38ff6d7491d76f2b06b3592611af620f8426e82dddb04a5ced"},
@@ -242,7 +243,7 @@ typed-ast = [
 wrapt = [
     {file = "wrapt-1.12.1.tar.gz", hash = "sha256:b62ffa81fb85f4332a4f609cab4ac40709470da05643a082ec1eb88e6d9b97d7"},
 ]
-youtube-dl = [
-    {file = "youtube_dl-2020.7.28-py2.py3-none-any.whl", hash = "sha256:c1bf9a20b0bc8cf6489930b96b9830156e2a7e865fc96ef628e97fa37aad8de9"},
-    {file = "youtube_dl-2020.7.28.tar.gz", hash = "sha256:4af90dac41dba8b2c8bdce3903177c4ecbc27d75e03a3f08070f9d9decbae829"},
+youtube-dlc = [
+    {file = "youtube_dlc-2020.10.26-py2.py3-none-any.whl", hash = "sha256:a7874a15f6adb177f645d41ca961c91a4a1e94d6f74aad56597ea0e381702366"},
+    {file = "youtube_dlc-2020.10.26.tar.gz", hash = "sha256:cf0300b921ce17cb640ac1c9783e88e018e4c6a19e0d59648152e0fed910a9e9"},
 ]

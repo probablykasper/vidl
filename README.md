@@ -3,7 +3,7 @@
 </p>
 
 # vidl
-vidl is a script designed to easily download video/audio from anywere, using youtube-dl. It automatically embeds thumbnails to mp3/mp4/m4a files.
+vidl is a script designed to easily download video/audio from anywere, using youtube-dlc. It automatically embeds thumbnails to mp3/mp4/m4a files.
 
 vidl will add metadata to mp3 files if it's found. The `--no-md` option turns this off.
 `title`, `artist` and `year` metadata is added, but if the URL is a playlist, it also adds `album`, `album artist`, `track number`, `track count`.
@@ -18,7 +18,7 @@ If you're on macOS, I recommend [setting up shortcuts for vidl](#macos-shortcut-
 
 # Updating
 vidl is updated by running `pip3 install vidl --upgrade --upgrade-strategy eager`.
-If vidl is unable to download a URL, it might be because youtube-dl is outdated. The `--upgrade-strategy eager` part updates youtube-dl.
+If vidl is unable to download a URL, it might be because youtube-dlc is outdated. The `--upgrade-strategy eager` part updates youtube-dlc.
 
 # Uninstall
 Run `pip3 uninstall vidl`.

@@ -1,6 +1,6 @@
 import sys, os, copy, logging
 from urllib.parse import urlparse
-import youtube_dl
+import youtube_dlc
 from colorboy import cyan, green, red
 from deep_filter import deep_filter
 from shlex import quote
@@ -68,12 +68,12 @@ def download(options):
         'outtmpl': ytdl_output_template,
         'quiet': False if options['verbose'] else True,
     }
-    with youtube_dl.YoutubeDL(ytdl_get_info_options) as ytdl:
+    with youtube_dlc.YoutubeDL(ytdl_get_info_options) as ytdl:
         try:
             info_result = ytdl.extract_info(options['url'], download=False)
         except Exception as err:
             if options['verbose']: logging.exception(err)
-            log.fatal('youtube-dl failed to get URL info')
+            log.fatal('youtube-dlc failed to get URL info')
         if options['verbose']: log.pretty(info_result)
 
     # delete None properties/indexes
@@ -127,8 +127,8 @@ def download(options):
         filename_split[len(filename_split)-1] = options['file_format']
         filename = '.'.join(filename_split)
         if options['verbose']:
-            # print youtube-dl command:
-            command = green('youtube-dl command: ')+'youtube-dl '
+            # print youtube-dlc command:
+            command = green('youtube-dlc command: ')+'youtube-dlc '
             for arg in ytdl_args+[video['webpage_url']]:
                 command += quote(arg)+' '
             log(command)
@@ -138,7 +138,7 @@ def download(options):
 
         # download
         try:
-            youtube_dl.main(ytdl_args+[video['webpage_url']])
+            youtube_dlc.main(ytdl_args+[video['webpage_url']])
         except (Exception, SystemExit) as err:
             if type(err) == SystemExit and err.code == 0:
                 # don't treat sys.exit(0) as error
