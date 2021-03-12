@@ -136,14 +136,14 @@ version = "1.12.1"
 
 [[package]]
 category = "main"
-description = "Media downloader supporting various sites such as youtube"
-name = "youtube-dlc"
+description = "YouTube video downloader"
+name = "youtube-dl"
 optional = false
-python-versions = ">=2.6"
-version = "2020.11.11.post3"
+python-versions = "*"
+version = "2021.3.3"
 
 [metadata]
-content-hash = "0118698394c633cbf25589acc20a561b6b698365c485e6d32f13420cbb46968c"
+content-hash = "f9fbbbc8b1cff2dfecf0c7b15287b6f7fcabf6b30f7da6169b0d55db4437b757"
 lock-version = "1.0"
 python-versions = "^3.5"
 
@@ -250,7 +250,7 @@ typed-ast = [
 wrapt = [
     {file = "wrapt-1.12.1.tar.gz", hash = "sha256:b62ffa81fb85f4332a4f609cab4ac40709470da05643a082ec1eb88e6d9b97d7"},
 ]
-youtube-dlc = [
-    {file = "youtube_dlc-2020.11.11.post3-py2.py3-none-any.whl", hash = "sha256:bbd4f554e9d63b6e8de7cbace0abd0b9707ed32798fbeb2abbb9c17fcb9f7ec3"},
-    {file = "youtube_dlc-2020.11.11.post3.tar.gz", hash = "sha256:5aaa0aa5fbd53d9acdfa95bab3c26802926eb27e425f23dc83d55cb18f11d053"},
+youtube-dl = [
+    {file = "youtube_dl-2021.3.3-py2.py3-none-any.whl", hash = "sha256:28663ce51bb35d0a0fa764aed3492b38c570da0a5a62fef3c28f4431522a6d4a"},
+    {file = "youtube_dl-2021.3.3.tar.gz", hash = "sha256:02432aa2dd0e859e64d74fca2ad624abf3bead3dba811d594100e1cb7897dce7"},
 ]

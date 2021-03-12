@@ -9,7 +9,7 @@ keywords = ['youtube', 'download', 'video', 'audio', 'music']
 
 [tool.poetry.dependencies]
 python = "^3.5"
-youtube-dlc = ">2020"
+youtube-dl = ">2020"
 colorboy = "^1.0.3"
 mutagen = "^1.45.1"
 deep-filter = "^1.0.1"

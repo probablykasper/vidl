@@ -10,7 +10,7 @@ vidl will add metadata to mp3 files if it's found. The `--no-md` option turns th
 If the title contains " - ", vidl often uses what comes before and after it as artist and title respectively. The `--dont-extract-md` option turns off this behaviour.
 
 # Installation
-1. Install Python (3.7 is recommended)
+1. Install Python (3.7+ is recommended)
 2. Install [ffmpeg and ffprobe](https://www.ffmpeg.org/)
 3. Run `pip3 install vidl`.
 4. If you're not on macOS or Windows, you need to specify where vidl will download files to in your vidl config file. Run `vidl --config-path` to see where the config file is.
@@ -122,7 +122,7 @@ main()
 
 # Dev Instructions
 
-### Dev Installation
+## Dev Installation
 1. Install Python. You may want to install it using [pyenv](https://github.com/pyenv/pyenv) in order to manage Python versions (If Poetry doesn't detect the right version, you can fix it with pyenv).
 2. Install [ffmpeg and ffprobe](https://www.ffmpeg.org/)
 3. Install [Poetry](https://poetry.eustace.io)
@@ -131,14 +131,14 @@ main()
 
 I recommend running `poetry config virtualenvs.in-project true`, which makes Poetry store your Python virtual environment inside the project folder. Additionally, it lets VSCode's Python extension detect the virtual environment if you set the `python.pythonPath` setting to `${workspaceFolder}/.venv/bin/python` in your settings.
 
-### Running
+## Running
 ```
 poetry run vidl
 ```
 
 An alternative to `poetry run <command>` is to run `poetry shell` to enter the virtual environment's Bash CLI, and then run the command on it's own (e.g `vidl`).
 
-### Releasing a new version
+## Releasing a new version
 
 First of all, consider updating the lockfile dependencies by running `poetry update`, then check if things still work.
 
