@@ -1,3 +1,6 @@
+## 3.6.1 2021 Mar 12
+- Move back to youtube-dl
+
 ## 3.6.0 2020 Oct 30
 - Moved from youtube-dl to youtube-dlc
 
