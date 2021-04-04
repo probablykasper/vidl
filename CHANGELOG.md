@@ -1,3 +1,6 @@
+## 3.6.2 2021 Apr 5
+- Finish move back to youtube-dl. Turns out I didn't really do it in 3.6.1.
+
 ## 3.6.1 2021 Mar 12
 - Move back to youtube-dl
 

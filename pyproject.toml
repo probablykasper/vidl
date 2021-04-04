@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "vidl"
-version = "3.6.1"
+version = "3.6.2"
 description = "Downloads video/audio from anywhere, adding thumbnails and mp3 metadata if applicable"
 authors = ["kasper.space"]
 readme = "README.md"
