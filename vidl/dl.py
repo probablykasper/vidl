@@ -73,7 +73,7 @@ def download(options):
             info_result = ytdl.extract_info(options['url'], download=False)
         except Exception as err:
             if options['verbose']: logging.exception(err)
-            log.fatal('youtube-dl failed to get URL info')
+            log.fatal('yt-dlp failed to get URL info')
         if options['verbose']: log.pretty(info_result)
 
     # delete None properties/indexes
@@ -98,7 +98,7 @@ def download(options):
         # yt-dlp specific: best audio, even if it has video
         ytdl_args += ['-f', 'ba*']
         ytdl_args += ['--format-sort', 'abr,codec']
-        # in youtube-dl, "--audio-format mp3 --audio-quality 0" seems to not work
+        # in yt-dlp, "--audio-format mp3 --audio-quality 0" seems to not work
         ytdl_args += ['--audio-format', options['file_format']]
         ytdl_args += ['--audio-quality', '0']
     else:
@@ -131,8 +131,8 @@ def download(options):
         filename_split[len(filename_split)-1] = options['file_format']
         filename = '.'.join(filename_split)
         if options['verbose']:
-            # print youtube-dl command:
-            command = green('youtube-dl command: ')+'youtube-dl '
+            # print yt-dlp command:
+            command = green('yt-dlp command: ')+'yt-dlp '
             for arg in ytdl_args+[video['webpage_url']]:
                 command += quote(arg)+' '
             log(command)

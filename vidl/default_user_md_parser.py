@@ -15,9 +15,9 @@ def user_md_parser(smart_md, md, video_info, url_info):
   #   Same as "md", except this will never include smart metadata (artist/title
   #   parsed from title).
   # video_info:
-  #   Object containing metadata from youtube-dl about the current video.
+  #   Object containing metadata from yt-dlp about the current video.
   # playlist_info:
-  #   An object containing playlist metadata from youtube-dl.
+  #   An object containing playlist metadata from yt-dlp.
   #   If the URL isn't a playlist, playlist_info is the same as video_info.
   #   If the URL is a playlist, it has an "entries" property with video_info objects.
   # callback: Callback function. Takes a metadata object as argument.
