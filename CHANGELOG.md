@@ -1,3 +1,7 @@
+## 3.6.3 2021 Sep 15
+- Move to yt-dlp
+- Improved audio quality
+
 ## 3.6.2 2021 Apr 5
 - Finish move back to youtube-dl. Turns out I didn't really do it in 3.6.1.
 
