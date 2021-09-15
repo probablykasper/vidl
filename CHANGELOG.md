@@ -1,3 +1,6 @@
+## 3.6.4 2021 Sep 15
+- Fix old references to youtube-dl
+
 ## 3.6.3 2021 Sep 15
 - Move to yt-dlp
 - Improved audio quality
