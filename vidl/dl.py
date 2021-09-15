@@ -1,6 +1,6 @@
 import sys, os, copy, logging
 from urllib.parse import urlparse
-import youtube_dl
+import yt_dlp
 from colorboy import cyan, green, red
 from deep_filter import deep_filter
 from shlex import quote
@@ -68,7 +68,7 @@ def download(options):
         'outtmpl': ytdl_output_template,
         'quiet': False if options['verbose'] else True,
     }
-    with youtube_dl.YoutubeDL(ytdl_get_info_options) as ytdl:
+    with yt_dlp.YoutubeDL(ytdl_get_info_options) as ytdl:
         try:
             info_result = ytdl.extract_info(options['url'], download=False)
         except Exception as err:
@@ -95,12 +95,16 @@ def download(options):
     ytdl_args = []
     if options['audio_only']:
         ytdl_args += ['-x']
-        ytdl_args += ['-f', 'best']
+        # yt-dlp specific: best audio, even if it has video
+        ytdl_args += ['-f', 'ba*']
+        ytdl_args += ['--format-sort', 'abr,codec']
+        # in youtube-dl, "--audio-format mp3 --audio-quality 0" seems to not work
         ytdl_args += ['--audio-format', options['file_format']]
+        ytdl_args += ['--audio-quality', '0']
     else:
-        ytdl_args += ['-f', 'bestvideo+bestaudio']
+        # yt-dlp specific: best video, and add audio if it's not there
+        ytdl_args += ['-f', 'bv*+ba/b']
         ytdl_args += ['--recode-video', options['file_format']]
-    ytdl_args += ['--audio-quality', '0']
     ytdl_args += ['-o', ytdl_output_template]
     if options['file_format'] in ['mp3', 'm4a', 'mp4'] and options['no_thumbnail_embed'] == False:
         ytdl_args += ['--embed-thumbnail']
@@ -138,7 +142,7 @@ def download(options):
 
         # download
         try:
-            youtube_dl.main(ytdl_args+[video['webpage_url']])
+            yt_dlp.main(ytdl_args+[video['webpage_url']])
         except (Exception, SystemExit) as err:
             if type(err) == SystemExit and err.code == 0:
                 # don't treat sys.exit(0) as error

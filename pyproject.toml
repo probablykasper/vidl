@@ -8,12 +8,12 @@ repository = "https://github.com/probablykasper/vidl"
 keywords = ['youtube', 'download', 'video', 'audio', 'music']
 
 [tool.poetry.dependencies]
-python = "^3.5"
-youtube-dl = ">2020"
+python = "^3.6"
 colorboy = "^1.0.3"
 mutagen = "^1.45.1"
 deep-filter = "^1.0.1"
 appdirs = "^1.4.4"
+yt-dlp = ">2021.0.0"
 
 [tool.poetry.dev-dependencies]
 pylint = "*"
