@@ -96,8 +96,8 @@ def download(options):
     if options['audio_only']:
         ytdl_args += ['-x']
         # yt-dlp specific: best audio, even if it has video
-        ytdl_args += ['-f', 'ba*']
-        ytdl_args += ['--format-sort', 'abr,codec']
+        ytdl_args += ['-f', 'ba/ba*']
+        ytdl_args += ['--format-sort-force', '--format-sort', 'abr,codec']
         # in yt-dlp, "--audio-format mp3 --audio-quality 0" seems to not work
         ytdl_args += ['--audio-format', options['file_format']]
         ytdl_args += ['--audio-quality', '0']
