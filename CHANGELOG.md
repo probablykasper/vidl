@@ -1,3 +1,6 @@
+## Next
+- Add `bestaudio` and `bestvideo` formats
+
 ## 3.6.5 2021 Sep 15
 - Improve format selection
 

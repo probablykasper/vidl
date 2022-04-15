@@ -32,13 +32,19 @@ def parse_cli_options():
         elif arg in video_formats:
             options['audio_only'] = False
             options['file_format'] = arg
-        elif arg in ['--no-md']:
+        elif arg == 'bestaudio':
+            options['audio_only'] = True
+            options['file_format'] = arg
+        elif arg == 'bestvideo':
+            options['audio_only'] = False
+            options['file_format'] = arg
+        elif arg == '--no-md':
             options['no_md'] = True
-        elif arg in ['--no-smart-md']:
+        elif arg == '--no-smart-md':
             options['no_smart_md'] = True
-        elif arg in ['--no-dl']:
+        elif arg == '--no-dl':
             options['no_dl'] = True
-        elif arg in ['--no-embed']:
+        elif arg == '--no-embed':
             options['no_thumbnail_embed'] = True
         elif arg in ['-v', '--verbose']:
             options['verbose'] = True
@@ -99,14 +105,16 @@ def download(options):
         ytdl_args += ['-f', 'ba/ba*']
         ytdl_args += ['--format-sort-force', '--format-sort', 'abr,acodec']
         # in yt-dlp, "--audio-format mp3 --audio-quality 0" seems to not work
-        ytdl_args += ['--audio-format', options['file_format']]
+        if options['file_format'] != 'bestaudio':
+            ytdl_args += ['--audio-format', options['file_format']]
         ytdl_args += ['--audio-quality', '0']
     else:
         # yt-dlp specific: best video, and add audio if it's not there
         ytdl_args += ['-f', 'bv*+ba/b']
-        ytdl_args += ['--recode-video', options['file_format']]
+        if options['file_format'] != 'bestvideo':
+            ytdl_args += ['--recode-video', options['file_format']]
     ytdl_args += ['-o', ytdl_output_template]
-    if options['file_format'] in ['mp3', 'm4a', 'mp4'] and options['no_thumbnail_embed'] == False:
+    if options['file_format'] in ['bestvideo', 'bestaudio', 'mp3', 'm4a', 'mp4'] and options['no_thumbnail_embed'] == False:
         ytdl_args += ['--embed-thumbnail']
     if not options['verbose']:
         ytdl_args += ['--quiet']
@@ -127,9 +135,12 @@ def download(options):
             log.error(error_msg)
             errors.append(video)
             continue
-        filename_split = filename.split('.')
-        filename_split[len(filename_split)-1] = options['file_format']
-        filename = '.'.join(filename_split)
+
+        if options['file_format'] not in ['bestvideo', 'bestaudio']:
+            filename_split = filename.split('.')
+            filename_split[-1] = options['file_format']
+            filename = '.'.join(filename_split)
+        file_format = filename.split('.')[-1]
         if options['verbose']:
             # print yt-dlp command:
             command = green('yt-dlp command: ')+'yt-dlp '
@@ -157,7 +168,7 @@ def download(options):
         log('Saved as', filename)
 
         # id3 tags
-        if options['file_format'] in id3_metadata_formats and not options['no_md']:
+        if file_format in id3_metadata_formats and not options['no_md']:
             log('Adding metadata to file')
 
             # get artist/title from title
