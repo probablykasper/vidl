@@ -11,7 +11,7 @@ def parse_cli_options():
 
     options = {
         'url': '',
-        'file_format': 'mp3',
+        'format': 'mp3',
         'audio_only': True,
         'no_md': False,
         'no_thumbnail_embed': False,
@@ -28,16 +28,16 @@ def parse_cli_options():
     for arg in sys.argv[1:]:
         if arg in audio_formats:
             options['audio_only'] = True
-            options['file_format'] = arg
+            options['format'] = arg
         elif arg in video_formats:
             options['audio_only'] = False
-            options['file_format'] = arg
+            options['format'] = arg
         elif arg == 'bestaudio':
             options['audio_only'] = True
-            options['file_format'] = arg
+            options['format'] = arg
         elif arg == 'bestvideo':
             options['audio_only'] = False
-            options['file_format'] = arg
+            options['format'] = arg
         elif arg == '--no-md':
             options['no_md'] = True
         elif arg == '--no-smart-md':
@@ -105,16 +105,16 @@ def download(options):
         ytdl_args += ['-f', 'ba/ba*']
         ytdl_args += ['--format-sort-force', '--format-sort', 'abr,acodec']
         # in yt-dlp, "--audio-format mp3 --audio-quality 0" seems to not work
-        if options['file_format'] != 'bestaudio':
-            ytdl_args += ['--audio-format', options['file_format']]
+        if options['format'] != 'bestaudio':
+            ytdl_args += ['--audio-format', options['format']]
         ytdl_args += ['--audio-quality', '0']
     else:
         # yt-dlp specific: best video, and add audio if it's not there
         ytdl_args += ['-f', 'bv*+ba/b']
-        if options['file_format'] != 'bestvideo':
-            ytdl_args += ['--recode-video', options['file_format']]
+        if options['format'] != 'bestvideo':
+            ytdl_args += ['--recode-video', options['format']]
     ytdl_args += ['-o', ytdl_output_template]
-    if options['file_format'] in ['bestvideo', 'bestaudio', 'mp3', 'm4a', 'mp4'] and options['no_thumbnail_embed'] == False:
+    if options['format'] in ['bestvideo', 'bestaudio', 'mp3', 'm4a', 'mp4'] and options['no_thumbnail_embed'] == False:
         ytdl_args += ['--embed-thumbnail']
     if not options['verbose']:
         ytdl_args += ['--quiet']
@@ -136,9 +136,9 @@ def download(options):
             errors.append(video)
             continue
 
-        if options['file_format'] not in ['bestvideo', 'bestaudio']:
+        if options['format'] not in ['bestvideo', 'bestaudio']:
             filename_split = filename.split('.')
-            filename_split[-1] = options['file_format']
+            filename_split[-1] = options['format']
             filename = '.'.join(filename_split)
         file_format = filename.split('.')[-1]
         if options['verbose']:

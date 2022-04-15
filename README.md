@@ -40,7 +40,7 @@ Examples:
         vidl [format] [options] <URL>
 
     Download Options:
-        format             mp3, mp4, wav or m4a. Default mp3
+        format             bestvideo, bestaudio, mp3, mp4, wav or m4a. Default mp3
         --no-md            Don't add metadata to downloaded files
         --no-smart-md      Don't extract artist and song name from title
         --no-embed         Don't embed thumbnail
