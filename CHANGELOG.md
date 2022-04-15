@@ -1,4 +1,4 @@
-## Next
+## 4.0.1 - 2022 Apr 15
 - Fix help menu
 
 ## 4.0.0 - 2022 Apr 15
