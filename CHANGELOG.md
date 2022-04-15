@@ -1,27 +1,27 @@
-## Next
+## 4.0.0 - 2022 Apr 15
 - **Breaking**: Renamed `file_format` API option to `format`
 - Add `bestaudio` and `bestvideo` formats
 
-## 3.6.5 2021 Sep 15
+## 3.6.5 - 2021 Sep 15
 - Improve format selection
 
-## 3.6.4 2021 Sep 15
+## 3.6.4 - 2021 Sep 15
 - Fix old references to youtube-dl
 
-## 3.6.3 2021 Sep 15
+## 3.6.3 - 2021 Sep 15
 - Move to yt-dlp
 - Improved audio quality
 
-## 3.6.2 2021 Apr 5
+## 3.6.2 - 2021 Apr 5
 - Finish move back to youtube-dl. Turns out I didn't really do it in 3.6.1.
 
-## 3.6.1 2021 Mar 12
+## 3.6.1 - 2021 Mar 12
 - Move back to youtube-dl
 
-## 3.6.0 2020 Oct 30
+## 3.6.0 - 2020 Oct 30
 - Moved from youtube-dl to youtube-dlc
 
-## 3.5.1 2020 Sep 5
+## 3.5.1 - 2020 Sep 5
 - Updated project metadata
 
 ## 3.5.0 - 2020 Aug 2
