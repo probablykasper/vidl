@@ -1,3 +1,6 @@
+## Next
+- Fix help menu
+
 ## 4.0.0 - 2022 Apr 15
 - **Breaking**: Renamed `file_format` API option to `format`
 - Add `bestaudio` and `bestvideo` formats
