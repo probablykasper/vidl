@@ -11,7 +11,7 @@ def parse_cli_options():
 
     options = {
         'url': '',
-        'format': 'mp3',
+        'format': 'bestaudio',
         'audio_only': True,
         'no_md': False,
         'no_thumbnail_embed': False,

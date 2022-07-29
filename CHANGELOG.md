@@ -1,3 +1,6 @@
+## Next
+- Default to `bestaudio`
+
 ## 4.0.1 - 2022 Apr 15
 - Fix help menu
 
