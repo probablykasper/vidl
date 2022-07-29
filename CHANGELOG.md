@@ -1,4 +1,4 @@
-## Next
+## 4.1.0 - 2022 Jul 30
 - Default to `bestaudio`
 
 ## 4.0.1 - 2022 Apr 15
