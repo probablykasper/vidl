@@ -1,3 +1,9 @@
+# Changelog
+
+## Next
+- Add `opus` audio format
+- Add default downloads folder on Linux
+
 ## 4.1.0 - 2022 Jul 30
 - Default to `bestaudio`
 

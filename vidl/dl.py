@@ -65,6 +65,9 @@ def download(options):
     """Accepts an `options` dict, but there's no validation and all options must be present. Look inside `parse_cli_options()` for an example options object."""
 
     metadata_formats = ['mp3', 'wav', 'opus']
+    if options['download_folder'] == None:
+        log.error("No download_folder is set in the vidl config file")
+        return
     ytdl_output_template = os.path.join(options['download_folder'], options['output_template'])
 
     # get info
