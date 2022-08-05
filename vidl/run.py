@@ -1,4 +1,4 @@
-import sys, pprint
+import sys
 from colorboy import green
 from vidl import config, __version__, dl, show_help, log
 

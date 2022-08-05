@@ -1,7 +1,7 @@
 import sys, os, copy, logging
 from urllib.parse import urlparse
 import yt_dlp
-from colorboy import cyan, green, red
+from colorboy import green
 from deep_filter import deep_filter
 from shlex import quote
 
@@ -22,7 +22,7 @@ def parse_cli_options():
         'output_template': config.get_config('output_template'),
     }
     video_formats = ['mp4']
-    audio_formats = ['mp3', 'wav', 'm4a']
+    audio_formats = ['mp3', 'wav', 'm4a', 'opus']
 
     # parse arguments
     for arg in sys.argv[1:]:
@@ -64,9 +64,8 @@ def parse_cli_options():
 def download(options):
     """Accepts an `options` dict, but there's no validation and all options must be present. Look inside `parse_cli_options()` for an example options object."""
 
-    id3_metadata_formats = ['mp3']
+    metadata_formats = ['mp3', 'wav', 'opus']
     ytdl_output_template = os.path.join(options['download_folder'], options['output_template'])
-
 
     # get info
     log('Fetching URL info')
@@ -114,7 +113,7 @@ def download(options):
         if options['format'] != 'bestvideo':
             ytdl_args += ['--recode-video', options['format']]
     ytdl_args += ['-o', ytdl_output_template]
-    if options['format'] in ['bestvideo', 'bestaudio', 'mp3', 'm4a', 'mp4'] and options['no_thumbnail_embed'] == False:
+    if options['format'] in ['bestvideo', 'bestaudio', 'mp3', 'm4a', 'mp4', 'opus'] and options['no_thumbnail_embed'] == False:
         ytdl_args += ['--embed-thumbnail']
     if not options['verbose']:
         ytdl_args += ['--quiet']
@@ -167,8 +166,8 @@ def download(options):
                 continue
         log('Saved as', filename)
 
-        # id3 tags
-        if file_format in id3_metadata_formats and not options['no_md']:
+        # tags
+        if file_format in metadata_formats and not options['no_md']:
             log('Adding metadata to file')
 
             # get artist/title from title
@@ -251,7 +250,7 @@ def download(options):
                 md['year'] = video['publish_date'][:4]
             elif 'upload_date' in video and is_int(video['upload_date'][:4]):
                 md['year'] = video['upload_date'][:4]
-            
+
             dumb_md = copy.deepcopy(md)
             if smart_title: md['title'] = parsed_title['title']
             if smart_artist: md['artist'] = parsed_title['artist']
@@ -267,9 +266,9 @@ def download(options):
                     md['album_artist'] = first_video_artist
 
             md = config.user_md_parser(md, dumb_md, video, url_info)
-            
-            md_module.add_metadata(filename, md)
-    
+
+            md_module.add_metadata(filename, md, file_format)
+
     if len(errors) >= 1:
         msg = 'There were errors when downloading the following URLs:'
         for video in errors:

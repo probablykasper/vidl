@@ -17,7 +17,7 @@ def save_file(path, content, json=False):
     file.close()
 
 def get_default_download_folder():
-    if sys.platform == 'darwin':
+    if sys.platform == 'darwin' or sys.platform.startswith('linux'):
         return '~/Downloads'
     elif sys.platform == 'win32':
         import os
