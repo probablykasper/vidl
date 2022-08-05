@@ -1,6 +1,6 @@
 # Changelog
 
-## Next
+## 4.2.0 - 2022 Aug 5
 - Add `opus` audio format
 - Add default downloads folder on Linux
 - Fix incorrect default format shown help menu
