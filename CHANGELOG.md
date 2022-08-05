@@ -3,6 +3,7 @@
 ## Next
 - Add `opus` audio format
 - Add default downloads folder on Linux
+- Fix incorrect default format shown help menu
 
 ## 4.1.0 - 2022 Jul 30
 - Default to `bestaudio`
