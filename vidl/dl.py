@@ -237,6 +237,9 @@ def download(options):
                     md['track_count'] = video['n_entries']
                 else:
                     md['track_count'] = len(videos)
+            elif 'album' in video and type(video['album']) == str:
+                md['album'] = video['album']
+                
             # year
             def is_int(number):
                 try:
