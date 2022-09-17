@@ -1,6 +1,7 @@
 import mutagen
 from mutagen.id3 import ID3, TIT2, TPE1, TALB, TPE2, TRCK, TCON, TDRC, COMM, USLT, TCOM
 from mutagen.oggopus import OggOpus
+from mutagen.mp4 import MP4
 from pprint import pformat
 from vidl import log
 
@@ -12,6 +13,9 @@ def add_metadata(filename, md, file_format):
         id3(filename, md)
     elif file_format == "opus":
         opus(filename, md)
+    elif file_format == "m4a":
+        m4a(filename, md)
+
 
     for key, value in md.items():
         whitespace = ' ' * (13 - len(key))
@@ -66,5 +70,29 @@ def opus(filename, md):
     if 'comment' in md:       tags["COMMENT"] = md['comment']
     if 'lyrics' in md:        tags["LYRICS"] = md['lyrics']
     if 'composer' in md:      tags["COMPOSER"] = md['composer']
+
+    file.save(filename)
+
+def m4a(filename, md):
+    try:
+        file = MP4(filename)
+        tags = file.tags
+    except mutagen.MutagenError:
+        return None
+
+    if 'title' in md:           tags["\xa9nam"] = md['title']
+    if 'artist' in md:          tags["\xa9ART"] = md['artist']
+    if 'album' in md:           tags["\xa9alb"] = md['album']
+    if 'album_artist' in md:    tags["aART"] = md['album_artist']
+    if 'track_number' in md:
+        tags["trkn"] = (md['track_number'])
+        if 'track_count' in md:
+            tags["trkn"] = (md['track_number'], md['track_count'])
+    if 'genre' in md:           tags["\xa9gen"] = md['genre']
+    if 'year' in md:          tags["\xa9day"] = md['year']
+
+    if 'comment' in md:       tags["\xa9cmt"] = md['comment']
+    if 'lyrics' in md:        tags["\xa9lyr"] = md['lyrics']
+    if 'composer' in md:      tags["\xa9wrt"] = md['composer']
 
     file.save(filename)
