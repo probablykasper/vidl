@@ -1,5 +1,9 @@
 # Changelog
 
+## Next
+- Add `m4a` metatata support
+- Fix metadata sometimes being missing
+
 ## 4.2.0 - 2022 Aug 5
 - Add `opus` audio format
 - Add default downloads folder on Linux

@@ -16,7 +16,6 @@ def add_metadata(filename, md, file_format):
     elif file_format == "m4a":
         m4a(filename, md)
 
-
     for key, value in md.items():
         whitespace = ' ' * (13 - len(key))
         log('  ' + key + ':' + whitespace + pformat(value))
