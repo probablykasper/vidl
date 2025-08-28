@@ -1,6 +1,6 @@
 # Changelog
 
-## Next
+## 4.3.1 - 2025 Aug 29
 - Fix support for new python versions
 
 ## 4.3.0 - 2022 Sep 18
