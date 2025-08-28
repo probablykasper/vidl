@@ -15,7 +15,7 @@ deep-filter = "^1.0.1"
 appdirs = "^1.4.4"
 yt-dlp = ">2021.0.0"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 pylint = "*"
 
 [tool.poetry.scripts]
