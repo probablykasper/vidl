@@ -1,5 +1,8 @@
 # Changelog
 
+## Next
+- Fix support for new python versions
+
 ## 4.3.0 - 2022 Sep 18
 - Add `m4a` metatata support
 - Fix metadata sometimes being missing

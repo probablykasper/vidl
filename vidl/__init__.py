@@ -1,12 +1,9 @@
 # this file makes the folder a package
-import pkg_resources, sys, pprint
+import sys, pprint
 from colorboy import cyan, green, red
 
 package_name = __package__.split('.')[0] # used for getting config location and package version
 package_author = 'Kasper Henningsen' # used for getting config location
-
-# automatically set __version__
-__version__ = pkg_resources.get_distribution(package_name).version
 
 log_prefix = cyan('['+package_name+'] ')
 class Log:
