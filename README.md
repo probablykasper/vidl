@@ -68,34 +68,11 @@ vidl has a `user_md_parser.py` file. By default, it does nothing, but you can co
 Documentation for this can be found in the file itself. The file is in the same folder as vidl's config file, which you can find by by running `vidl --config-path`. If you screw something up, you can delete the file, and the default will be recreated the next time you run vidl.
 
 # <a name="macos-shortcut-setup"></a>Set up shortcuts for vidl (macOS)
-You'll be able to select any piece of text, press your chosen shortcut and the link(s) in your selected text will be downloaded! A little tedious to set up, but well worth it.
 
-First, we need to create a macOS Service:
-1. Open the Automator app.
-2. Choose File > New, and select Service.
-3. (TLDR; Add `Run Shell Script`) In the window that just popped up, there are two columns on the left (if not, click the `Library` button in the status bar). Select `Utilities` in the first column, and in the second column, drag `Run Shell Script` into the main part of the window.
-4. Make your settings match these:
+Download [the vidl.shortcut file](./vidl.shortcut) or try [this link](https://www.icloud.com/shortcuts/b84b48ed62ec426398c43daf0d695408). You'll be able to select any piece of text, press your chosen shortcut and the link(s) in your selected text will be downloaded!
 
-    ![Service receives selected [URLs] in [any application]. Input is [only URLs]. In your Run Shell Script box; Shell: [/bin/bash]. Pass input: [as arguments]](https://raw.githubusercontent.com/SpectralKH/vidl/master/macos-service-screenshot.png)
-
-    If you want the shortcut to only work in one app, select that app instead of `any application`.
-5. In the text box in the "Run Shell Script" box, paste in the following script:
-    ```bash
-    for f in "$@"
-    do
-      # behave like a normal terminal window:
-      export PATH=/usr/local/bin:$PATH
-      source ~/.bash_profile
-
-      vidl "$f"
-    done
-    ```
-6. Choose File > Save. Type in vidl.
-
-Almost done, you just need to tie a shortcut to the macOS Service you just created:
-1. Open the System Preferences app.
-2. Go to Keyboard and select the Shortcuts tab.
-3. Select Services from the left column, and locate vidl (should be under Internet). Add your preferred shortcut.
+You can set your preferred keyboard shortcut here:
+![](./macos-shortcut-setup.png)
 
 # API Usage
 You can use Python to download a URL. Example:
