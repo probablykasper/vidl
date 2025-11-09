@@ -1,6 +1,6 @@
 # Changelog
 
-## Next
+## 4.3.2 - 2025 Nov 9
 - Fix YouTube error
 
 ## 4.3.1 - 2025 Aug 29
