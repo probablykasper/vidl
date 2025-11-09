@@ -63,7 +63,7 @@ If you screw something up, you can delete the file, and the default will be recr
 
 # Custom metadata parsing
 
-vidl has a `user_md_parser.py` file. By default, it does nothing, but you can configure it to manipulate metadata of songs you download however you like. In my case, I set the "Comment" metadata to "NCS" if the title ends with "[NCS Release]".
+vidl has a `user_md_parser.py` file. By default, it does nothing, but you can configure it to manipulate metadata of songs you download however you like. For example you could remove "[NCS Release]" from the title.
 
 Documentation for this can be found in the file itself. The file is in the same folder as vidl's config file, which you can find by by running `vidl --config-path`. If you screw something up, you can delete the file, and the default will be recreated the next time you run vidl.
 
