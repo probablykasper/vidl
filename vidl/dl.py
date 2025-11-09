@@ -203,6 +203,7 @@ def download(options):
                         md['artist'] = video['artist']
                     # youtube music artist
                     if  video['extractor'] == 'youtube' \
+                    and 'uploader' in video \
                     and video['uploader'].endswith(' - Topic') \
                     and 'artist' in video:
                         if 'categories' not in video:
