@@ -84,9 +84,9 @@ def m4a(filename, md):
     if 'album' in md:           tags["\xa9alb"] = md['album']
     if 'album_artist' in md:    tags["aART"] = md['album_artist']
     if 'track_number' in md:
-        tags["trkn"] = (md['track_number'])
+        tags["trkn"] = [(int(md['track_number']),0)]
         if 'track_count' in md:
-            tags["trkn"] = (md['track_number'], md['track_count'])
+            tags["trkn"] = [(int(md['track_number']), int(md['track_count']))]
     if 'genre' in md:           tags["\xa9gen"] = md['genre']
     if 'year' in md:          tags["\xa9day"] = md['year']
 

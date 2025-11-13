@@ -5,6 +5,7 @@
 - Show download progress
 - Log info as JSON
 - Faster downloads
+- Fix writing track numbers to m4a files
 
 ## 4.3.2 - 2025 Nov 9
 - Fix YouTube error
