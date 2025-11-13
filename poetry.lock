@@ -330,18 +330,6 @@ files = [
 ]
 
 [[package]]
-name = "deep-filter"
-version = "1.0.1"
-description = "Removes values from nested dicts and lists"
-optional = false
-python-versions = ">=3.5,<4.0"
-groups = ["main"]
-files = [
-    {file = "deep-filter-1.0.1.tar.gz", hash = "sha256:ecafc5fdd6f2f049aef5a76758e0d51ea500afd4f890420c7083a0cf5e40b6c4"},
-    {file = "deep_filter-1.0.1-py3-none-any.whl", hash = "sha256:c063c22f6d03353e3f26d2f281dae7eaa3333d7242df3c05e29f94c689311896"},
-]
-
-[[package]]
 name = "dill"
 version = "0.4.0"
 description = "serialize all of Python"
@@ -874,4 +862,4 @@ test = ["pytest (>=8.1,<9.0)", "pytest-rerunfailures (>=14.0,<15.0)"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.6"
-content-hash = "0032c354ca965d83a32921a0211f4acb02879102a48272f3f270be69e98cb736"
+content-hash = "44d9f02a9e90fccc2a5ac6c086332175bb5a56ea7fab6dbe45f436796d419f29"

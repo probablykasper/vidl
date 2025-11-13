@@ -11,7 +11,6 @@ keywords = ['youtube', 'download', 'video', 'audio', 'music']
 python = "^3.6"
 colorboy = "^1.0.3"
 mutagen = "^1.45.1"
-deep-filter = "^1.0.1"
 appdirs = "^1.4.4"
 yt-dlp = ">2021.0.0"
 
