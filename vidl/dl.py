@@ -134,7 +134,7 @@ def download(options: Options):
         if options['verbose']: logging.exception(err)
         log.fatal('yt-dlp failed to get URL info')
     if options['verbose']:
-        log.pretty(info_result)
+        print(json.dumps(ydl.sanitize_info(info_result, remove_private_keys=True), indent=4))
 
     video_index = -1
     first_video_artist = ''
