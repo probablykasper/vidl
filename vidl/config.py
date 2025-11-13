@@ -2,16 +2,24 @@ import sys, json, os, appdirs
 from colorboy import green
 from vidl import log, package_name, package_author
 
-user_data_dir = appdirs.user_data_dir(package_name, package_author)
-config_path = os.path.join(user_data_dir, 'config.json')
-user_md_parser_path = os.path.join(user_data_dir, 'user_md_parser.py')
+if sys.platform == 'darwin':
+    # TODO:
+    # https://github.com/ActiveState/appdirs/issues/185
+    # or
+    # https://github.com/platformdirs/platformdirs/issues/98
+    user_config_dir = "~/Library/Application Support/" + package_name
+else:
+    user_config_dir = appdirs.user_config_dir(package_name, package_author, roaming=True)
+
+config_path = os.path.join(user_config_dir, 'config.json')
+user_md_parser_path = os.path.join(user_config_dir, 'user_md_parser.py')
 default_user_md_parser_path = os.path.join(os.path.dirname(__file__), 'default_user_md_parser.py')
 
 def save_file(path, content, json=False):
     try:
         file = open(path, 'w+')
     except FileNotFoundError:
-        os.makedirs(user_data_dir)
+        os.makedirs(user_config_dir)
         file = open(path, 'w+')
     file.write(content)
     file.close()
