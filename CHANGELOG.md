@@ -1,6 +1,6 @@
 # Changelog
 
-## Next
+## 4.4.0 - 2025 Nov 13
 - Allow passing yt-dlp arguments
 - Show download progress
 - Log info as JSON
