@@ -4,6 +4,7 @@ import json
 from colorboy import green
 from shlex import quote
 from typing import TypedDict
+import traceback
 
 from vidl import log, config, md as md_module
 
@@ -174,9 +175,9 @@ class MetadataPostProcessor(yt_dlp.postprocessor.PostProcessor):
             log('Adding metadata to file')
             try:
                 md_module.add_metadata(info['filepath'], md, file_format)
-            except Exception as e:
-                log.error(f"Failed to add metadata for {info['filepath']}")
-                raise e
+            except Exception:
+                log.error('Failed to add metadata for', info['filepath'])
+                traceback.print_exc()
 
         return [], info
 
@@ -250,7 +251,7 @@ def download(options: Options):
 
     try:
         ydl.download(parsed_options.urls)
-    except Exception as e:
+    except Exception:
         logging.exception(f"Failed to download")
         raise
 
