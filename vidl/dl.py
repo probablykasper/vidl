@@ -126,6 +126,8 @@ def download(options: Options):
 
     if len(parsed_options.urls) == 0:
         log.fatal('No URL provided')
+    if len(parsed_options.urls) > 1:
+        log.fatal('Multiple URLs provided')
 
     log('Fetching URL info')
     try:
