@@ -59,29 +59,125 @@ def parse_cli_options():
 
     return options
 
+def first_not_none(*values):
+    for v in values:
+        if v is not None:
+            return v
+
 class MetadataPostProcessor(yt_dlp.postprocessor.PostProcessor):
-    def __init__(self, md):
+    def __init__(self, vidl_options: Options, ydl):
         yt_dlp.postprocessor.PostProcessor.__init__(self)
-        self.vidl_md = md
+        self.vidl_options = vidl_options
+        self.ydl = ydl
     def run(self, info):
+        options = self.vidl_options
+        if options['verbose']:
+            log('Info JSON:')
+            print(json.dumps(self.ydl.sanitize_info(info), indent=4))
+
+        if options['no_md']:
+            return [], info
+
+        # get artist/title from title
+        parsed_title = {}
+        if not options['no_smart_md']:
+            if 'title' in info and info['title'].count(' - ') == 1:
+                split_title = info['title'].split(' - ')
+                parsed_title['artist'] = split_title[0]
+                parsed_title['title'] = split_title[1]
+
+        md = {}
+        playlist = info.get('playlist_count', 1) > 1
+
+        # smart title
+        if 'title' in parsed_title:
+            smart_title = True
+        else:
+            smart_title = False
+        # title
+        if 'title' in info:
+            md['title'] = info['title']
+        elif 'track' in info:
+            md['title'] = info['track']
+
+        # smart artist
+        if 'artist' in parsed_title:
+            smart_artist = True
+        else:
+            smart_artist = False
+        # artist
+        if 'uploader' in info:
+            md['artist'] = info['uploader']
+        elif 'artist' in info:
+            md['artist'] = info['artist']
+        # youtube music artist
+        if  info['extractor'] == 'youtube' \
+        and 'uploader' in info \
+        and info['uploader'].endswith(' - Topic') \
+        and 'artist' in info:
+            if 'categories' not in info:
+                md['artist'] = info['artist']
+            elif info['categories'] == ['Music']:
+                md['artist'] = info['artist']
+
+        if playlist:
+            # album
+            md['album'] = first_not_none(
+                info.get('album'),
+                info.get('playlist_title'),
+                info.get('playlist'),
+            )
+            # album_artist
+            md['album_artist'] = first_not_none(
+                info.get('album_artist'),
+                info.get('playlist_uploader'),
+            )
+            # todo: fallback to first video's artist
+            # track_number
+            md['track_number'] = first_not_none(
+                info.get('playlist_index'),
+                info.get('playlist_autonumber'),
+            )
+            # track_count
+            md['track_count'] = first_not_none(
+                info.get('n_entries'),
+                info.get('playlist_count'),
+            )
+        # year
+        year = first_not_none(
+            info.get('release_year'),
+            info.get('release_date'),
+            info.get('publish_date'),
+            info.get('upload_date'),
+        )
+        if year is not None:
+            md['year'] = str(year)[:4]
+
+        dumb_md = copy.deepcopy(md)
+        if smart_title: md['title'] = parsed_title['title']
+        if smart_artist: md['artist'] = parsed_title['artist']
+
+        md = config.user_md_parser(md, dumb_md, info, info)
+
+        # filter out None values
+        md = {k: v for k, v in md.items() if v is not None}
+
         file_format = info['filepath'].split('.')[-1]
         metadata_formats = ['mp3', 'wav', 'opus', 'm4a']
         if file_format in metadata_formats:
             log('Adding metadata to file')
-            md_module.add_metadata(info['filepath'], self.vidl_md, file_format)
+            try:
+                md_module.add_metadata(info['filepath'], md, file_format)
+            except Exception as e:
+                log.error(f"Failed to add metadata for {info['filepath']}")
+                raise e
+
         return [], info
 
 class LogFilepathPostProcessor(yt_dlp.postprocessor.PostProcessor):
     def run(self, info):
         log('Saved as', info['filepath'])
         return [], info
-
-def is_int(number):
-    try:
-        int(number)
-        return True
-    except ValueError:
-        return False
 
 def download(options: Options):
     """Accepts an `options` dict, but there's no validation and all options must be present. Look inside `parse_cli_options()` for an example options object."""
@@ -124,161 +220,29 @@ def download(options: Options):
 
     ydl = yt_dlp.YoutubeDL(parsed_options.ydl_opts)
 
+    if options['no_dl']:
+        ydl.add_post_processor(MetadataPostProcessor(options, ydl), when='pre_process')
+    else:
+        ydl.add_post_processor(MetadataPostProcessor(options, ydl), when='after_move')
+
+    ydl.add_post_processor(LogFilepathPostProcessor(), when='after_move')
+
     if len(parsed_options.urls) == 0:
         log.fatal('No URL provided')
     if len(parsed_options.urls) > 1:
         log.fatal('Multiple URLs provided')
 
-    log('Fetching URL info')
-    try:
-        info_result = ydl.extract_info(parsed_options.urls[0], download=False)
-    except Exception as err:
-        if options['verbose']: logging.exception(err)
-        log.fatal('yt-dlp failed to get URL info')
     if options['verbose']:
-        print(json.dumps(ydl.sanitize_info(info_result, remove_private_keys=True), indent=4))
+        # print yt-dlp command:
+        command = green('yt-dlp command: ')+'yt-dlp '
+        for arg in ydl_args+[parsed_options.urls[0]]:
+            command += quote(arg)+' '
+        log(command)
 
-    video_index = -1
-    first_video_artist = ''
-    errors = []
+    try:
+        ydl.download(parsed_options.urls)
+    except Exception as e:
+        logging.exception(f"Failed to download")
+        raise
 
-    if 'entries' in info_result:
-        videos = info_result['entries']
-        playlist_info = info_result
-    else:
-        videos = [info_result]
-        playlist_info = {}
-    
-    for video in videos:
-        video_index += 1
-
-        if options['verbose']:
-            # print yt-dlp command:
-            command = green('yt-dlp command: ')+'yt-dlp '
-            for arg in ydl_args+[video['webpage_url']]:
-                command += quote(arg)+' '
-            log(command)
-        if options['no_dl']:
-            continue
-        log('Downloading')
-
-        # download
-        try:
-            # tags
-            if not options['no_md']:
-                # get artist/title from title
-                parsed_title = {}
-                if not options['no_smart_md']:
-                    if 'title' in video and video['title'].count(' - ') == 1:
-                        split_title = video['title'].split(' - ')
-                        parsed_title['artist'] = split_title[0]
-                        parsed_title['title'] = split_title[1]
-
-                md = {}
-                playlist = True if len(videos) > 1 else False
-
-                # smart title
-                if 'title' in parsed_title:
-                    smart_title = True
-                else:
-                    smart_title = False
-                # title
-                if 'title' in video:
-                    md['title'] = video['title']
-                elif 'track' in video:
-                    md['title'] = video['track']
-
-                # smart artist
-                if 'artist' in parsed_title:
-                    smart_artist = True
-                else:
-                    smart_artist = False
-                # artist
-                if 'uploader' in video:
-                    md['artist'] = video['uploader']
-                elif 'artist' in video:
-                    md['artist'] = video['artist']
-                # youtube music artist
-                if  video['extractor'] == 'youtube' \
-                and 'uploader' in video \
-                and video['uploader'].endswith(' - Topic') \
-                and 'artist' in video:
-                    if 'categories' not in video:
-                        md['artist'] = video['artist']
-                    elif video['categories'] == ['Music']:
-                        md['artist'] = video['artist']
-
-                use_first_video_artist = False
-                if playlist:
-                    #album
-                    if 'title' in playlist_info:
-                        md['album'] = playlist_info['title']
-                    elif 'playlist_title' in video:
-                        md['album'] = video['playlist_title']
-                    elif 'playlist' in video and type(video['playlist']) == str:
-                        md['album'] = video['playlist']
-                    #album_artist
-                    if 'uploader' in playlist_info:
-                        md['album_artist'] = playlist_info['uploader']
-                    elif 'playlist_uploader' in video:
-                        md['album_artist'] = video['playlist_uploader']
-                    else:
-                        use_first_video_artist = True
-                    # track_number
-                    if 'playlist_index' in video:
-                        md['track_number'] = video['playlist_index']
-                    else:
-                        md['track_number'] = video_index+1
-                    # track_count
-                    if 'n_entries' in video:
-                        md['track_count'] = video['n_entries']
-                    else:
-                        md['track_count'] = len(videos)
-                # year
-                if 'release_date' in video and is_int(video['release_date'][:4]):
-                    md['year'] = video['release_date'][:4]
-                elif 'publish_date' in video and is_int(video['publish_date'][:4]):
-                    md['year'] = video['publish_date'][:4]
-                elif 'upload_date' in video and is_int(video['upload_date'][:4]):
-                    md['year'] = video['upload_date'][:4]
-
-                dumb_md = copy.deepcopy(md)
-                if smart_title: md['title'] = parsed_title['title']
-                if smart_artist: md['artist'] = parsed_title['artist']
-
-                if playlist:
-                    # save artist of first video
-
-                    if video_index == 0 and 'artist' in md:
-                        first_video_artist = md['artist']
-
-                    # use first video's artist as album artist if no other is found
-                    if use_first_video_artist:
-                        md['album_artist'] = first_video_artist
-
-                md = config.user_md_parser(md, dumb_md, video, info_result)
-                ydl.add_post_processor(MetadataPostProcessor(md), when='after_move')
-            
-            ydl.add_post_processor(LogFilepathPostProcessor(), when='after_move')
-
-            # download
-            ydl.process_info(video)
-
-        except (Exception, SystemExit) as err:
-            if type(err) == SystemExit and err.code == 0:
-                # don't treat sys.exit(0) as error
-                pass
-            else:
-                if options['verbose']: logging.exception(err)
-                error_msg = 'Failed to download URL: '+green(video['webpage_url'])
-                if len(videos) == 1: log.fatal(error_msg)
-                log.error(error_msg)
-                errors.append(video)
-                continue
-
-    if len(errors) >= 1:
-        msg = 'There were errors when downloading the following URLs:'
-        for video in errors:
-            msg += f'\n- {green(video["webpage_url"])}: {video["uploader"]} - {video["title"]}'
-        log.fatal(msg)
     log('Done')
