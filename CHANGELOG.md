@@ -2,6 +2,7 @@
 
 ## Next
 - Allow passing yt-dlp arguments
+- Show yt-dlp logs (previously, `--quiet` was used)
 
 ## 4.3.2 - 2025 Nov 9
 - Fix YouTube error
