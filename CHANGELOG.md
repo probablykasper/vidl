@@ -1,5 +1,8 @@
 # Changelog
 
+## Next
+- Allow passing yt-dlp arguments
+
 ## 4.3.2 - 2025 Nov 9
 - Fix YouTube error
 

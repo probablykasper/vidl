@@ -17,6 +17,7 @@ class Options(TypedDict):
     verbose: bool
     download_folder: str
     output_template: str
+    ydl_args: list[str]
 
 def parse_cli_options():
     options = Options(
@@ -29,6 +30,7 @@ def parse_cli_options():
         verbose=False,
         download_folder=config.get_config('download_folder'),    
         output_template=config.get_config('output_template'),
+        ydl_args=[],
     )
     video_formats = ['mp4']
     audio_formats = ['mp3', 'wav', 'm4a', 'opus']
@@ -52,7 +54,8 @@ def parse_cli_options():
         elif arg in ['-v', '--verbose']:
             options['verbose'] = True
         else:
-            log.fatal('Unknown argument:', arg)
+            # Everything else goes to yt-dlp
+            options['ydl_args'].append(arg)
 
     return options
 
@@ -83,7 +86,7 @@ def is_int(number):
 def download(options: Options):
     """Accepts an `options` dict, but there's no validation and all options must be present. Look inside `parse_cli_options()` for an example options object."""
 
-    ydl_args = []
+    ydl_args = options['ydl_args']
 
     # apply vidl arguments
     if options['audio_only']:

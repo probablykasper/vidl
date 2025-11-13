@@ -1,6 +1,6 @@
 # this file makes the folder a package
 import sys, pprint
-from colorboy import cyan, green, red
+from colorboy import cyan, green, red, yellow
 
 package_name = __package__.split('.')[0] # used for getting config location and package version
 package_author = 'Kasper Henningsen' # used for getting config location
@@ -24,7 +24,8 @@ def show_help():
     print(        '    '+cyan(package_name)+' [format] [options] <URL>')
     print(        '')
     print(green(  'Download Options:'))
-    print(cyan(   '    format             ')+'bestvideo, bestaudio (default), mp3, mp4, wav, m4a, or opus')
+    print(yellow(   '    format             ')+'bestvideo, bestaudio (default), mp3, mp4, wav, m4a, or opus')
+    print(yellow(   '    yt-dlp options     ')+'You can also pass any yt-dlp option')
     print(cyan(   '    --no-md            ')+'Don\'t add metadata to downloaded files')
     print(cyan(   '    --no-smart-md      ')+'Don\'t extract artist and song name from title')
     print(cyan(   '    --no-embed         ')+'Don\'t embed thumbnail')
