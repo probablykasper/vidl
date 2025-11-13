@@ -209,6 +209,9 @@ def download(options: Options):
     if options['format'] in ['bestvideo', 'bestaudio', 'mp3', 'm4a', 'mp4', 'opus'] and options['no_thumbnail_embed'] == False:
         ydl_args += ['--embed-thumbnail']
 
+    if not options['verbose']:
+        ydl_args += ['--quiet', '--progress']
+
     # band-aid solution for 403 error caused by cache
     ydl_args += ['--rm-cache-dir']
 

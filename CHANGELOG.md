@@ -2,7 +2,7 @@
 
 ## Next
 - Allow passing yt-dlp arguments
-- Show yt-dlp logs (previously, `--quiet` was used)
+- Show download progress
 - Log info as JSON
 - Faster downloads
 
