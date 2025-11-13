@@ -69,6 +69,7 @@ class MetadataPostProcessor(yt_dlp.postprocessor.PostProcessor):
         yt_dlp.postprocessor.PostProcessor.__init__(self)
         self.vidl_options = vidl_options
         self.ydl = ydl
+        self.first_video_artists: dict[str, str] = {}  # keyed by playlist URL
     def run(self, info):
         options = self.vidl_options
         if options['verbose']:
@@ -87,7 +88,6 @@ class MetadataPostProcessor(yt_dlp.postprocessor.PostProcessor):
                 parsed_title['title'] = split_title[1]
 
         md = {}
-        playlist = info.get('playlist_count', 1) > 1
 
         # smart title
         if 'title' in parsed_title:
@@ -120,7 +120,13 @@ class MetadataPostProcessor(yt_dlp.postprocessor.PostProcessor):
             elif info['categories'] == ['Music']:
                 md['artist'] = info['artist']
 
+        playlist = info.get('playlist_count', 1) > 1
         if playlist:
+            if info['playlist_webpage_url']:
+                fallback_artist = self.first_video_artists.get(info['playlist_webpage_url'])
+                if not fallback_artist:
+                    fallback_artist = md['artist']
+                    self.first_video_artists[info['playlist_webpage_url']] = md['artist']
             # album
             md['album'] = first_not_none(
                 info.get('album'),
@@ -131,8 +137,8 @@ class MetadataPostProcessor(yt_dlp.postprocessor.PostProcessor):
             md['album_artist'] = first_not_none(
                 info.get('album_artist'),
                 info.get('playlist_uploader'),
+                fallback_artist,
             )
-            # todo: fallback to first video's artist
             # track_number
             md['track_number'] = first_not_none(
                 info.get('playlist_index'),
