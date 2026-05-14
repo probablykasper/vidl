@@ -1,5 +1,9 @@
 # Changelog
 
+## Next
+- Add yt-dlp-ejs dependency
+- Require python 3.10+
+
 ## 4.4.0 - 2025 Nov 13
 - Allow passing yt-dlp arguments
 - Show download progress
