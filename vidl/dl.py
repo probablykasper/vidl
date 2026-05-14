@@ -18,6 +18,7 @@ class Options(TypedDict):
     verbose: bool
     download_folder: str
     output_template: str
+    cookies_from_browser: str
     ydl_args: list[str]
 
 def parse_cli_options():
@@ -31,6 +32,7 @@ def parse_cli_options():
         verbose=False,
         download_folder=config.get_config('download_folder'),    
         output_template=config.get_config('output_template'),
+        cookies_from_browser=config.get_config('cookies_from_browser'),
         ydl_args=[],
     )
     video_formats = ['mp4']
@@ -215,6 +217,9 @@ def download(options: Options):
 
     if options['format'] in ['bestvideo', 'bestaudio', 'mp3', 'm4a', 'mp4', 'opus'] and options['no_thumbnail_embed'] == False:
         ydl_args += ['--embed-thumbnail']
+
+    if options['cookies_from_browser']:
+        ydl_args += ['--cookies-from-browser', options['cookies_from_browser']]
 
     if not options['verbose']:
         ydl_args += ['--quiet', '--progress']

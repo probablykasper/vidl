@@ -29,6 +29,7 @@ def get_default_download_folder():
 default_config = {
     'download_folder': get_default_download_folder(),
     'output_template': '%(uploader)s - %(title)s.%(ext)s',
+    'cookies_from_browser': '',
 }
 
 if not os.path.isfile(config_path):

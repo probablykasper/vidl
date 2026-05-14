@@ -1,6 +1,7 @@
 # Changelog
 
 ## Next
+- Add `cookies_from_browser` config option
 - Add yt-dlp-ejs dependency
 - Require python 3.10+
 
