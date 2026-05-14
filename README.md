@@ -35,26 +35,26 @@ Examples:
 
 `vidl`
 - Prints vidl's help menu, which looks like this:
-    ```
-    Download Usage:
-        vidl [format] [options] <URL>
+	```
+	Download Usage:
+		vidl [format] [options] <URL>
 
-    Download Options:
-        format             bestvideo, bestaudio (default), mp3, mp4, wav, m4a, or opus
-        --no-md            Don't add metadata to downloaded files
-        --no-smart-md      Don't extract artist and song name from title
-        --no-embed         Don't embed thumbnail
-        --no-dl            Don't download anything. Usually used with -v
-        -v, --verbose      Display all logs
+	Download Options:
+		format             bestvideo, bestaudio (default), mp3, mp4, wav, m4a, or opus
+		--no-md            Don't add metadata to downloaded files
+		--no-smart-md      Don't extract artist and song name from title
+		--no-embed         Don't embed thumbnail
+		--no-dl            Don't download anything. Usually used with -v
+		-v, --verbose      Display all logs
 
-    General Options:
-        --version          Show version. vidl -v and vidl version works too
-        -h, --help         Show this help message. vidl help works too
-        --config-path      Show the location of the configuration file
+	General Options:
+		--version          Show version. vidl -v and vidl version works too
+		-h, --help         Show this help message. vidl help works too
+		--config-path      Show the location of the configuration file
 
-    Update:
-        pip3 install vidl --upgrade --upgrade-strategy eager
-    ```
+	Update:
+		pip3 install vidl --upgrade --upgrade-strategy eager
+	```
 
 # Configuration
 vidl has a configuration file, which you can find the location of by running `vidl --config-path`. In it, you can set the download folder and filename template.
@@ -80,20 +80,20 @@ You can use Python to download a URL. Example:
 from vidl import config, dl
 
 def main():
-    config.verify_config()
-    dl.download({
-        # all options are required
-        'url': 'https://www.youtube.com/watch?v=82IZ63TU8Fs'
-        'file_format': 'mp3',
-        'audio_only': True,
-        'no_md': False,
-        'no_thumbnail_embed': False,
-        'no_smart_md': False,
-        'no_dl': False,
-        'verbose': False,
-        'download_folder': config.get_config('download_folder'),
-        'output_template': config.get_config('output_template'),
-    })
+	config.verify_config()
+	dl.download({
+		# all options are required
+		'url': 'https://www.youtube.com/watch?v=82IZ63TU8Fs'
+		'file_format': 'mp3',
+		'audio_only': True,
+		'no_md': False,
+		'no_thumbnail_embed': False,
+		'no_smart_md': False,
+		'no_dl': False,
+		'verbose': False,
+		'download_folder': config.get_config('download_folder'),
+		'output_template': config.get_config('output_template'),
+	})
 main()
 ```
 
@@ -120,17 +120,17 @@ An alternative to `poetry run <command>` is to run `poetry shell` to enter the v
 First of all, consider updating the lockfile dependencies by running `poetry update`, then check if things still work.
 
 1. Bump the version number. `<version>` can be `patch`, `minor`, `major` or a version number:
-    ```
-    poetry version <version>
-    ```
+	```
+	poetry version <version>
+	```
 2. Update CHANGELOG.md
 3. Build:
-    ```
-    poetry build
-    ```
+	```
+	poetry build
+	```
 4. Commit and create a git tag
 5. Create GitHub release with release notes and attach the build files
 6. Publish to PyPI:
-    ```
-    poetry publish
-    ```
+	```
+	poetry publish
+	```
