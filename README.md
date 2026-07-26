@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/probablykasper/vidl/master/logo/logo%201000.png" width="100">
+  <img src="https://raw.githubusercontent.com/kasper9n/vidl/master/logo/logo%201000.png" width="100">
 </p>
 
 # vidl

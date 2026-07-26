@@ -4,7 +4,7 @@ version = "5.0.0"
 description = "Downloads video/audio from anywhere, adding thumbnails and mp3 metadata if applicable"
 authors = ["kasper.space"]
 readme = "README.md"
-repository = "https://github.com/probablykasper/vidl"
+repository = "https://github.com/kasper9n/vidl"
 keywords = ['youtube', 'download', 'video', 'audio', 'music']
 
 [tool.poetry.dependencies]
